@@ -126,7 +126,7 @@
             position: relative;
             z-index: 2;
             display: grid;
-            grid-template-columns: 1.3fr 1fr;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
             gap: 4rem;
             align-items: center;
         }
@@ -201,7 +201,7 @@
 
         .hero-stats {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 1.5rem;
         }
 
@@ -281,7 +281,7 @@
 
         .problema-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -318,7 +318,7 @@
 
         .bloques-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
             gap: 2rem;
         }
 
@@ -401,7 +401,7 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
             gap: 1.5rem;
         }
 
@@ -439,7 +439,7 @@
         /* METODOLOGÍA */
         .metodologia-steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
             gap: 1rem;
             margin-top: 3rem;
         }
@@ -516,7 +516,7 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
@@ -551,6 +551,14 @@
             font-size: 0.85rem;
         }
 
+        .hero-content > *,
+        .hero-stats > *,
+        .problema-grid > *,
+        .bloques-grid > *,
+        .sectores-grid > *,
+        .metodologia-steps > *,
+        .footer-content > * { min-width: 0; }
+
         /* ANIMACIONES */
         .fade-in {
             opacity: 0;
@@ -583,4 +591,38 @@
             .menu-toggle { display: block; }
             section { padding: 4rem 1.5rem; }
             .problema { padding: 2rem 1.5rem; }
+        }
+
+        @media (max-width: 600px) {
+            .nav-container { padding: 0.75rem 1rem; }
+            .logo { gap: 0.5rem; font-size: 1.1rem; }
+            .logo-icon { width: 36px; height: 36px; }
+
+            .hero-content { padding: 3rem 1rem; gap: 2rem; }
+            .hero-text .subtitle { font-size: 1.05rem; }
+            .hero-cta { flex-direction: column; align-items: stretch; }
+            .hero-cta .btn { justify-content: center; }
+            .hero-stats { gap: 1rem; }
+            .stat-card { padding: 1rem; }
+            .stat-number { font-size: 2rem; }
+
+            section { padding: 3.5rem 1rem; }
+            .problema { padding: 1.5rem 1rem; }
+            .bloques-grid { gap: 1.25rem; }
+            .bloque-card { padding: 2rem 1.5rem; }
+            .sectores { padding: 3.5rem 1rem; }
+
+            .cta-final {
+                margin: 3rem 1rem;
+                padding: 3rem 1.25rem;
+                border-radius: 16px;
+            }
+
+            footer { padding: 2.5rem 1rem 1.25rem; }
+        }
+
+        @media (max-width: 360px) {
+            .hero-stats { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: 2rem; }
+            .stat-card { padding: 1.25rem; }
         }

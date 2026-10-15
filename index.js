@@ -1,7 +1,20 @@
         // Menú móvil
         const toggle = document.querySelector('.menu-toggle');
         const menu = document.getElementById('menu');
-        toggle.addEventListener('click', () => menu.classList.toggle('active'));
+
+        const setMenuOpen = (isOpen) => {
+            menu.classList.toggle('active', isOpen);
+            toggle.setAttribute('aria-expanded', String(isOpen));
+            toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+        };
+
+        toggle.addEventListener('click', () => setMenuOpen(!menu.classList.contains('active')));
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => setMenuOpen(false));
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') setMenuOpen(false);
+        });
 
         // Animaciones al hacer scroll
         const observer = new IntersectionObserver((entries) => {
