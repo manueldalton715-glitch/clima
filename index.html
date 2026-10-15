@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="División de Seguimiento Climático y Fenómenos Meteorológicos - Enseñanza del seguimiento, registro histórico y pensamiento climático integral">
+    <title>DSCFM | División de Seguimiento Climático y Fenómenos Meteorológicos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul-profundo: #0a2540;
+            --azul-medio: #1e4d7b;
+            --azul-cielo: #4a90c2;
+            --verde-ecosistema: #2d6a4f;
+            --verde-claro: #52b788;
+            --ambar-alerta: #f59e0b;
+            --rojo-critico: #dc2626;
+            --crema: #fafaf7;
+            --gris-texto: #374151;
+            --gris-claro: #e5e7eb;
+            --sombra: 0 4px 20px rgba(10, 37, 64, 0.08);
+            --sombra-hover: 0 8px 30px rgba(10, 37, 64, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gris-texto);
+            background: var(--crema);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; color: var(--azul-profundo); line-height: 1.2; }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gris-claro);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--azul-profundo);
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--azul-cielo), var(--verde-ecosistema));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--gris-texto);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        nav a:hover { color: var(--azul-medio); }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--verde-claro);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after { width: 100%; }
+
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--azul-profundo); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--azul-medio) 50%, var(--verde-ecosistema) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(82, 183, 136, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(74, 144, 194, 0.2) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: white;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-text .tagline {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--verde-claro);
+            color: var(--azul-profundo);
+        }
+
+        .btn-primary:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(82, 183, 136, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover { transform: translateY(-5px); }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--verde-claro);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+        }
+
+        /* SECCIONES */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--verde-ecosistema);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* PROBLEMA CENTRAL */
+        .problema {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--sombra);
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .problema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .problema-card {
+            padding: 2rem;
+            border-radius: 12px;
+            background: var(--crema);
+            border-left: 4px solid var(--ambar-alerta);
+            transition: all 0.3s;
+        }
+
+        .problema-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--sombra);
+        }
+
+        .problema-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .problema-card .icon {
+            font-size: 1.5rem;
+        }
+
+        /* BLOQUES TEMÁTICOS */
+        .bloques {
+            background: linear-gradient(180deg, var(--crema) 0%, white 100%);
+        }
+
+        .bloques-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .bloque-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--sombra);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .bloque-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--azul-cielo), var(--verde-claro));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .bloque-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--sombra-hover);
+        }
+
+        .bloque-card:hover::before { transform: scaleX(1); }
+
+        .bloque-numero {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gris-claro);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .bloque-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .bloque-card p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bloque-link {
+            color: var(--azul-medio);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s;
+        }
+
+        .bloque-link:hover { gap: 0.8rem; }
+
+        /* SECTORES */
+        .sectores {
+            background: var(--azul-profundo);
+            color: white;
+            margin: 0;
+            max-width: 100%;
+            padding: 6rem 2rem;
+        }
+
+        .sectores .section-header h2 { color: white; }
+        .sectores .section-header p { color: rgba(255, 255, 255, 0.7); }
+        .sectores .section-tag { background: rgba(82, 183, 136, 0.2); color: var(--verde-claro); }
+
+        .sectores-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .sector-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .sector-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--verde-claro);
+            transform: translateY(-3px);
+        }
+
+        .sector-item .icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .sector-item h4 {
+            color: white;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sector-item p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* METODOLOGÍA */
+        .metodologia-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-hover);
+        }
+
+        .step-num {
+            display: inline-block;
+            background: var(--azul-profundo);
+            color: white;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .step h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            background: linear-gradient(135deg, var(--verde-ecosistema), var(--azul-medio));
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+            border-radius: 20px;
+            margin: 4rem auto;
+            max-width: 1200px;
+        }
+
+        .cta-final h2 {
+            color: white;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-final p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--azul-profundo);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h4 {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul { list-style: none; }
+
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.3rem 0;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover { color: var(--verde-claro); }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* ANIMACIONES */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1.5rem;
+                box-shadow: var(--sombra);
+            }
+            nav ul.active { display: flex; }
+            .menu-toggle { display: block; }
+            section { padding: 4rem 1.5rem; }
+            .problema { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🌍</div>
+                <span>DSCFM</span>
+            </a>
+            <nav>
+                <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+                <ul id="menu">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#diagnostico">Diagnóstico</a></li>
+                    <li><a href="#bloques">Bloques</a></li>
+                    <li><a href="#sectores">Sectores</a></li>
+                    <li><a href="#metodologia">Metodología</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <div class="hero-text">
+                <span class="tagline">Proyecto de Intervención Institucional</span>
+                <h1>División de Seguimiento Climático y Fenómenos Meteorológicos</h1>
+                <p class="subtitle">Enseñanza del seguimiento, registro histórico, vigilancia operativa diaria, generación de protocolos propios y proyección de soluciones con alcance universal.</p>
+                <div class="hero-cta">
+                    <a href="#diagnostico" class="btn btn-primary">Conocer el proyecto →</a>
+                    <a href="#metodologia" class="btn btn-secondary">Ver metodología</a>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-number">+1.1°C</span>
+                    <span class="stat-label">Aumento global desde niveles preindustriales (IPCC, 2023)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">9</span>
+                    <span class="stat-label">Años más cálidos registrados desde 1850 (OMM)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">250k</span>
+                    <span class="stat-label">Muertes adicionales/año proyectadas por OMS (2030-2050)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">7x</span>
+                    <span class="stat-label">Retorno de invertir en prevención vs. reparación</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIAGNÓSTICO -->
+    <section id="diagnostico">
+        <div class="section-header fade-in">
+            <span class="section-tag">El problema</span>
+            <h2>La información existe. Nadie la integra. Nadie enseña a pensarla.</h2>
+            <p>El cambio climático es un multiplicador de riesgos transversales. Sin una unidad dedicada al seguimiento integral y a la enseñanza de ese seguimiento, ningún sector puede anticipar amenazas ni capitalizar oportunidades.</p>
+        </div>
+
+        <div class="problema fade-in">
+            <h3 style="margin-bottom: 1rem;">Consecuencias de la fragmentación actual</h3>
+            <div class="problema-grid">
+                <div class="problema-card">
+                    <h3><span class="icon">⚠️</span> Alertas tardías</h3>
+                    <p>Se llega al brote cuando ya hay cientos de afectados. El meteorólogo registra la lluvia, el epidemiólogo el dengue, el agrónomo la plaga. Nadie une los tres datos.</p>
+                </div>
+                <div class="problema-card">
+                    <h3><span class="icon">💸</span> Reparación en vez de prevención</h3>
+                    <p>Se gasta 10 veces más en reconstruir que en monitorear. Políticas públicas reactivas: se legisla después del desastre, no antes.</p>
+                </div>
+                <div class="problema-card">
+                    <h3><span class="icon">🌾</span> Pérdidas evitables</h3>
+                    <p>El productor no recibe la alerta con anticipación. Cosechas completas destruidas por eventos que pudieron anticiparse.</p>
+                </div>
+                <div class="problema-card">
+                    <h3><span class="icon">🦟</span> Invasiones descontroladas</h3>
+                    <p>Especies invasoras detectadas cuando ya colonizaron miles de hectáreas. Oportunidades productivas invisibilizadas.</p>
+                </div>
+                <div class="problema-card">
+                    <h3><span class="icon">🧠</span> Nadie enseña a pensar</h3>
+                    <p>No se trata solo de que falten datos: nadie enseñó a generarlos, interpretarlos y pensar a partir de ellos.</p>
+                </div>
+                <div class="problema-card">
+                    <h3><span class="icon">🔗</span> Descoordinación institucional</h3>
+                    <p>Cada organismo duplica esfuerzos y genera datos incompatibles. Ceguera operativa en la toma de decisiones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOQUES TEMÁTICOS -->
+    <section class="bloques" id="bloques">
+        <div class="section-header fade-in">
+            <span class="section-tag">Estructura del proyecto</span>
+            <h2>Cuatro bloques, un objetivo: enseñar a seguir, pensar y actuar</h2>
+            <p>La DSCFM no solo monitorea el clima: enseña a monitorearlo, enseña a pensar a partir del registro y forma organizaciones autónomas.</p>
+        </div>
+
+        <div class="bloques-grid">
+            <div class="bloque-card fade-in">
+                <div class="bloque-numero">01</div>
+                <h3>Justificación</h3>
+                <p>Vectores biológicos, patógenos emergentes, residuos, hambruna y golpes climáticos. El vacío institucional y formativo que la División viene a cubrir.</p>
+                <a href="diagnostico.html" class="bloque-link">Leer bloque completo →</a>
+            </div>
+            <div class="bloque-card fade-in">
+                <div class="bloque-numero">02</div>
+                <h3>Operación por sector</h3>
+                <p>Red de nodos especializados conectados a una base unificada: agricultura, salud, energía, ciencia, gobierno, educación, industria, biodiversidad.</p>
+                <a href="operacion.html" class="bloque-link">Ver sectores →</a>
+            </div>
+            <div class="bloque-card fade-in">
+                <div class="bloque-numero">03</div>
+                <h3>Soluciones propuestas</h3>
+                <p>Red de sensores, plataforma de datos abiertos, sistema de alerta multinivel, educación transversal, alianzas, fondos de resiliencia.</p>
+                <a href="soluciones.html" class="bloque-link">Conocer soluciones →</a>
+            </div>
+            <div class="bloque-card fade-in">
+                <div class="bloque-numero">04</div>
+                <h3>"Lo obvio que no lo es"</h3>
+                <p>Premisas que suelen omitirse y generan fallos críticos: el clima no afecta a todos igual, una alerta sin acción no sirve, enseñar a pensar transforma.</p>
+                <a href="metodologia.html" class="bloque-link">Ver premisas →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTORES -->
+    <section class="sectores" id="sectores">
+        <div class="section-header fade-in">
+            <span class="section-tag">Alcance transversal</span>
+            <h2>Nueve sectores, una sola red</h2>
+            <p>Cada sector recibe datos, aprende a generar sus propios datos y construye sus propios protocolos adaptados a su realidad.</p>
+        </div>
+
+        <div class="sectores-grid">
+            <div class="sector-item fade-in">
+                <span class="icon">🌾</span>
+                <h4>Agricultura y Campo</h4>
+                <p>Plagas, heladas, sequías, ventanas de siembra</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">🏥</span>
+                <h4>Salud Pública</h4>
+                <p>Brotes, vectores, enfermedades respiratorias</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">⚡</span>
+                <h4>Energía e Infraestructura</h4>
+                <p>Demanda, clima espacial, redes críticas</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">🔬</span>
+                <h4>Ciencia y Tecnología</h4>
+                <p>Degradación de materiales, ensayos</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">🏛️</span>
+                <h4>Gobierno y Defensa Civil</h4>
+                <p>Eventos extremos, evacuación, ordenamiento</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">📚</span>
+                <h4>Educación y Comunidad</h4>
+                <p>Ciencia ciudadana, observadores autónomos</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">🚚</span>
+                <h4>Industria y Logística</h4>
+                <p>Cadenas de suministro, cadena de frío</p>
+            </div>
+            <div class="sector-item fade-in">
+                <span class="icon">🌿</span>
+                <h4>Biodiversidad y Ecosistemas</h4>
+                <p>Invasoras, migraciones, puntos de quiebre</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- METODOLOGÍA -->
+    <section id="metodologia">
+        <div class="section-header fade-in">
+            <span class="section-tag">Metodología central</span>
+            <h2>Del registro al protocolo: 8 pasos replicables</h2>
+            <p>Los protocolos no se importan: nacen del pensamiento de la División sobre sus propios datos y se enseñan para que cada organización los adapte.</p>
+        </div>
+
+        <div class="metodologia-steps">
+            <div class="step fade-in">
+                <span class="step-num">1</span>
+                <h4>Observación</h4>
+                <p>¿Qué estoy viendo? Descripción precisa del fenómeno.</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">2</span>
+                <h4>Registro</h4>
+                <p>Frecuencia, magnitud, ubicación, evidencia.</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">3</span>
+                <h4>Cruce</h4>
+                <p>Variables climáticas, biológicas, sanitarias, productivas.</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">4</span>
+                <h4>Pensamiento</h4>
+                <p>¿Qué patrón emerge? ¿Qué hipótesis formulo?</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">5</span>
+                <h4>Proyección</h4>
+                <p>¿Qué va a pasar si la tendencia continúa?</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">6</span>
+                <h4>Protocolo</h4>
+                <p>Qué, quién, cuándo, con qué recursos.</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">7</span>
+                <h4>Enseñanza</h4>
+                <p>Explicar la lógica para que otros lo adapten.</p>
+            </div>
+            <div class="step fade-in">
+                <span class="step-num">8</span>
+                <h4>Revisión</h4>
+                <p>¿Funcionó? ¿Qué datos nuevos lo confirman?</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <div class="cta-final fade-in">
+        <h2>¿Quién va a estar registrando cuando el impacto llegue?</h2>
+        <p>El cambio climático no negocia. No espera a que se pongan de acuerdo cinco ministerios. Avanza todos los días, a todas las horas, en todos los territorios. La DSCFM existe para que la respuesta sea la primera. Y existe para enseñar que esa respuesta no es un privilegio de expertos: es una capacidad que se aprende, se practica y se transmite.</p>
+        <a href="contacto.html" class="btn btn-primary">Articular con la División →</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>DSCFM</h4>
+                <p style="font-size: 0.9rem;">División de Seguimiento Climático y Fenómenos Meteorológicos. Proyecto de intervención institucional con alcance universal.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#diagnostico">Diagnóstico</a></li>
+                    <li><a href="#bloques">Bloques temáticos</a></li>
+                    <li><a href="#sectores">Sectores</a></li>
+                    <li><a href="#metodologia">Metodología</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Documentación</h4>
+                <ul>
+                    <li><a href="cronograma.html">Cronograma</a></li>
+                    <li><a href="equipo.html">Equipo y recursos</a></li>
+                    <li><a href="registro.html">Sistema de registro</a></li>
+                    <li><a href="proyecciones.html">Proyecciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Marco normativo</h4>
+                <ul>
+                    <li><a href="#">Acuerdo de París (2015)</a></li>
+                    <li><a href="#">Ley 27.520 (2019)</a></li>
+                    <li><a href="#">Ley 27.621 EAI (2021)</a></li>
+                    <li><a href="#">Marco de Sendai</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 DSCFM · Proyecto de intervención institucional · Enseñanza del seguimiento y pensamiento climático integral</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menú móvil
+        const toggle = document.querySelector('.menu-toggle');
+        const menu = document.getElementById('menu');
+        toggle.addEventListener('click', () => menu.classList.toggle('active'));
+
+        // Animaciones al hacer scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Header con sombra al hacer scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.style.boxShadow = window.scrollY > 50 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+        });
+    </script>
+</body>
+</html>
