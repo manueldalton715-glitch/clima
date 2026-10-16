@@ -3,295 +3,1917 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="División de Seguimiento Climático y Fenómenos Meteorológicos - Enseñanza del seguimiento, registro histórico y pensamiento climático integral">
-    <title>DSCFM | División de Seguimiento Climático y Fenómenos Meteorológicos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Guía práctica para observar y registrar el tiempo local, reconocer patrones y planificar actividades con información climática.">
+    <meta name="theme-color" content="#52b788">
+    <meta name="color-scheme" content="light dark">
+    <link rel="manifest" href="manifest.webmanifest">
+    <title>DSCFM Lite | Registra el clima, decide mejor, vive mejor</title>
+    <style>
+        :root {
+            --azul: #1d4f73;
+            --azul-claro: #2d7bb3;
+            --verde: #2d8f6f;
+            --verde-claro: #91d7b2;
+            --amarillo: #f6b94c;
+            --rojo: #dd5f4b;
+            --crema: #f6f8f3;
+            --gris: #23313d;
+            --gris-claro: #dfe7ea;
+            --sombra: 0 16px 36px rgba(29, 79, 115, 0.10);
+            --radio-tarjeta: 18px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(145, 215, 178, 0.18), transparent 28rem),
+                linear-gradient(180deg, #f7fbf8 0%, var(--crema) 100%);
+            color: var(--gris);
+            line-height: 1.7;
+            font-size: 18px;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; color: var(--azul); letter-spacing: -0.03em; }
+
+        /* HEADER */
+        header {
+            background:
+                radial-gradient(ellipse at 14% 12%, rgba(255, 255, 255, 0.16), transparent 24rem),
+                linear-gradient(125deg, #173b5b 0%, #246a77 54%, #2d8f6f 100%);
+            color: white;
+            padding: 4rem 1.5rem 4.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .language-selector a {
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 0.7rem;
+            border: 1px solid rgba(255,255,255,0.45);
+            border-radius: 999px;
+            color: #fff;
+            background: rgba(10, 37, 64, 0.2);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .language-selector a[aria-current="page"] {
+            background: #fff;
+            color: #173b5b;
+        }
+
+        .language-selector a:hover { background: rgba(255,255,255,0.22); }
+        .language-selector a[aria-current="page"]:hover { background: #fff; }
+
+        .storm-audio {
+            width: min(100%, 580px);
+            margin: 1.75rem auto 0;
+            padding: 1rem 1.15rem;
+            border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 16px;
+            background: rgba(11, 34, 53, 0.28);
+            backdrop-filter: blur(8px);
+            text-align: left;
+        }
+
+        .storm-audio p { font-size: 0.9rem; margin-top: 0.45rem; }
+
+        .storm-audio button {
+            min-height: 48px;
+            padding: 0.65rem 1rem;
+            border: 0;
+            border-radius: 10px;
+            background: #f6b94c;
+            color: #173b5b;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .storm-audio-status { min-height: 1.5em; }
+
+        .edition-link {
+            display: inline-block;
+            margin-top: 1.2rem;
+            border: 0;
+        }
+
+        /* CONTENEDOR */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title .tag {
+            display: inline-block;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--verde);
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* CAJA PRINCIPAL */
+        .caja-principal {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid rgba(29, 79, 115, 0.08);
+            border-radius: 22px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin: -2rem auto 2rem;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .caja-principal h3 {
+            color: var(--verde);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .caja-principal ul {
+            list-style: none;
+        }
+
+        .caja-principal li {
+            padding: 0.6rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px dashed var(--gris-claro);
+        }
+
+        .caja-principal li:last-child { border-bottom: none; }
+
+        .caja-principal li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--verde-claro);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* EJEMPLOS */
+        .ejemplos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ejemplo-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.8rem;
+            box-shadow: var(--sombra);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            border: 1px solid rgba(29, 79, 115, 0.06);
+            border-top: 4px solid var(--verde-claro);
+        }
+
+        .ejemplo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 30px rgba(29, 79, 115, 0.12);
+        }
+
+        .ejemplo-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ejemplo-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            color: var(--azul);
+        }
+
+        .ejemplo-card .persona {
+            font-size: 0.85rem;
+            color: var(--verde);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .ejemplo-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .ahorro-tag {
+            display: inline-block;
+            background: var(--verde-claro);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* GRÁFICAS */
+        .grafica-container {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid rgba(29, 79, 115, 0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin-bottom: 2rem;
+        }
+
+        .grafica-container h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .grafica-container .descripcion {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grafica-wrapper {
+            position: relative;
+            height: 320px;
+        }
+
+        .graficas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .graficas-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CALCULADORA */
+        .calculadora {
+            background: linear-gradient(135deg, var(--azul), var(--verde));
+            color: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .calculadora h2 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculadora > p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .calc-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .calc-form label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            opacity: 0.95;
+        }
+
+        .calc-form select, .calc-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.95);
+            color: var(--gris);
+        }
+
+        .calc-btn {
+            background: var(--amarillo);
+            color: var(--azul);
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calc-btn:hover {
+            transform: scale(1.03);
+        }
+
+        .calc-resultado {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .calc-resultado.activo {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resultado-numero {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--amarillo);
+            margin: 0.5rem 0;
+        }
+
+        .resultado-lista {
+            margin-top: 1rem;
+            padding-left: 1.2rem;
+        }
+
+        .resultado-lista li {
+            padding: 0.3rem 0;
+        }
+
+        /* SIMULADOR */
+        .simulador {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin: 2rem 0;
+        }
+
+        .simulador h3 {
+            margin-bottom: 1rem;
+        }
+
+        .escenario {
+            background: var(--crema);
+            border-left: 4px solid var(--azul-claro);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .escenario-titulo {
+            font-weight: 700;
+            color: var(--azul);
+            margin-bottom: 0.5rem;
+        }
+
+        .opciones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .opcion-btn {
+            padding: 1rem;
+            border: 2px solid var(--gris-claro);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .opcion-btn:hover {
+            border-color: var(--verde-claro);
+            background: rgba(82, 183, 136, 0.05);
+        }
+
+        .opcion-btn.correcta {
+            border-color: var(--verde-claro);
+            background: rgba(82, 183, 136, 0.15);
+        }
+
+        .opcion-btn.incorrecta {
+            border-color: var(--rojo);
+            background: rgba(220, 38, 38, 0.08);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.activo { display: block; }
+
+        .feedback.bueno {
+            background: rgba(82, 183, 136, 0.15);
+            border-left: 4px solid var(--verde-claro);
+            color: var(--verde);
+        }
+
+        .feedback.malo {
+            background: rgba(220, 38, 38, 0.08);
+            border-left: 4px solid var(--rojo);
+            color: var(--rojo);
+        }
+
+        /* PASOS */
+        .pasos {
+            counter-reset: paso;
+        }
+
+        .paso {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 1.5rem 1.5rem 4.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--sombra);
+            position: relative;
+            counter-increment: paso;
+        }
+
+        .paso::before {
+            content: counter(paso);
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--verde-claro);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .paso h4 {
+            color: var(--azul);
+            margin-bottom: 0.3rem;
+        }
+
+        .paso p {
+            font-size: 0.95rem;
+            color: #6b7280;
+        }
+
+        /* CHECKLIST */
+        .checklist {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+        }
+
+        .checklist h3 {
+            margin-bottom: 1rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--gris-claro);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .check-item:hover {
+            background: var(--crema);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--verde-claro);
+        }
+
+        .check-item.completado label {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .check-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .progreso {
+            background: var(--gris-claro);
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progreso-barra {
+            height: 100%;
+            background: linear-gradient(90deg, var(--verde-claro), var(--verde));
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 4px;
+        }
+
+        .progreso-texto {
+            text-align: center;
+            font-weight: 600;
+            color: var(--verde);
+        }
+
+        /* BENEFICIOS LABORALES */
+        .beneficios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .beneficio {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+            border-left: 4px solid var(--amarillo);
+        }
+
+        .beneficio h4 {
+            color: var(--azul);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .beneficio .numero {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--verde-claro);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            background: linear-gradient(135deg, #2e8f72 0%, #1d4f73 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            margin: 3rem 0;
+            box-shadow: 0 18px 40px rgba(29, 79, 115, 0.18);
+        }
+
+        .cta-final h2 {
+            color: white;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-final p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.95;
+            font-size: 1.05rem;
+        }
+
+        .btn-descarga {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7c75d 0%, #f3a630 100%);
+            color: var(--azul);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 0.3rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+            box-shadow: 0 12px 24px rgba(246, 185, 76, 0.28);
+        }
+
+        .btn-descarga:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(246, 185, 76, 0.32);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--azul);
+            color: rgba(255,255,255,0.8);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--verde-claro);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .opciones { grid-template-columns: 1fr; }
+            .caja-principal { padding: 1.5rem; }
+            .calculadora { padding: 1.5rem; }
+        }
+
+        .skip-link {
+            position: fixed;
+            z-index: 1200;
+            top: 0.5rem;
+            left: 0.5rem;
+            transform: translateY(-160%);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background: #fff;
+            color: #1f2937;
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
+        .reading-progress-track {
+            position: fixed;
+            z-index: 1100;
+            inset: 0 0 auto;
+            height: 5px;
+            background: rgba(55, 65, 81, 0.12);
+        }
+
+        .reading-progress {
+            width: 0;
+            height: 100%;
+            background: var(--verde);
+            transition: width 0.15s linear;
+        }
+
+        .reading-tools {
+            position: fixed;
+            z-index: 1000;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reading-tools button,
+        .index-toggle,
+        .mobile-book-nav button {
+            min-width: 48px;
+            min-height: 48px;
+            border: 1px solid var(--gris-claro);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--gris);
+            font: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+        }
+
+        .index-toggle {
+            position: fixed;
+            z-index: 1001;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 0.8rem;
+        }
+
+        .lite-index {
+            position: fixed;
+            z-index: 1000;
+            inset: 0 auto 0 0;
+            width: min(340px, 88vw);
+            padding: 5rem 1rem 2rem;
+            overflow-y: auto;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(31, 41, 55, 0.18);
+            transform: translateX(-110%);
+            transition: transform 0.25s ease;
+        }
+
+        .lite-index.open { transform: translateX(0); }
+        .lite-index h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+        .lite-index ol { padding-left: 1.5rem; }
+        .lite-index li { margin: 0.55rem 0; }
+        .lite-index a { color: var(--gris); text-decoration: none; }
+        .lite-index a:hover,
+        .lite-index a[aria-current="location"] {
+            color: #28724e;
+            font-weight: 700;
+        }
+
+        .index-backdrop {
+            position: fixed;
+            z-index: 999;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.45);
+        }
+
+        .chapter-indicator {
+            position: fixed;
+            z-index: 900;
+            right: 1rem;
+            bottom: 1rem;
+            max-width: min(280px, 42vw);
+            padding: 0.6rem 0.9rem;
+            border-radius: 999px;
+            background: #fff;
+            box-shadow: var(--sombra);
+            font-size: 0.85rem;
+        }
+
+        .mobile-book-nav { display: none; }
+        .reading-tools button:focus-visible,
+        .index-toggle:focus-visible,
+        .mobile-book-nav button:focus-visible,
+        .lite-index a:focus-visible {
+            outline: 3px solid #0a2540;
+            outline-offset: 3px;
+        }
+
+        body.night-mode {
+            color-scheme: dark;
+            --crema: #111827;
+            --gris: #e5e7eb;
+            --gris-claro: #4b5563;
+            background: #111827;
+            color: #e5e7eb;
+        }
+
+        body.night-mode .caja-principal,
+        body.night-mode .ejemplo-card,
+        body.night-mode .simulador,
+        body.night-mode .checklist,
+        body.night-mode .beneficio,
+        body.night-mode .escenario,
+        body.night-mode .paso,
+        body.night-mode .grafica-container,
+        body.night-mode .lite-index,
+        body.night-mode .reading-tools button,
+        body.night-mode .index-toggle,
+        body.night-mode .mobile-book-nav button,
+        body.night-mode .chapter-indicator { background: #1f2937; color: #f3f4f6; }
+
+        body.night-mode .section-title p,
+        body.night-mode .paso p { color: #d1d5db; }
+
+        body.night-mode .lite-index a,
+        body.night-mode h1,
+        body.night-mode h2,
+        body.night-mode h3,
+        body.night-mode h4 { color: #b7e4c7; }
+
+        body.night-mode .opcion-btn { background: #111827; color: #f3f4f6; }
+
+        @media (prefers-color-scheme: dark) {
+            body:not(.light-mode) {
+                color-scheme: dark;
+                --crema: #111827;
+                --gris: #e5e7eb;
+                --gris-claro: #4b5563;
+                background: #111827;
+                color: #e5e7eb;
+            }
+
+            body:not(.light-mode) .caja-principal,
+            body:not(.light-mode) .ejemplo-card,
+            body:not(.light-mode) .simulador,
+            body:not(.light-mode) .checklist,
+            body:not(.light-mode) .beneficio,
+            body:not(.light-mode) .escenario,
+            body:not(.light-mode) .paso,
+            body:not(.light-mode) .grafica-container,
+            body:not(.light-mode) .lite-index,
+            body:not(.light-mode) .reading-tools button,
+            body:not(.light-mode) .index-toggle,
+            body:not(.light-mode) .mobile-book-nav button,
+            body:not(.light-mode) .chapter-indicator { background: #1f2937; color: #f3f4f6; }
+
+            body:not(.light-mode) .section-title p,
+            body:not(.light-mode) .paso p { color: #d1d5db; }
+
+            body:not(.light-mode) .lite-index a,
+            body:not(.light-mode) h1,
+            body:not(.light-mode) h2,
+            body:not(.light-mode) h3,
+            body:not(.light-mode) h4 { color: #b7e4c7; }
+
+            body:not(.light-mode) .opcion-btn { background: #111827; color: #f3f4f6; }
+        }
+
+        body.text-large { font-size: 20px; }
+        body.text-large .section-title p { font-size: 1.12em; }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .fade-in.visible { opacity: 1; transform: none; }
+
+        @media (max-width: 600px) {
+            .reading-tools { top: 4.5rem; right: 0.75rem; }
+            .chapter-indicator { right: 0.75rem; bottom: 1rem; }
+            header { padding-top: 7rem; }
+        }
+
+        @media (max-width: 479px) {
+            .chapter-indicator { bottom: 5rem; }
+            .mobile-book-nav {
+                position: fixed;
+                z-index: 950;
+                inset: auto 0 0;
+                display: flex;
+                justify-content: space-around;
+                gap: 0.5rem;
+                padding: 0.5rem;
+                background: rgba(250, 250, 247, 0.96);
+                box-shadow: 0 -4px 18px rgba(31, 41, 55, 0.12);
+            }
+            .mobile-book-nav button { flex: 1; }
+            body { padding-bottom: 4.5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media print {
+            .reading-progress-track,
+            .reading-tools,
+            .index-toggle,
+            .lite-index,
+            .index-backdrop,
+            .chapter-indicator,
+            .mobile-book-nav { display: none !important; }
+            body { background: #fff; color: #111; font-size: 12pt; }
+            header { background: none; color: #111; padding: 1rem 0; }
+            header h1, h1, h2, h3 { color: #111 !important; }
+            .container { max-width: none; padding: 0; }
+            section, .caja-principal, .ejemplo-card { break-inside: avoid; box-shadow: none; }
+        }
+    </style>
 </head>
 <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <div class="reading-progress-track" role="progressbar" aria-label="Progreso de lectura" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="readingProgress" class="reading-progress"></div></div>
+    <button id="indexToggle" class="index-toggle" type="button" aria-controls="liteIndex" aria-expanded="false">☰ Índice</button>
+    <nav id="liteIndex" class="lite-index" aria-label="Índice de la guía" inert>
+        <h2>Índice de lectura</h2>
+        <ol id="liteIndexLinks"></ol>
+        <button id="bookmarkButton" type="button" class="calc-btn" aria-label="Guardar esta sección como marcador">Guardar marcador</button>
+        <a id="bookmarkLink" hidden>Ir al marcador guardado</a>
+    </nav>
+    <div id="indexBackdrop" class="index-backdrop" hidden></div>
+    <div class="reading-tools" aria-label="Herramientas de lectura">
+        <button id="nightModeButton" type="button" aria-label="Alternar modo nocturno" aria-pressed="false" title="Alternar modo nocturno">🌙</button>
+        <button id="textSizeButton" type="button" aria-pressed="false" title="Aumentar tamaño del texto">A+</button>
+    </div>
+    <div id="chapterIndicator" class="chapter-indicator" aria-live="polite">Capítulo actual</div>
+    <nav class="mobile-book-nav" aria-label="Navegación entre secciones">
+        <button id="previousSection" type="button" aria-label="Sección anterior">← Anterior</button>
+        <button id="mobileIndexToggle" type="button" aria-controls="liteIndex">Índice</button>
+        <button id="nextSection" type="button" aria-label="Sección siguiente">Siguiente →</button>
+    </nav>
 
-    <!-- HEADER -->
+    <!-- HERO -->
     <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">🌍</div>
-                <span>DSCFM</span>
-            </a>
-            <nav>
-                <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="menu" aria-expanded="false">☰</button>
-                <ul id="menu">
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#diagnostico">Diagnóstico</a></li>
-                    <li><a href="#bloques">Bloques</a></li>
-                    <li><a href="#sectores">Sectores</a></li>
-                    <li><a href="#metodologia">Metodología</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                </ul>
-            </nav>
+        <nav class="language-selector" aria-label="Idioma">
+            <a href="./index.html" lang="es" aria-current="page">Español</a>
+            <a href="./index.en.html" lang="en">English</a>
+            <a href="./index.pt-BR.html" lang="pt-BR">Português (Brasil)</a>
+        </nav>
+        <div class="hero-badge">🌦️ DSCFM · OBSERVACIÓN Y SEGUIMIENTO DEL CLIMA</div>
+        <h1>El clima cambia. Observarlo ayuda a decidir mejor.</h1>
+        <p>Una guía práctica para registrar el tiempo local, reconocer patrones y planificar actividades cotidianas. No hace falta ser especialista: alcanza con observar, anotar y contrastar la información.</p>
+        <a class="btn-descarga edition-link" href="dscfm-extendida.html">📘 Leer versión extendida</a>
+        <div class="storm-audio" role="group" aria-label="Sonido ambiental de tormenta">
+            <button id="stormAudioButton" type="button" aria-describedby="stormAudioHelp">⛈️ Activar sonido de tormenta</button>
+            <p id="stormAudioHelp">Al activarlo, suena un trueno de unos 8 segundos ahora y luego a intervalos crecientes (5, 15, 25… minutos) durante un máximo de 5 horas. El audio está incluido en esta guía; podés detenerlo cuando quieras.</p>
+            <p id="stormAudioStatus" class="storm-audio-status" aria-live="polite">El sonido está desactivado.</p>
+            <audio id="thunderAudio" src="./thunder.wav" preload="auto" aria-hidden="true"></audio>
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="hero" id="inicio">
-        <div class="hero-content">
-            <div class="hero-text">
-                <span class="tagline">Proyecto de Intervención Institucional</span>
-                <h1>División de Seguimiento Climático y Fenómenos Meteorológicos</h1>
-                <p class="subtitle">Enseñanza del seguimiento, registro histórico, vigilancia operativa diaria, generación de protocolos propios y proyección de soluciones con alcance universal.</p>
-                <div class="hero-cta">
-                    <a href="#diagnostico" class="btn btn-primary">Conocer el proyecto →</a>
-                    <a href="#metodologia" class="btn btn-secondary">Ver metodología</a>
-                </div>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <span class="stat-number">+1.1°C</span>
-                    <span class="stat-label">Aumento global desde niveles preindustriales (IPCC, 2023)</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">9</span>
-                    <span class="stat-label">Años más cálidos registrados desde 1850 (OMM)</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">250k</span>
-                    <span class="stat-label">Muertes adicionales/año proyectadas por OMS (2030-2050)</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">7x</span>
-                    <span class="stat-label">Retorno de invertir en prevención vs. reparación</span>
-                </div>
-            </div>
-        </div>
-    </section>
+    <main id="contenido" class="container">
 
-    <!-- DIAGNÓSTICO -->
-    <section id="diagnostico">
-        <div class="section-header fade-in">
-            <span class="section-tag">El problema</span>
-            <h2>La información existe. Nadie la integra. Nadie enseña a pensarla.</h2>
-            <p>El cambio climático es un multiplicador de riesgos transversales. Sin una unidad dedicada al seguimiento integral y a la enseñanza de ese seguimiento, ningún sector puede anticipar amenazas ni capitalizar oportunidades.</p>
+        <!-- CAJA PRINCIPAL -->
+        <div class="caja-principal">
+            <h3>💡 ¿Por qué esta guía es diferente?</h3>
+            <ul>
+                <li><strong>No necesitás tecnología cara:</strong> un cuaderno, una birome y tu celular alcanzan.</li>
+                <li><strong>No necesitás saber de clima:</strong> solo anotar lo que ves y lo que pasa.</li>
+                <li><strong>No necesitás mucho tiempo:</strong> 5 minutos por día es suficiente.</li>
+                <li><strong>Sirve para cualquier trabajo:</strong> huertero, albañil, comerciante, remisero, docente, ama de casa.</li>
+                <li><strong>En 30 días podés revisar tus primeras anotaciones:</strong> la continuidad del registro ayuda a comparar observaciones, sin garantizar resultados.</li>
+            </ul>
         </div>
 
-        <div class="problema fade-in">
-            <h3 class="problema-title">Consecuencias de la fragmentación actual</h3>
-            <div class="problema-grid">
-                <div class="problema-card">
-                    <h3><span class="icon">⚠️</span> Alertas tardías</h3>
-                    <p>Se llega al brote cuando ya hay cientos de afectados. El meteorólogo registra la lluvia, el epidemiólogo el dengue, el agrónomo la plaga. Nadie une los tres datos.</p>
+        <!-- SECCIÓN: LA IDEA CENTRAL -->
+        <section>
+            <div class="section-title">
+                <span class="tag">La idea central</span>
+                <h2>El clima puede influir en tus decisiones cotidianas</h2>
+                <p>La lluvia, el frío, el calor y el viento pueden afectar actividades, gastos o producción. Registrar observaciones ayuda a comparar situaciones y planificar, sin reemplazar pronósticos ni asesoramiento especializado.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CASOS ILUSTRATIVOS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Casos ilustrativos</span>
+                <h2>Seis ejemplos de observación y planificación</h2>
+                <p>Las personas y situaciones de esta sección son ficticias. Sirven para mostrar ideas de uso; no son testimonios ni resultados comprobados.</p>
+            </div>
+
+            <div class="ejemplos-grid">
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🥬</div>
+                    <div class="persona">Doña Marta · Huertera familiar</div>
+                    <h3>Anota la lluvia y decide cuándo trasplantar</h3>
+                    <p>Marta lleva un registro de lluvia y anota cuándo trasplanta. Con el tiempo puede comparar sus observaciones con el pronóstico y ajustar su planificación, sin asumir que un día fijo será siempre más conveniente.</p>
+                    <span class="ahorro-tag">Ejemplo: registrar lluvia y trasplantes</span>
                 </div>
-                <div class="problema-card">
-                    <h3><span class="icon">💸</span> Reparación en vez de prevención</h3>
-                    <p>Se gasta 10 veces más en reconstruir que en monitorear. Políticas públicas reactivas: se legisla después del desastre, no antes.</p>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🧱</div>
+                    <div class="persona">Don José · Albañil independiente</div>
+                    <h3>Anota la temperatura y planifica los trabajos</h3>
+                    <p>José anota los días de trabajo exterior, las condiciones meteorológicas y los cambios de agenda. Esa información puede ayudarle a planificar, junto con pronósticos actualizados y las necesidades de cada obra.</p>
+                    <span class="ahorro-tag">Ejemplo: planificar tareas a la intemperie</span>
                 </div>
-                <div class="problema-card">
-                    <h3><span class="icon">🌾</span> Pérdidas evitables</h3>
-                    <p>El productor no recibe la alerta con anticipación. Cosechas completas destruidas por eventos que pudieron anticiparse.</p>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🏠</div>
+                    <div class="persona">Familia Rodríguez · 4 personas</div>
+                    <h3>Anota gastos por clima y ajusta el presupuesto</h3>
+                    <p>La familia registra gastos mensuales de energía y los compara con la temperatura. Así puede identificar variaciones y explorar opciones de presupuesto; el registro no garantiza una reducción del gasto.</p>
+                    <span class="ahorro-tag">Ejemplo: comparar gastos y condiciones</span>
                 </div>
-                <div class="problema-card">
-                    <h3><span class="icon">🦟</span> Invasiones descontroladas</h3>
-                    <p>Especies invasoras detectadas cuando ya colonizaron miles de hectáreas. Oportunidades productivas invisibilizadas.</p>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🚕</div>
+                    <div class="persona">Pedro · Remisero</div>
+                    <h3>Anota clima y ajusta rutas y horarios</h3>
+                    <p>Pedro registra condiciones del tiempo, rutas y tiempos de viaje. Puede revisar esos datos para planificar recorridos, sin asumir que una condición meteorológica produce siempre la misma demanda.</p>
+                    <span class="ahorro-tag">Ejemplo: observar rutas y tiempos</span>
                 </div>
-                <div class="problema-card">
-                    <h3><span class="icon">🧠</span> Nadie enseña a pensar</h3>
-                    <p>No se trata solo de que falten datos: nadie enseñó a generarlos, interpretarlos y pensar a partir de ellos.</p>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🤝</div>
+                    <div class="persona">Cooperativa El Progreso · 12 familias</div>
+                    <h3>Anotan plagas y comparten alertas por WhatsApp</h3>
+                    <p>Las familias comparten observaciones de sus huertas y registran cuándo aparece una plaga. La información puede servir para consultar a personal técnico y coordinar seguimiento, no para sustituir un diagnóstico.</p>
+                    <span class="ahorro-tag">Ejemplo: compartir observaciones</span>
                 </div>
-                <div class="problema-card">
-                    <h3><span class="icon">🔗</span> Descoordinación institucional</h3>
-                    <p>Cada organismo duplica esfuerzos y genera datos incompatibles. Ceguera operativa en la toma de decisiones.</p>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">📚</div>
+                    <div class="persona">Lucía · Maestra de primaria</div>
+                    <h3>Enseña a sus alumnos a registrar el clima</h3>
+                    <p>Lucía propone registrar la temperatura del patio con instrumentos adecuados y usar la serie como actividad educativa de matemática, lengua y ciencias, explicando sus alcances y limitaciones.</p>
+                    <span class="ahorro-tag">Ejemplo: aprender con observaciones locales</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN: GRÁFICAS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Cómo leer gráficas</span>
+                <h2>Gráficas de ejemplo: cómo leer y comparar registros</h2>
+                <p>Las gráficas siguientes usan datos simulados con fines didácticos. No representan observaciones ni resultados de familias, organizaciones o productores.</p>
+            </div>
+
+            <div class="grafica-container">
+                <h3>📊 Índice simulado por actividad</h3>
+                <p class="descripcion">Valores ficticios para practicar la lectura de una gráfica; no estiman ahorros o resultados reales.</p>
+                <div class="grafica-wrapper">
+                    <canvas id="graficaBarras" role="img" aria-label="Gráfica de barras con valores simulados por actividad"></canvas>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- BLOQUES TEMÁTICOS -->
-    <section class="bloques" id="bloques">
-        <div class="section-header fade-in">
-            <span class="section-tag">Estructura del proyecto</span>
-            <h2>Cuatro bloques, un objetivo: enseñar a seguir, pensar y actuar</h2>
-            <p>La DSCFM no solo monitorea el clima: enseña a monitorearlo, enseña a pensar a partir del registro y forma organizaciones autónomas.</p>
-        </div>
+            <div class="graficas-grid">
+                <div class="grafica-container">
+                    <h3>📈 Ejemplo de variación mensual</h3>
+                    <p class="descripcion">Serie inventada para mostrar cómo comparar dos conjuntos de datos, no una proyección de gastos.</p>
+                    <div class="grafica-wrapper">
+                        <canvas id="graficaLineas" role="img" aria-label="Gráfica de líneas: gastos mensuales comparativos con y sin registro climático"></canvas>
+                    </div>
+                </div>
 
-        <div class="bloques-grid">
-            <div class="bloque-card fade-in">
-                <div class="bloque-numero">01</div>
-                <h3>Justificación</h3>
-                <p>Vectores biológicos, patógenos emergentes, residuos, hambruna y golpes climáticos. El vacío institucional y formativo que la División viene a cubrir.</p>
-                <a href="diagnostico.html" class="bloque-link">Leer bloque completo →</a>
+                <div class="grafica-container">
+                    <h3>🥧 Distribución simulada</h3>
+                    <p class="descripcion">Porcentajes ficticios para explicar una gráfica de torta; no describen gastos observados.</p>
+                    <div class="grafica-wrapper">
+                        <canvas id="graficaTorta" role="img" aria-label="Gráfica de torta con distribución porcentual simulada"></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="bloque-card fade-in">
-                <div class="bloque-numero">02</div>
-                <h3>Operación por sector</h3>
-                <p>Red de nodos especializados conectados a una base unificada: agricultura, salud, energía, ciencia, gobierno, educación, industria, biodiversidad.</p>
-                <a href="operacion.html" class="bloque-link">Ver sectores →</a>
-            </div>
-            <div class="bloque-card fade-in">
-                <div class="bloque-numero">03</div>
-                <h3>Soluciones propuestas</h3>
-                <p>Red de sensores, plataforma de datos abiertos, sistema de alerta multinivel, educación transversal, alianzas, fondos de resiliencia.</p>
-                <a href="soluciones.html" class="bloque-link">Conocer soluciones →</a>
-            </div>
-            <div class="bloque-card fade-in">
-                <div class="bloque-numero">04</div>
-                <h3>"Lo obvio que no lo es"</h3>
-                <p>Premisas que suelen omitirse y generan fallos críticos: el clima no afecta a todos igual, una alerta sin acción no sirve, enseñar a pensar transforma.</p>
-                <a href="metodologia.html" class="bloque-link">Ver premisas →</a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- SECTORES -->
-    <section class="sectores" id="sectores">
-        <div class="section-header fade-in">
-            <span class="section-tag">Alcance transversal</span>
-            <h2>Nueve sectores, una sola red</h2>
-            <p>Cada sector recibe datos, aprende a generar sus propios datos y construye sus propios protocolos adaptados a su realidad.</p>
-        </div>
+        <!-- CALCULADORA -->
+        <section>
+            <div class="calculadora">
+                <h2>🧮 Explorá un escenario con tus supuestos</h2>
+                <p id="calculadoraNota">Ingresá un gasto mensual y un porcentaje de reducción hipotético. El resultado es solo una cuenta aritmética: no predice ni garantiza un ahorro por registrar el clima.</p>
 
-        <div class="sectores-grid">
-            <div class="sector-item fade-in">
-                <span class="icon">🌾</span>
-                <h4>Agricultura y Campo</h4>
-                <p>Plagas, heladas, sequías, ventanas de siembra</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">🏥</span>
-                <h4>Salud Pública</h4>
-                <p>Brotes, vectores, enfermedades respiratorias</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">⚡</span>
-                <h4>Energía e Infraestructura</h4>
-                <p>Demanda, clima espacial, redes críticas</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">🔬</span>
-                <h4>Ciencia y Tecnología</h4>
-                <p>Degradación de materiales, ensayos</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">🏛️</span>
-                <h4>Gobierno y Defensa Civil</h4>
-                <p>Eventos extremos, evacuación, ordenamiento</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">📚</span>
-                <h4>Educación y Comunidad</h4>
-                <p>Ciencia ciudadana, observadores autónomos</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">🚚</span>
-                <h4>Industria y Logística</h4>
-                <p>Cadenas de suministro, cadena de frío</p>
-            </div>
-            <div class="sector-item fade-in">
-                <span class="icon">🌿</span>
-                <h4>Biodiversidad y Ecosistemas</h4>
-                <p>Invasoras, migraciones, puntos de quiebre</p>
-            </div>
-        </div>
-    </section>
+                <div class="calc-form">
+                    <div>
+                        <label for="gastoMensual">Gasto mensual que querés analizar ($)</label>
+                        <input id="gastoMensual" type="number" min="0" step="100" inputmode="decimal" value="0" aria-describedby="calculadoraNota">
+                    </div>
+                    <div>
+                        <label for="reduccionEsperada">Reducción hipotética (%)</label>
+                        <input id="reduccionEsperada" type="number" min="0" max="100" step="1" inputmode="decimal" value="0" aria-describedby="calculadoraNota">
+                    </div>
+                </div>
 
-    <!-- METODOLOGÍA -->
-    <section id="metodologia">
-        <div class="section-header fade-in">
-            <span class="section-tag">Metodología central</span>
-            <h2>Del registro al protocolo: 8 pasos replicables</h2>
-            <p>Los protocolos no se importan: nacen del pensamiento de la División sobre sus propios datos y se enseñan para que cada organización los adapte.</p>
-        </div>
+                <button class="calc-btn" onclick="calcular()">Calcular escenario →</button>
 
-        <div class="metodologia-steps">
-            <div class="step fade-in">
-                <span class="step-num">1</span>
-                <h4>Observación</h4>
-                <p>¿Qué estoy viendo? Descripción precisa del fenómeno.</p>
+                <div class="calc-resultado" id="resultado" aria-live="polite">
+                    <p>Reducción anual hipotética, según los valores ingresados:</p>
+                    <div class="resultado-numero" id="resultadoNumero">$0</div>
+                    <p id="resultadoSupuestos">No es una estimación de resultados reales ni una garantía de ahorro.</p>
+                    <button id="shareSavingsButton" class="calc-btn" type="button">Compartir por WhatsApp</button>
+                </div>
             </div>
-            <div class="step fade-in">
-                <span class="step-num">2</span>
-                <h4>Registro</h4>
-                <p>Frecuencia, magnitud, ubicación, evidencia.</p>
-            </div>
-            <div class="step fade-in">
-                <span class="step-num">3</span>
-                <h4>Cruce</h4>
-                <p>Variables climáticas, biológicas, sanitarias, productivas.</p>
-            </div>
-            <div class="step fade-in">
-                <span class="step-num">4</span>
-                <h4>Pensamiento</h4>
-                <p>¿Qué patrón emerge? ¿Qué hipótesis formulo?</p>
-            </div>
-            <div class="step fade-in">
-                <span class="step-num">5</span>
-                <h4>Proyección</h4>
-                <p>¿Qué va a pasar si la tendencia continúa?</p>
-            </div>
-            <div class="step fade-in">
-                <span class="step-num">6</span>
-                <h4>Protocolo</h4>
-                <p>Qué, quién, cuándo, con qué recursos.</p>
-            </div>
-            <div class="step fade-in">
-                <span class="step-num">7</span>
-                <h4>Enseñanza</h4>
-                <p>Explicar la lógica para que otros lo adapten.</p>
-            </div>
-            <div class="step fade-in">
-                <span class="step-num">8</span>
-                <h4>Revisión</h4>
-                <p>¿Funcionó? ¿Qué datos nuevos lo confirman?</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CTA FINAL -->
-    <div class="cta-final fade-in">
-        <h2>¿Quién va a estar registrando cuando el impacto llegue?</h2>
-        <p>El cambio climático no negocia. No espera a que se pongan de acuerdo cinco ministerios. Avanza todos los días, a todas las horas, en todos los territorios. La DSCFM existe para que la respuesta sea la primera. Y existe para enseñar que esa respuesta no es un privilegio de expertos: es una capacidad que se aprende, se practica y se transmite.</p>
-        <a href="mailto:editorialvhs30@gmail.com?subject=Contacto%20DSCFM" class="btn btn-primary">Enviar un email →</a>
-    </div>
+        <!-- SIMULADOR DE DECISIONES -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Aprendé jugando</span>
+                <h2>Simulador: ¿qué harías vos?</h2>
+                <p>Practicá con situaciones hipotéticas. Elegí una opción y revisá qué información convendría considerar.</p>
+            </div>
 
-    <!-- FOOTER -->
-    <footer id="contacto">
-        <div class="footer-content">
-            <div class="footer-col">
-                <h4>DSCFM</h4>
-                <p class="footer-description">División de Seguimiento Climático y Fenómenos Meteorológicos. Proyecto de intervención institucional con alcance universal.</p>
+            <div class="simulador">
+                <div class="escenario">
+                    <div class="escenario-titulo">🌦️ Escenario: Mañana es día de mercado al aire libre</div>
+                    <p>Anotaste en tu cuaderno durante 3 meses que cuando la humedad supera el 80% a la mañana, a la tarde llueve. Hoy la humedad está en 85%. ¿Qué hacés?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Opción A:</strong> Armo el puesto igual, ya lloverá si tiene que llover.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Opción B:</strong> Reviso el pronóstico actualizado y considero una alternativa cubierta.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <div class="escenario">
+                    <div class="escenario-titulo">🌡️ Escenario: tenés una tarea al aire libre</div>
+                    <p>En tu registro aparecen varios días fríos seguidos. El pronóstico anuncia otra jornada fresca. ¿Qué hacés?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Opción A:</strong> Revisás las condiciones y adaptás la tarea si hace falta.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Opción B:</strong> Ignorás el pronóstico y no preparás ninguna alternativa.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <div class="escenario">
+                    <div class="escenario-titulo">🛒 Escenario: Tenés un pequeño comercio de bebidas</div>
+                    <p>Anotaste que cuando hay 3 días seguidos arriba de 30°C, vendés el triple de agua y gaseosa. El pronóstico dice 34°C los próximos 4 días. ¿Qué hacés?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Opción A:</strong> Dejo todo igual, vendo lo que venda.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Opción B:</strong> Compro más stock hoy y aviso a vecinos.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="#diagnostico">Diagnóstico</a></li>
-                    <li><a href="#bloques">Bloques temáticos</a></li>
-                    <li><a href="#sectores">Sectores</a></li>
-                    <li><a href="#metodologia">Metodología</a></li>
-                </ul>
+        </section>
+
+        <!-- SECCIÓN: PASOS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Empezá hoy</span>
+                <h2>Tu primer registro en 5 minutos</h2>
+                <p>No necesitás nada especial. Solo un cuaderno (o la app de notas del celular) y estos 5 pasos.</p>
             </div>
-            <div class="footer-col">
-                <h4>Documentación</h4>
-                <ul>
-                    <li><a href="cronograma.html">Cronograma</a></li>
-                    <li><a href="equipo.html">Equipo y recursos</a></li>
-                    <li><a href="registro.html">Sistema de registro</a></li>
-                    <li><a href="proyecciones.html">Proyecciones</a></li>
-                </ul>
+
+            <div class="pasos">
+                <div class="paso">
+                    <h4>Elegí un horario fijo</h4>
+                    <p>Lo mejor es a la mañana, con el café o el mate. Todos los días, a la misma hora. Tardás 2 minutos.</p>
+                </div>
+                <div class="paso">
+                    <h4>Anotá 3 cosas simples</h4>
+                    <p><strong>1)</strong> ¿Cómo está el cielo? (sol, nublado, lluvia). <strong>2)</strong> ¿Hace frío, fresco, calor? <strong>3)</strong> ¿Qué hice hoy por el clima? (cerré ventanas, prendí estufa, regué).</p>
+                </div>
+                <div class="paso">
+                    <h4>Sumá lo que gastaste por el clima</h4>
+                    <p>Un ejemplo: "hoy compré garrafa porque hizo frío". Anotalo al lado. Al mes vas a ver un patrón.</p>
+                </div>
+                <div class="paso">
+                    <h4>Mirá tu cuaderno una vez por semana</h4>
+                    <p>Domingo a la noche, 5 minutos. Buscá: "¿qué se repite?". Ahí está tu primer aprendizaje.</p>
+                </div>
+                <div class="paso">
+                    <h4>Tomá UNA decisión mejor</h4>
+                    <p>No intentes cambiar todo. Solo una cosa. Ejemplo: "si llueve 3 días, no trasplanto". Probalo un mes.</p>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4>Marco normativo</h4>
-                <ul>
-                    <li><a href="#">Acuerdo de París (2015)</a></li>
-                    <li><a href="#">Ley 27.520 (2019)</a></li>
-                    <li><a href="#">Ley 27.621 EAI (2021)</a></li>
-                    <li><a href="#">Marco de Sendai</a></li>
-                </ul>
+        </section>
+
+        <!-- SECCIÓN: BENEFICIOS LABORALES -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Mejorá tu trabajo</span>
+                <h2>Cómo el registro mejora tu vida laboral</h2>
+                <p>Un registro no predice el tiempo ni garantiza resultados. Puede ayudarte a revisar experiencias locales junto con pronósticos y recomendaciones oficiales.</p>
             </div>
+
+            <div class="beneficios-grid">
+                <div class="beneficio">
+                    <span class="numero">🌤️</span>
+                    <h4>Planificación de tareas</h4>
+                    <p>Registrar condiciones y cambios de agenda ayuda a revisar cómo organizar tareas al aire libre junto con pronósticos actualizados.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌡️</span>
+                    <h4>Atención ante temperaturas extremas</h4>
+                    <p>Observar calor y frío puede facilitar la consulta oportuna de alertas y recomendaciones de las autoridades sanitarias.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌧️</span>
+                    <h4>Organización de un comercio</h4>
+                    <p>Comparar condiciones meteorológicas con la actividad del negocio puede aportar contexto para planificar compras y horarios.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌱</span>
+                    <h4>Seguimiento de huertas</h4>
+                    <p>Anotar lluvia, temperatura y observaciones de cultivo ayuda a identificar cambios y consultar orientación técnica.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">📝</span>
+                    <h4>Memoria local</h4>
+                    <p>Un registro propio complementa los pronósticos: documenta lo observado en un lugar y momento concretos.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🗓️</span>
+                    <h4>Comparación a lo largo del tiempo</h4>
+                    <p>Una serie ordenada permite comparar períodos, teniendo en cuenta que las condiciones y los límites de cada registro varían.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHECKLIST -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Tu plan de acción</span>
+                <h2>Checklist para empezar esta semana</h2>
+                <p>Tildá cada paso cuando lo hagas. El progreso se guarda en tu navegador.</p>
+            </div>
+
+            <div class="checklist">
+                <h3>📝 Esta semana quiero:</h3>
+                <div class="progreso">
+                    <div class="progreso-barra" id="progresoBarra"></div>
+                </div>
+                <p class="progreso-texto" id="progresoTexto">0 de 10 completados</p>
+
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c1">
+                    <label for="c1">Conseguir un cuaderno chico (o crear una nota en el celular)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c2">
+                    <label for="c2">Elegir un horario fijo para anotar (ej: 8 AM con el mate)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c3">
+                    <label for="c3">Hacer el primer registro hoy (cielo, temperatura, qué hice)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c4">
+                    <label for="c4">Anotar un gasto que hice por el clima (garrafa, remedio, nafta)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c5">
+                    <label for="c5">Repetir el registro 7 días seguidos</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c6">
+                    <label for="c6">El domingo mirar todo lo anotado y buscar un patrón</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c7">
+                    <label for="c7">Elegir UNA decisión que voy a tomar distinto la próxima semana</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c8">
+                    <label for="c8">Contarle a alguien (familia, vecino, compañero) lo que estoy haciendo</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c9">
+                    <label for="c9">Al mes, calcular cuánto ahorré o dejé de perder</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c10">
+                    <label for="c10">Revisar al final del mes si el registro me resulta útil para planificar</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <div class="cta-final">
+            <h2>Empezá con una observación del tiempo local.</h2>
+            <p>Descargá la plantilla, imprimila o usala en el celular. Registrá lo que observás y contrastalo con pronósticos y fuentes oficiales.</p>
+            <button class="btn-descarga" type="button" onclick="descargarPlantilla()">📄 Imprimir cuaderno / guardar como PDF</button>
+            <button id="installAppButton" class="btn-descarga" type="button" onclick="instalarApp()">📱 Instalar / usar sin conexión</button>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 DSCFM · Proyecto de intervención institucional · Enseñanza del seguimiento y pensamiento climático integral</p>
-        </div>
+    </main>
+
+    <footer>
+        <p><strong>DSCFM Lite</strong> · Guía de observación y registro del tiempo para apoyar la planificación cotidiana.</p>
+        <p style="margin-top: 0.5rem;">El registro personal complementa, pero no reemplaza, los pronósticos y las alertas oficiales. <a href="dscfm-extendida.html">Consultar la propuesta institucional →</a></p>
     </footer>
 
-    <script src="index.js" defer></script>
+    <script>
+        const renderCharts = () => {
+        if (typeof Chart === 'undefined') {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                canvas.hidden = true;
+                const fallback = document.createElement('p');
+                fallback.textContent = 'La gráfica necesita conexión para cargarse. El resto de la guía sigue disponible sin conexión.';
+                canvas.after(fallback);
+            });
+            return;
+        }
+        // ========== GRÁFICA DE BARRAS: AHORRO POR ACTIVIDAD ==========
+        const ctxBarras = document.getElementById('graficaBarras').getContext('2d');
+        new Chart(ctxBarras, {
+            type: 'bar',
+            data: {
+                labels: ['Huerta', 'Trabajo exterior', 'Comercio', 'Transporte', 'Hogar', 'Cooperativa'],
+                datasets: [{
+                    label: 'Valor simulado (índice)',
+                    data: [35, 62, 48, 54, 29, 71],
+                    backgroundColor: [
+                        '#52b788',
+                        '#4a90c2',
+                        '#f59e0b',
+                        '#95d5b2',
+                        '#52b788',
+                        '#52b788'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' (simulado)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ========== GRÁFICA DE LÍNEAS: GASTOS SIN vs CON REGISTRO ==========
+        const ctxLineas = document.getElementById('graficaLineas').getContext('2d');
+        new Chart(ctxLineas, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [
+                    {
+                        label: 'Serie A (simulada)',
+                        data: [180, 175, 190, 220, 280, 350, 380, 340, 260, 210, 185, 180],
+                        borderColor: '#e76f51',
+                        backgroundColor: 'rgba(231, 111, 81, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Serie B (simulada)',
+                        data: [180, 175, 185, 200, 230, 260, 270, 250, 220, 200, 180, 175],
+                        borderColor: '#52b788',
+                        backgroundColor: 'rgba(82, 183, 136, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': índice ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ========== GRÁFICA DE TORTA: DISTRIBUCIÓN SIMULADA ==========
+        const ctxTorta = document.getElementById('graficaTorta').getContext('2d');
+        new Chart(ctxTorta, {
+            type: 'doughnut',
+            data: {
+                labels: ['Salud y remedios', 'Comida', 'Educación de hijos', 'Ahorro / emergencia', 'Vivienda / arreglos'],
+                datasets: [{
+                    data: [28, 22, 20, 18, 12],
+                    backgroundColor: ['#52b788', '#4a90c2', '#f59e0b', '#95d5b2', '#374151'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 12 },
+                            padding: 10
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        };
+
+        const loadCharts = () => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+            script.onload = renderCharts;
+            script.onerror = error => {
+                console.error('No se pudo cargar Chart.js:', error);
+                renderCharts();
+            };
+            document.head.append(script);
+        };
+
+        const firstChart = document.querySelector('canvas');
+        if ('IntersectionObserver' in window && firstChart) {
+            const chartObserver = new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting)) {
+                    chartObserver.disconnect();
+                    loadCharts();
+                }
+            }, { rootMargin: '200px' });
+            chartObserver.observe(firstChart);
+        } else {
+            loadCharts();
+        }
+
+        const stormAudioButton = document.getElementById('stormAudioButton');
+        const stormAudioStatus = document.getElementById('stormAudioStatus');
+        const stormDuration = 5 * 60 * 60 * 1000;
+        let stormTimer;
+        let stormStartedAt;
+        let nextThunderInterval = 5;
+
+        const thunderAudio = document.getElementById('thunderAudio');
+
+        const playThunder = () => {
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            return thunderAudio.play();
+        };
+
+        const finishStormSounds = () => {
+            clearTimeout(stormTimer);
+            stormTimer = undefined;
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            stormStartedAt = undefined;
+            stormAudioButton.textContent = '⛈️ Activar sonido de tormenta';
+            stormAudioButton.setAttribute('aria-pressed', 'false');
+            stormAudioStatus.textContent = 'La sesión de sonidos terminó después de 5 horas.';
+        };
+
+        const scheduleNextThunder = () => {
+            const elapsed = Date.now() - stormStartedAt;
+            const remaining = stormDuration - elapsed;
+            if (remaining <= 0) {
+                finishStormSounds();
+                return;
+            }
+
+            const delay = nextThunderInterval * 60 * 1000;
+            if (delay > remaining) {
+                stormTimer = setTimeout(finishStormSounds, remaining);
+                return;
+            }
+
+            stormTimer = setTimeout(() => {
+                if (Date.now() - stormStartedAt >= stormDuration) {
+                    finishStormSounds();
+                    return;
+                }
+                playThunder().then(() => {
+                    nextThunderInterval += 10;
+                    stormAudioStatus.textContent = `Trueno reproducido. El próximo sonará en ${nextThunderInterval} minutos; la sesión termina a las 5 horas.`;
+                    scheduleNextThunder();
+                }).catch(error => {
+                    console.error('No se pudo reproducir el trueno:', error);
+                    stopStormSounds();
+                    stormAudioStatus.textContent = 'El navegador no pudo reproducir el audio. Revisá el volumen y los permisos de sonido, y volvé a intentarlo.';
+                });
+            }, delay);
+        };
+
+        const stopStormSounds = () => {
+            clearTimeout(stormTimer);
+            stormTimer = undefined;
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            stormStartedAt = undefined;
+            stormAudioButton.textContent = '⛈️ Activar sonido de tormenta';
+            stormAudioButton.setAttribute('aria-pressed', 'false');
+            stormAudioStatus.textContent = 'Sonido detenido. No se reproducirán más truenos.';
+        };
+
+        stormAudioButton.addEventListener('click', () => {
+            if (stormStartedAt) {
+                stopStormSounds();
+                return;
+            }
+
+            playThunder().then(() => {
+                stormStartedAt = Date.now();
+                nextThunderInterval = 5;
+                stormAudioButton.textContent = '⏹️ Detener sonidos';
+                stormAudioButton.setAttribute('aria-pressed', 'true');
+                stormAudioStatus.textContent = 'Trueno reproducido. El próximo sonará en 5 minutos; después, los intervalos aumentarán de 10 en 10 minutos. La sesión se detendrá a las 5 horas.';
+                scheduleNextThunder();
+            }).catch(error => {
+                console.error('No se pudo iniciar el sonido de tormenta:', error);
+                stormAudioStatus.textContent = 'No se pudo reproducir el trueno. Revisá el volumen y los permisos de sonido del dispositivo e intentá de nuevo.';
+            });
+        });
+
+        // ========== CALCULADORA DE AHORRO ==========
+        function calcular() {
+            const gastoMensual = Number(document.getElementById('gastoMensual').value);
+            const reduccion = Number(document.getElementById('reduccionEsperada').value);
+            const resultadoNumero = document.getElementById('resultadoNumero');
+            const resultadoSupuestos = document.getElementById('resultadoSupuestos');
+
+            if (!Number.isFinite(gastoMensual) || gastoMensual < 0 || !Number.isFinite(reduccion) || reduccion < 0 || reduccion > 100) {
+                resultadoNumero.textContent = 'Revisá los valores';
+                resultadoSupuestos.textContent = 'Ingresá un gasto no negativo y una reducción entre 0 y 100%.';
+                document.getElementById('resultado').classList.add('activo');
+                return;
+            }
+
+            const reduccionAnualHipotetica = Math.round(gastoMensual * (reduccion / 100) * 12);
+            resultadoNumero.textContent = '$' + reduccionAnualHipotetica.toLocaleString('es-AR');
+            resultadoSupuestos.textContent = `Escenario aritmético: $${gastoMensual.toLocaleString('es-AR')} mensuales × ${reduccion}% × 12. No representa un resultado observado.`;
+            document.getElementById('resultado').classList.add('activo');
+        }
+
+        // ========== SIMULADOR DE DECISIONES ==========
+        let escenarioActual = 1;
+        const feedbacks = {
+            1: {
+                bueno: 'Bien: usaste observaciones y un pronóstico actualizado para considerar alternativas. La decisión depende de las condiciones reales del día.',
+                malo: 'En este ejercicio, conviene revisar el pronóstico y prever una alternativa. Un registro pasado no permite asegurar qué ocurrirá hoy.'
+            },
+            2: {
+                bueno: 'Bien: contrastaste el registro con las condiciones actuales y ajustaste el plan. Los datos pasados orientan, pero no reemplazan el pronóstico.',
+                malo: 'En este ejercicio, ignorar la información disponible deja menos opciones de planificación. El registro no permite predecir con certeza el tiempo.'
+            },
+            3: {
+                bueno: 'Bien: usaste observaciones para planificar y revisar necesidades. La demanda y los precios también dependen de otros factores.',
+                malo: 'En este ejercicio, revisar el registro y la información disponible ayudaría a decidir con más contexto, sin garantizar ventas ni precios.'
+            }
+        };
+
+        function responder(btn, esCorrecta) {
+            const escenario = btn.closest('.escenario');
+            const escenarioNum = Array.from(document.querySelectorAll('.escenario')).indexOf(escenario) + 1;
+            const feedback = escenario.querySelector('.feedback');
+            const botones = escenario.querySelectorAll('.opcion-btn');
+
+            botones.forEach(b => b.disabled = true);
+
+            if (esCorrecta) {
+                btn.classList.add('correcta');
+                feedback.className = 'feedback activo bueno';
+                feedback.textContent = feedbacks[escenarioNum].bueno;
+            } else {
+                btn.classList.add('incorrecta');
+                feedback.className = 'feedback activo malo';
+                feedback.textContent = feedbacks[escenarioNum].malo;
+            }
+        }
+
+        // ========== CHECKLIST CON PROGRESO ==========
+        function toggleCheck(item) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            item.classList.toggle('completado', checkbox.checked);
+            actualizarProgreso();
+            guardarProgreso();
+        }
+
+        function actualizarProgreso() {
+            const total = document.querySelectorAll('.check-item').length;
+            const completados = document.querySelectorAll('.check-item.completado').length;
+            const porcentaje = (completados / total) * 100;
+
+            document.getElementById('progresoBarra').style.width = porcentaje + '%';
+            document.getElementById('progresoTexto').textContent = `${completados} de ${total} completados`;
+        }
+
+        function guardarProgreso() {
+            const checks = [];
+            document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+                checks.push(cb.checked);
+            });
+            try {
+                localStorage.setItem('dscfm-lite-checks', JSON.stringify(checks));
+            } catch (error) {
+                console.error('No se pudo guardar el progreso:', error);
+                document.getElementById('progresoTexto').textContent = 'No se pudo guardar el progreso en este navegador.';
+            }
+        }
+
+        function cargarProgreso() {
+            try {
+                const guardado = localStorage.getItem('dscfm-lite-checks');
+                if (guardado) {
+                    const checks = JSON.parse(guardado);
+                    document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+                        cb.checked = Boolean(checks[i]);
+                        cb.closest('.check-item').classList.toggle('completado', cb.checked);
+                    });
+                }
+            } catch (error) {
+                console.error('No se pudo recuperar el progreso guardado:', error);
+                document.getElementById('progresoTexto').textContent = 'No se pudo recuperar el progreso guardado en este navegador.';
+            }
+            actualizarProgreso();
+        }
+
+        // ========== DESCARGAS ==========
+        function descargarPlantilla() {
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert('El navegador bloqueó la ventana de impresión. Permití ventanas emergentes para guardar la plantilla como PDF.');
+                return;
+            }
+            const rows = Array.from({ length: 7 }, (_, index) =>
+                `<tr><td>${index + 1}</td><td></td><td></td><td></td><td></td><td></td></tr>`
+            ).join('');
+            printWindow.document.write(`<!DOCTYPE html>
+                <html lang="es"><head><meta charset="UTF-8"><title>Cuaderno de registro climático DSCFM</title>
+                <style>
+                    body{font:14px/1.4 Arial,sans-serif;color:#1f2937;margin:24px}
+                    h1{color:#1e4d7b;font-size:22px}p{margin:8px 0}
+                    table{width:100%;border-collapse:collapse;margin-top:18px}
+                    th,td{border:1px solid #687386;padding:10px;text-align:left}
+                    td{height:42px}th{background:#eef5f0}
+                    @media print{body{margin:10mm}h1{font-size:18pt}}
+                </style></head><body>
+                <h1>Cuaderno de registro climático</h1>
+                <p><strong>Nombre / grupo:</strong> ____________________________ &nbsp; <strong>Localidad:</strong> ____________________</p>
+                <p><strong>Mes:</strong> ____________________ &nbsp; <strong>Año:</strong> __________</p>
+                <table><thead><tr><th>Día</th><th>Cielo / lluvia</th><th>Temperatura</th><th>Actividad</th><th>Gastos / efectos</th><th>Observaciones</th></tr></thead><tbody>${rows}</tbody></table>
+                <p><strong>Patrón que observé:</strong> _________________________________________________________________</p>
+                <p><strong>Decisión para la próxima semana:</strong> ____________________________________________________</p>
+                <script>window.addEventListener('load',()=>window.print());<\/script>
+                </body></html>`);
+            printWindow.document.close();
+        }
+
+        let installPrompt;
+        window.addEventListener('beforeinstallprompt', event => {
+            event.preventDefault();
+            installPrompt = event;
+            document.getElementById('installAppButton').textContent = '📱 Instalar DSCFM';
+        });
+
+        async function instalarApp() {
+            if (!installPrompt) {
+                alert('Para instalar y habilitar el uso sin conexión, abrí esta guía desde un servidor HTTPS o localhost y elegí “Agregar a pantalla de inicio” en el menú del navegador.');
+                return;
+            }
+            try {
+                installPrompt.prompt();
+                await installPrompt.userChoice;
+                installPrompt = null;
+            } catch (error) {
+                console.error('No se pudo iniciar la instalación:', error);
+                alert('El navegador no pudo iniciar la instalación. Probá con “Agregar a pantalla de inicio” desde su menú.');
+            }
+        }
+
+        document.getElementById('shareSavingsButton').addEventListener('click', () => {
+            const ahorro = document.getElementById('resultadoNumero').textContent;
+            const message = `Exploré un escenario hipotético de reducción anual de gastos con la guía DSCFM: ${ahorro}. Es una cuenta basada en supuestos, no una predicción ni una garantía.`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+        });
+
+        document.querySelectorAll('.check-item').forEach(item => {
+            item.removeAttribute('onclick');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', () => toggleCheck(item));
+            item.addEventListener('click', event => {
+                if (event.target.closest('input, label')) return;
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
+        // Inicializar
+        cargarProgreso();
+    </script>
+
+    <script>
+        (() => {
+            const sections = Array.from(document.querySelectorAll('main section'));
+            const menu = document.getElementById('liteIndex');
+            const toggle = document.getElementById('indexToggle');
+            const backdrop = document.getElementById('indexBackdrop');
+            const links = document.getElementById('liteIndexLinks');
+            const chapterIndicator = document.getElementById('chapterIndicator');
+            const progressBar = document.getElementById('readingProgress');
+            let currentIndex = 0;
+            let storageUnavailable = false;
+            const storageGet = key => {
+                if (storageUnavailable) return null;
+                try {
+                    return localStorage.getItem(key);
+                } catch (error) {
+                    storageUnavailable = true;
+                    console.error('No se pudo leer el almacenamiento local:', error);
+                    chapterIndicator.textContent = 'El navegador bloqueó el guardado local.';
+                    return null;
+                }
+            };
+            const storageSet = (key, value) => {
+                if (storageUnavailable) return;
+                try {
+                    localStorage.setItem(key, value);
+                } catch (error) {
+                    storageUnavailable = true;
+                    console.error('No se pudo guardar en el almacenamiento local:', error);
+                    chapterIndicator.textContent = 'El navegador bloqueó el guardado local.';
+                }
+            };
+
+            const closeMenu = () => {
+                menu.classList.remove('open');
+                backdrop.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+                menu.inert = true;
+            };
+
+            const openMenu = () => {
+                menu.classList.add('open');
+                backdrop.hidden = false;
+                toggle.setAttribute('aria-expanded', 'true');
+                menu.inert = false;
+            };
+
+            sections.forEach((section, index) => {
+                const heading = section.querySelector('h2');
+                if (!heading) return;
+                section.id = `lite-section-${index + 1}`;
+                section.classList.add('fade-in');
+                const item = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${section.id}`;
+                link.textContent = heading.textContent.trim();
+                item.append(link);
+                links.append(item);
+                link.addEventListener('click', closeMenu);
+            });
+
+            const navigateTo = index => {
+                const target = sections[Math.max(0, Math.min(index, sections.length - 1))];
+                target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+
+            toggle.addEventListener('click', () => menu.classList.contains('open') ? closeMenu() : openMenu());
+            document.getElementById('mobileIndexToggle').addEventListener('click', openMenu);
+            backdrop.addEventListener('click', closeMenu);
+            document.getElementById('previousSection').addEventListener('click', () => navigateTo(currentIndex - 1));
+            document.getElementById('nextSection').addEventListener('click', () => navigateTo(currentIndex + 1));
+
+            const nightModeButton = document.getElementById('nightModeButton');
+            const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            let savedTheme = storageGet('dscfm-lite-night-mode');
+            const setNightMode = enabled => {
+                document.body.classList.toggle('night-mode', enabled);
+                document.body.classList.toggle('light-mode', !enabled);
+                nightModeButton.setAttribute('aria-pressed', String(enabled));
+                nightModeButton.setAttribute('aria-label', enabled ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+                nightModeButton.title = enabled ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+                nightModeButton.textContent = enabled ? '☀️' : '🌙';
+            };
+            setNightMode(savedTheme === null ? colorScheme.matches : savedTheme === 'true');
+            nightModeButton.addEventListener('click', () => {
+                const enabled = !document.body.classList.contains('night-mode');
+                savedTheme = String(enabled);
+                storageSet('dscfm-lite-night-mode', savedTheme);
+                setNightMode(enabled);
+            });
+            colorScheme.addEventListener('change', event => {
+                if (savedTheme === null) setNightMode(event.matches);
+            });
+
+            document.getElementById('textSizeButton').addEventListener('click', event => {
+                const active = document.body.classList.toggle('text-large');
+                event.currentTarget.setAttribute('aria-pressed', String(active));
+            });
+
+            const bookmarkLink = document.getElementById('bookmarkLink');
+            const savedBookmark = storageGet('dscfm-lite-bookmark');
+            if (savedBookmark && document.getElementById(savedBookmark)) {
+                bookmarkLink.href = `#${savedBookmark}`;
+                bookmarkLink.hidden = false;
+                bookmarkLink.textContent = 'Ir al marcador guardado';
+            }
+            document.getElementById('bookmarkButton').addEventListener('click', () => {
+                const section = sections[currentIndex];
+                if (!section) return;
+                storageSet('dscfm-lite-bookmark', section.id);
+                bookmarkLink.href = `#${section.id}`;
+                bookmarkLink.hidden = false;
+                bookmarkLink.textContent = `Volver a: ${section.querySelector('h2')?.textContent.trim() || 'sección guardada'}`;
+            });
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    currentIndex = sections.indexOf(entry.target);
+                    const title = entry.target.querySelector('h2')?.textContent.trim();
+                    chapterIndicator.textContent = title ? `Leyendo: ${title}` : 'Capítulo actual';
+                    links.querySelectorAll('a').forEach(link => {
+                        if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current', 'location');
+                        else link.removeAttribute('aria-current');
+                    });
+                    entry.target.classList.add('visible');
+                });
+            }, { rootMargin: '-20% 0px -65% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            const updateProgress = () => {
+                const available = document.documentElement.scrollHeight - window.innerHeight;
+                const percent = available > 0 ? Math.round((window.scrollY / available) * 100) : 0;
+                progressBar.style.width = `${percent}%`;
+                document.querySelector('.reading-progress-track').setAttribute('role', 'progressbar');
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuenow', String(percent));
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuemin', '0');
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuemax', '100');
+            };
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeMenu();
+                if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+                if (event.key === 'ArrowRight') navigateTo(currentIndex + 1);
+                if (event.key === 'ArrowLeft') navigateTo(currentIndex - 1);
+            });
+        })();
+    </script>
+    <script>
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.register('./sw.js').catch(error => {
+                console.error('No se pudo activar el modo sin conexión:', error);
+            });
+        }
+    </script>
+
 </body>
 </html>

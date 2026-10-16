@@ -1,0 +1,18 @@
+{
+  "name": "DSCFM | Libros de seguimiento climático",
+  "short_name": "DSCFM",
+  "description": "Guías lite y extendida para el seguimiento climático.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAFAF7",
+  "theme_color": "#52B788",
+  "icons": [
+    {
+      "src": "./dscfm-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

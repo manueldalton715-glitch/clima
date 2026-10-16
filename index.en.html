@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A practical guide to observing and recording local weather, recognizing patterns, and planning activities with weather information.">
+    <meta name="theme-color" content="#52b788">
+    <meta name="color-scheme" content="light dark">
+    <link rel="manifest" href="manifest.webmanifest">
+    <title>DSCFM Lite | Track the weather, make better decisions, live better</title>
+    <style>
+        .language-selector { position: absolute; z-index: 20; top: 0.75rem; right: 1rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.35rem 0.55rem; max-width: min(100% - 2rem, 760px); padding: 0.45rem 0.65rem; border: 1px solid rgba(255,255,255,0.35); border-radius: 12px; background: rgba(11,34,53,0.55); color: white; font-size: 0.75rem; line-height: 1.4; }
+        .language-selector a { color: white; text-decoration: underline; text-underline-offset: 2px; }
+        .language-selector a:focus-visible { outline: 2px solid #f6b94c; outline-offset: 2px; }
+        @media (max-width: 700px) { .language-selector { position: relative; inset: auto; margin: -3.25rem auto 1rem; width: fit-content; max-width: 100%; } header { padding-top: 1.5rem; } }
+        :root {
+            --azul: #1d4f73;
+            --azul-claro: #2d7bb3;
+            --verde: #2d8f6f;
+            --verde-claro: #91d7b2;
+            --amarillo: #f6b94c;
+            --rojo: #dd5f4b;
+            --crema: #f6f8f3;
+            --gris: #23313d;
+            --gris-claro: #dfe7ea;
+            --sombra: 0 16px 36px rgba(29, 79, 115, 0.10);
+            --radio-tarjeta: 18px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(145, 215, 178, 0.18), transparent 28rem),
+                linear-gradient(180deg, #f7fbf8 0%, var(--crema) 100%);
+            color: var(--gris);
+            line-height: 1.7;
+            font-size: 18px;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; color: var(--azul); letter-spacing: -0.03em; }
+
+        /* HEADER */
+        header {
+            background:
+                radial-gradient(ellipse at 14% 12%, rgba(255, 255, 255, 0.16), transparent 24rem),
+                linear-gradient(125deg, #173b5b 0%, #246a77 54%, #2d8f6f 100%);
+            color: white;
+            padding: 4rem 1.5rem 4.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .storm-audio {
+            width: min(100%, 580px);
+            margin: 1.75rem auto 0;
+            padding: 1rem 1.15rem;
+            border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 16px;
+            background: rgba(11, 34, 53, 0.28);
+            backdrop-filter: blur(8px);
+            text-align: left;
+        }
+
+        .storm-audio p { font-size: 0.9rem; margin-top: 0.45rem; }
+
+        .storm-audio button {
+            min-height: 48px;
+            padding: 0.65rem 1rem;
+            border: 0;
+            border-radius: 10px;
+            background: #f6b94c;
+            color: #173b5b;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .storm-audio-status { min-height: 1.5em; }
+
+        .edition-link {
+            display: inline-block;
+            margin-top: 1.2rem;
+            border: 0;
+        }
+
+        /* CONTENEDOR */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title .tag {
+            display: inline-block;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--verde);
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* CAJA PRINCIPAL */
+        .caja-principal {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid rgba(29, 79, 115, 0.08);
+            border-radius: 22px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin: -2rem auto 2rem;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .caja-principal h3 {
+            color: var(--verde);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .caja-principal ul {
+            list-style: none;
+        }
+
+        .caja-principal li {
+            padding: 0.6rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px dashed var(--gris-claro);
+        }
+
+        .caja-principal li:last-child { border-bottom: none; }
+
+        .caja-principal li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--verde-claro);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* EJEMPLOS */
+        .ejemplos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ejemplo-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.8rem;
+            box-shadow: var(--sombra);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            border: 1px solid rgba(29, 79, 115, 0.06);
+            border-top: 4px solid var(--verde-claro);
+        }
+
+        .ejemplo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 30px rgba(29, 79, 115, 0.12);
+        }
+
+        .ejemplo-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ejemplo-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            color: var(--azul);
+        }
+
+        .ejemplo-card .persona {
+            font-size: 0.85rem;
+            color: var(--verde);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .ejemplo-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .ahorro-tag {
+            display: inline-block;
+            background: var(--verde-claro);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* GRÁFICAS */
+        .grafica-container {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid rgba(29, 79, 115, 0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin-bottom: 2rem;
+        }
+
+        .grafica-container h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .grafica-container .descripcion {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grafica-wrapper {
+            position: relative;
+            height: 320px;
+        }
+
+        .graficas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .graficas-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CALCULADORA */
+        .calculadora {
+            background: linear-gradient(135deg, var(--azul), var(--verde));
+            color: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .calculadora h2 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculadora > p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .calc-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .calc-form label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            opacity: 0.95;
+        }
+
+        .calc-form select, .calc-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.95);
+            color: var(--gris);
+        }
+
+        .calc-btn {
+            background: var(--amarillo);
+            color: var(--azul);
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calc-btn:hover {
+            transform: scale(1.03);
+        }
+
+        .calc-resultado {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .calc-resultado.activo {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resultado-numero {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--amarillo);
+            margin: 0.5rem 0;
+        }
+
+        .resultado-lista {
+            margin-top: 1rem;
+            padding-left: 1.2rem;
+        }
+
+        .resultado-lista li {
+            padding: 0.3rem 0;
+        }
+
+        /* SIMULADOR */
+        .simulador {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin: 2rem 0;
+        }
+
+        .simulador h3 {
+            margin-bottom: 1rem;
+        }
+
+        .escenario {
+            background: var(--crema);
+            border-left: 4px solid var(--azul-claro);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .escenario-titulo {
+            font-weight: 700;
+            color: var(--azul);
+            margin-bottom: 0.5rem;
+        }
+
+        .opciones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .opcion-btn {
+            padding: 1rem;
+            border: 2px solid var(--gris-claro);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .opcion-btn:hover {
+            border-color: var(--verde-claro);
+            background: rgba(82, 183, 136, 0.05);
+        }
+
+        .opcion-btn.correcta {
+            border-color: var(--verde-claro);
+            background: rgba(82, 183, 136, 0.15);
+        }
+
+        .opcion-btn.incorrecta {
+            border-color: var(--rojo);
+            background: rgba(220, 38, 38, 0.08);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.activo { display: block; }
+
+        .feedback.bueno {
+            background: rgba(82, 183, 136, 0.15);
+            border-left: 4px solid var(--verde-claro);
+            color: var(--verde);
+        }
+
+        .feedback.malo {
+            background: rgba(220, 38, 38, 0.08);
+            border-left: 4px solid var(--rojo);
+            color: var(--rojo);
+        }
+
+        /* PASOS */
+        .pasos {
+            counter-reset: paso;
+        }
+
+        .paso {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 1.5rem 1.5rem 4.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--sombra);
+            position: relative;
+            counter-increment: paso;
+        }
+
+        .paso::before {
+            content: counter(paso);
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--verde-claro);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .paso h4 {
+            color: var(--azul);
+            margin-bottom: 0.3rem;
+        }
+
+        .paso p {
+            font-size: 0.95rem;
+            color: #6b7280;
+        }
+
+        /* CHECKLIST */
+        .checklist {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+        }
+
+        .checklist h3 {
+            margin-bottom: 1rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--gris-claro);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .check-item:hover {
+            background: var(--crema);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--verde-claro);
+        }
+
+        .check-item.completado label {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .check-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .progreso {
+            background: var(--gris-claro);
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progreso-barra {
+            height: 100%;
+            background: linear-gradient(90deg, var(--verde-claro), var(--verde));
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 4px;
+        }
+
+        .progreso-texto {
+            text-align: center;
+            font-weight: 600;
+            color: var(--verde);
+        }
+
+        /* BENEFICIOS LABORALES */
+        .beneficios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .beneficio {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+            border-left: 4px solid var(--amarillo);
+        }
+
+        .beneficio h4 {
+            color: var(--azul);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .beneficio .numero {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--verde-claro);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            background: linear-gradient(135deg, #2e8f72 0%, #1d4f73 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            margin: 3rem 0;
+            box-shadow: 0 18px 40px rgba(29, 79, 115, 0.18);
+        }
+
+        .cta-final h2 {
+            color: white;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-final p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.95;
+            font-size: 1.05rem;
+        }
+
+        .btn-descarga {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7c75d 0%, #f3a630 100%);
+            color: var(--azul);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 0.3rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+            box-shadow: 0 12px 24px rgba(246, 185, 76, 0.28);
+        }
+
+        .btn-descarga:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(246, 185, 76, 0.32);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--azul);
+            color: rgba(255,255,255,0.8);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--verde-claro);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .opciones { grid-template-columns: 1fr; }
+            .caja-principal { padding: 1.5rem; }
+            .calculadora { padding: 1.5rem; }
+        }
+
+        .skip-link {
+            position: fixed;
+            z-index: 1200;
+            top: 0.5rem;
+            left: 0.5rem;
+            transform: translateY(-160%);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background: #fff;
+            color: #1f2937;
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
+        .reading-progress-track {
+            position: fixed;
+            z-index: 1100;
+            inset: 0 0 auto;
+            height: 5px;
+            background: rgba(55, 65, 81, 0.12);
+        }
+
+        .reading-progress {
+            width: 0;
+            height: 100%;
+            background: var(--verde);
+            transition: width 0.15s linear;
+        }
+
+        .reading-tools {
+            position: fixed;
+            z-index: 1000;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reading-tools button,
+        .index-toggle,
+        .mobile-book-nav button {
+            min-width: 48px;
+            min-height: 48px;
+            border: 1px solid var(--gris-claro);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--gris);
+            font: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+        }
+
+        .index-toggle {
+            position: fixed;
+            z-index: 1001;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 0.8rem;
+        }
+
+        .lite-index {
+            position: fixed;
+            z-index: 1000;
+            inset: 0 auto 0 0;
+            width: min(340px, 88vw);
+            padding: 5rem 1rem 2rem;
+            overflow-y: auto;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(31, 41, 55, 0.18);
+            transform: translateX(-110%);
+            transition: transform 0.25s ease;
+        }
+
+        .lite-index.open { transform: translateX(0); }
+        .lite-index h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+        .lite-index ol { padding-left: 1.5rem; }
+        .lite-index li { margin: 0.55rem 0; }
+        .lite-index a { color: var(--gris); text-decoration: none; }
+        .lite-index a:hover,
+        .lite-index a[aria-current="location"] {
+            color: #28724e;
+            font-weight: 700;
+        }
+
+        .index-backdrop {
+            position: fixed;
+            z-index: 999;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.45);
+        }
+
+        .chapter-indicator {
+            position: fixed;
+            z-index: 900;
+            right: 1rem;
+            bottom: 1rem;
+            max-width: min(280px, 42vw);
+            padding: 0.6rem 0.9rem;
+            border-radius: 999px;
+            background: #fff;
+            box-shadow: var(--sombra);
+            font-size: 0.85rem;
+        }
+
+        .mobile-book-nav { display: none; }
+        .reading-tools button:focus-visible,
+        .index-toggle:focus-visible,
+        .mobile-book-nav button:focus-visible,
+        .lite-index a:focus-visible {
+            outline: 3px solid #0a2540;
+            outline-offset: 3px;
+        }
+
+        body.night-mode {
+            color-scheme: dark;
+            --crema: #111827;
+            --gris: #e5e7eb;
+            --gris-claro: #4b5563;
+            background: #111827;
+            color: #e5e7eb;
+        }
+
+        body.night-mode .caja-principal,
+        body.night-mode .ejemplo-card,
+        body.night-mode .simulador,
+        body.night-mode .checklist,
+        body.night-mode .beneficio,
+        body.night-mode .escenario,
+        body.night-mode .paso,
+        body.night-mode .grafica-container,
+        body.night-mode .lite-index,
+        body.night-mode .reading-tools button,
+        body.night-mode .index-toggle,
+        body.night-mode .mobile-book-nav button,
+        body.night-mode .chapter-indicator { background: #1f2937; color: #f3f4f6; }
+
+        body.night-mode .section-title p,
+        body.night-mode .paso p { color: #d1d5db; }
+
+        body.night-mode .lite-index a,
+        body.night-mode h1,
+        body.night-mode h2,
+        body.night-mode h3,
+        body.night-mode h4 { color: #b7e4c7; }
+
+        body.night-mode .opcion-btn { background: #111827; color: #f3f4f6; }
+
+        @media (prefers-color-scheme: dark) {
+            body:not(.light-mode) {
+                color-scheme: dark;
+                --crema: #111827;
+                --gris: #e5e7eb;
+                --gris-claro: #4b5563;
+                background: #111827;
+                color: #e5e7eb;
+            }
+
+            body:not(.light-mode) .caja-principal,
+            body:not(.light-mode) .ejemplo-card,
+            body:not(.light-mode) .simulador,
+            body:not(.light-mode) .checklist,
+            body:not(.light-mode) .beneficio,
+            body:not(.light-mode) .escenario,
+            body:not(.light-mode) .paso,
+            body:not(.light-mode) .grafica-container,
+            body:not(.light-mode) .lite-index,
+            body:not(.light-mode) .reading-tools button,
+            body:not(.light-mode) .index-toggle,
+            body:not(.light-mode) .mobile-book-nav button,
+            body:not(.light-mode) .chapter-indicator { background: #1f2937; color: #f3f4f6; }
+
+            body:not(.light-mode) .section-title p,
+            body:not(.light-mode) .paso p { color: #d1d5db; }
+
+            body:not(.light-mode) .lite-index a,
+            body:not(.light-mode) h1,
+            body:not(.light-mode) h2,
+            body:not(.light-mode) h3,
+            body:not(.light-mode) h4 { color: #b7e4c7; }
+
+            body:not(.light-mode) .opcion-btn { background: #111827; color: #f3f4f6; }
+        }
+
+        body.text-large { font-size: 20px; }
+        body.text-large .section-title p { font-size: 1.12em; }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .fade-in.visible { opacity: 1; transform: none; }
+
+        @media (max-width: 600px) {
+            .reading-tools { top: 4.5rem; right: 0.75rem; }
+            .chapter-indicator { right: 0.75rem; bottom: 1rem; }
+            header { padding-top: 7rem; }
+        }
+
+        @media (max-width: 479px) {
+            .chapter-indicator { bottom: 5rem; }
+            .mobile-book-nav {
+                position: fixed;
+                z-index: 950;
+                inset: auto 0 0;
+                display: flex;
+                justify-content: space-around;
+                gap: 0.5rem;
+                padding: 0.5rem;
+                background: rgba(250, 250, 247, 0.96);
+                box-shadow: 0 -4px 18px rgba(31, 41, 55, 0.12);
+            }
+            .mobile-book-nav button { flex: 1; }
+            body { padding-bottom: 4.5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media print {
+            .reading-progress-track,
+            .reading-tools,
+            .index-toggle,
+            .lite-index,
+            .index-backdrop,
+            .chapter-indicator,
+            .mobile-book-nav { display: none !important; }
+            body { background: #fff; color: #111; font-size: 12pt; }
+            header { background: none; color: #111; padding: 1rem 0; }
+            header h1, h1, h2, h3 { color: #111 !important; }
+            .container { max-width: none; padding: 0; }
+            section, .caja-principal, .ejemplo-card { break-inside: avoid; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Skip to content</a>
+    <div class="reading-progress-track" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="readingProgress" class="reading-progress"></div></div>
+    <button id="indexToggle" class="index-toggle" type="button" aria-controls="liteIndex" aria-expanded="false">☰ Contents</button>
+    <nav id="liteIndex" class="lite-index" aria-label="Guide contents" inert>
+        <h2>Reading contents</h2>
+        <ol id="liteIndexLinks"></ol>
+        <button id="bookmarkButton" type="button" class="calc-btn" aria-label="Bookmark this section">Save bookmark</button>
+        <a id="bookmarkLink" hidden>Go to saved bookmark</a>
+    </nav>
+    <div id="indexBackdrop" class="index-backdrop" hidden></div>
+    <div class="reading-tools" aria-label="Reading tools">
+        <button id="nightModeButton" type="button" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">🌙</button>
+        <button id="textSizeButton" type="button" aria-pressed="false" title="Increase text size">A+</button>
+    </div>
+    <div id="chapterIndicator" class="chapter-indicator" aria-live="polite">Current chapter</div>
+    <nav class="mobile-book-nav" aria-label="Section navigation">
+        <button id="previousSection" type="button" aria-label="Previous section">← Previous</button>
+        <button id="mobileIndexToggle" type="button" aria-controls="liteIndex">Índice</button>
+        <button id="nextSection" type="button" aria-label="Sección siguiente">Next →</button>
+    </nav>
+
+    <nav class="language-selector" aria-label="Lite edition language">
+        <span>Lite edition:</span>
+        <a href="index.html" title="Español" aria-label="Lite: Español">Español</a>
+        <a href="index.en.html" title="English" aria-label="Lite: English">English</a>
+        <a href="index.pt-BR.html" title="Português (Brasil)" aria-label="Lite: Português (Brasil)">Português (Brasil)</a>
+    </nav>
+    <!-- HERO -->
+    <header>
+        <div class="hero-badge">🌦️ DSCFM · WEATHER OBSERVATION AND TRACKING</div>
+        <h1>Weather changes. Observing it helps you make better decisions.</h1>
+        <p>A practical guide to recording local weather, recognizing patterns, and planning everyday activities. You do not need to be an expert: simply observe, take notes, and compare the information.</p>
+        <a class="btn-descarga edition-link" href="dscfm-extendida.en.html">📘 Read the extended edition</a>
+        <div class="storm-audio" role="group" aria-label="Ambient storm sound">
+            <button id="stormAudioButton" type="button" aria-describedby="stormAudioHelp">⛈️ Turn on storm sounds</button>
+            <p id="stormAudioHelp">When activated, an approximately 8-second thunder sound plays now, then at increasing intervals (5, 15, 25… minutes) for up to 5 hours. The audio is included with this guide; you can stop it at any time.</p>
+            <p id="stormAudioStatus" class="storm-audio-status" aria-live="polite">Sound is off.</p>
+            <audio id="thunderAudio" src="./thunder.wav" preload="auto" aria-hidden="true"></audio>
+        </div>
+    </header>
+
+    <main id="contenido" class="container">
+
+        <!-- CAJA PRINCIPAL -->
+        <div class="caja-principal">
+            <h3>💡 What makes this guide different?</h3>
+            <ul>
+                <li><strong>You do not need expensive technology:</strong> a notebook, a pen, and your phone are enough.</li>
+                <li><strong>You do not need to be a weather expert:</strong> just write down what you see and what happens.</li>
+                <li><strong>You do not need much time:</strong> 5 minutes a day is enough.</li>
+                <li><strong>It is useful for any kind of work:</strong> gardener, construction worker, shopkeeper, driver, teacher, or homemaker.</li>
+                <li><strong>In 30 days, you can review your first notes:</strong> keeping a consistent record helps you compare observations, without guaranteeing results.</li>
+            </ul>
+        </div>
+
+        <!-- SECCIÓN: LA IDEA CENTRAL -->
+        <section>
+            <div class="section-title">
+                <span class="tag">The main idea</span>
+                <h2>Weather can influence your everyday decisions</h2>
+                <p>Rain, cold, heat, and wind can affect activities, expenses, or production. Recording observations helps you compare situations and plan, without replacing forecasts or expert advice.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CASOS ILUSTRATIVOS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Illustrative examples</span>
+                <h2>Six examples of observation and planning</h2>
+                <p>The people and situations in this section are fictional. They illustrate possible uses; they are not testimonials or verified results.</p>
+            </div>
+
+            <div class="ejemplos-grid">
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🥬</div>
+                    <div class="persona">Marta · Family gardener</div>
+                    <h3>She records rainfall and decides when to transplant</h3>
+                    <p>Marta keeps a rainfall record and notes when she transplants. Over time, she can compare her observations with the forecast and adjust her plans, without assuming that a fixed day will always be best.</p>
+                    <span class="ahorro-tag">Example: tracking rainfall and transplanting</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🧱</div>
+                    <div class="persona">José · Independent construction worker</div>
+                    <h3>He records temperature and plans his jobs</h3>
+                    <p>José records outdoor workdays, weather conditions, and schedule changes. This information can help him plan alongside up-to-date forecasts and the needs of each job.</p>
+                    <span class="ahorro-tag">Example: planning outdoor work</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🏠</div>
+                    <div class="persona">The Rodríguez family · 4 people</div>
+                    <h3>They track weather-related expenses and adjust their budget</h3>
+                    <p>The family records monthly energy expenses and compares them with temperature. This can help identify variations and explore budgeting options; keeping a record does not guarantee lower expenses.</p>
+                    <span class="ahorro-tag">Example: comparing expenses and conditions</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🚕</div>
+                    <div class="persona">Pedro · Driver</div>
+                    <h3>He tracks the weather and adjusts routes and schedules</h3>
+                    <p>Pedro records weather conditions, routes, and travel times. He can review this information to plan trips without assuming that a particular weather condition always produces the same demand.</p>
+                    <span class="ahorro-tag">Example: tracking routes and travel times</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🤝</div>
+                    <div class="persona">El Progreso Cooperative · 12 families</div>
+                    <h3>They track pests and share alerts on WhatsApp</h3>
+                    <p>Families share observations from their gardens and record when pests appear. This information can help them consult technical staff and coordinate follow-up, not replace a diagnosis.</p>
+                    <span class="ahorro-tag">Example: sharing observations</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">📚</div>
+                    <div class="persona">Lucía · Elementary school teacher</div>
+                    <h3>She teaches her students to record the weather</h3>
+                    <p>Lucía suggests recording the schoolyard temperature with suitable instruments and using the data series for educational activities in math, language arts, and science, while explaining its scope and limitations.</p>
+                    <span class="ahorro-tag">Example: learning from local observations</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN: GRÁFICAS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">How to read charts</span>
+                <h2>Sample charts: how to read and compare records</h2>
+                <p>The following charts use simulated data for educational purposes. They do not represent observations or results from families, organizations, or producers.</p>
+            </div>
+
+            <div class="grafica-container">
+                <h3>📊 Simulated index by activity</h3>
+                <p class="descripcion">Fictional values for practicing how to read a chart; they do not estimate real savings or outcomes.</p>
+                <div class="grafica-wrapper">
+                    <canvas id="graficaBarras" role="img" aria-label="Bar chart with simulated values by activity"></canvas>
+                </div>
+            </div>
+
+            <div class="graficas-grid">
+                <div class="grafica-container">
+                    <h3>📈 Example of monthly variation</h3>
+                    <p class="descripcion">An invented series showing how to compare two data sets, not a projection of expenses.</p>
+                    <div class="grafica-wrapper">
+                        <canvas id="graficaLineas" role="img" aria-label="Line chart: comparing monthly expenses with and without weather tracking"></canvas>
+                    </div>
+                </div>
+
+                <div class="grafica-container">
+                    <h3>🥧 Simulated distribution</h3>
+                    <p class="descripcion">Fictional percentages to explain a pie chart; they do not describe observed expenses.</p>
+                    <div class="grafica-wrapper">
+                        <canvas id="graficaTorta" role="img" aria-label="Pie chart with a simulated percentage breakdown"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCULADORA -->
+        <section>
+            <div class="calculadora">
+                <h2>🧮 Explore a scenario using your assumptions</h2>
+                <p id="calculadoraNota">Enter a monthly expense and a hypothetical reduction percentage. The result is arithmetic only: it does not predict or guarantee savings from tracking the weather.</p>
+
+                <div class="calc-form">
+                    <div>
+                        <label for="gastoMensual">Monthly expense you want to analyze ($)</label>
+                        <input id="gastoMensual" type="number" min="0" step="100" inputmode="decimal" value="0" aria-describedby="calculadoraNota">
+                    </div>
+                    <div>
+                        <label for="reduccionEsperada">Hypothetical reduction (%)</label>
+                        <input id="reduccionEsperada" type="number" min="0" max="100" step="1" inputmode="decimal" value="0" aria-describedby="calculadoraNota">
+                    </div>
+                </div>
+
+                <button class="calc-btn" onclick="calcular()">Calculate scenario →</button>
+
+                <div class="calc-resultado" id="resultado" aria-live="polite">
+                    <p>Hypothetical annual reduction based on the values entered:</p>
+                    <div class="resultado-numero" id="resultadoNumero">$0</div>
+                    <p id="resultadoSupuestos">This is not an estimate of actual results or a guarantee of savings.</p>
+                    <button id="shareSavingsButton" class="calc-btn" type="button">Share on WhatsApp</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULADOR DE DECISIONES -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Learn as you play</span>
+                <h2>Simulator: what would you do?</h2>
+                <p>Practice with hypothetical situations. Choose an option and review what information might be useful.</p>
+            </div>
+
+            <div class="simulador">
+                <div class="escenario">
+                    <div class="escenario-titulo">🌦️ Scenario: Tomorrow is market day outdoors</div>
+                    <p>For 3 months, you noted that it rains in the afternoon when morning humidity is above 80%. Today, humidity is 85%. What do you do?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Option A:</strong> I set up my stall anyway; if it rains, it rains.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Option B:</strong> I check the latest forecast and consider a covered alternative.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <div class="escenario">
+                    <div class="escenario-titulo">🌡️ Scenario: You have an outdoor task</div>
+                    <p>Your records show several cold days in a row. The forecast calls for another cool day. What do you do?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Option A:</strong> I check the conditions and adapt the task if needed.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Option B:</strong> I ignore the forecast and do not prepare an alternative.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <div class="escenario">
+                    <div class="escenario-titulo">🛒 Scenario: You run a small drink shop</div>
+                    <p>You noted that when temperatures stay above 30°C for 3 days, you sell three times as much water and soda. The forecast is 34°C for the next 4 days. What do you do?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Option A:</strong> I leave everything as it is and sell whatever I sell.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Option B:</strong> I buy more stock today and let the neighbors know.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PASOS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Get started today</span>
+                <h2>Your first record in 5 minutes</h2>
+                <p>You do not need anything special. Just a notebook (or your phone’s notes app) and these 5 steps.</p>
+            </div>
+
+            <div class="pasos">
+                <div class="paso">
+                    <h4>Choose a regular time</h4>
+                    <p>Morning is best, with coffee or tea. Do it every day at the same time. It takes 2 minutes.</p>
+                </div>
+                <div class="paso">
+                    <h4>Write down 3 simple things</h4>
+                    <p><strong>1)</strong> What does the sky look like? (sunny, cloudy, rainy). <strong>2)</strong> Is it cold, cool, or hot? <strong>3)</strong> What did I do today because of the weather? (closed windows, turned on the heater, watered plants).</p>
+                </div>
+                <div class="paso">
+                    <h4>Add what you spent because of the weather</h4>
+                    <p>For example: “I bought a gas cylinder today because it was cold.” Write it down too. After a month, you may notice a pattern.</p>
+                </div>
+                <div class="paso">
+                    <h4>Review your notebook once a week</h4>
+                    <p>Take 5 minutes on Sunday evening. Ask: “what keeps happening?” That is your first insight.</p>
+                </div>
+                <div class="paso">
+                    <h4>Make ONE better decision</h4>
+                    <p>Do not try to change everything. Just one thing. For example: “if it rains for 3 days, I will not transplant.” Try it for a month.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: BENEFICIOS LABORALES -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Improve your work</span>
+                <h2>How keeping records can improve your working life</h2>
+                <p>A record does not predict the weather or guarantee results. It can help you review local experience alongside forecasts and official recommendations.</p>
+            </div>
+
+            <div class="beneficios-grid">
+                <div class="beneficio">
+                    <span class="numero">🌤️</span>
+                    <h4>Task planning</h4>
+                    <p>Recording conditions and schedule changes can help you plan outdoor tasks alongside up-to-date forecasts.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌡️</span>
+                    <h4>Taking care in extreme temperatures</h4>
+                    <p>Tracking heat and cold can prompt you to check alerts and recommendations from health authorities in a timely manner.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌧️</span>
+                    <h4>Running a shop</h4>
+                    <p>Comparing weather conditions with business activity can provide context for planning purchases and opening hours.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌱</span>
+                    <h4>Garden monitoring</h4>
+                    <p>Recording rainfall, temperature, and crop observations can help identify changes and seek technical guidance.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">📝</span>
+                    <h4>Local record</h4>
+                    <p>Your own record complements forecasts: it documents what was observed in a specific place and at a specific time.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🗓️</span>
+                    <h4>Comparing over time</h4>
+                    <p>An organized series lets you compare periods, keeping in mind that conditions and the limitations of each record vary.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHECKLIST -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Your action plan</span>
+                <h2>Checklist to get started this week</h2>
+                <p>Check off each step as you complete it. Your progress is saved in your browser.</p>
+            </div>
+
+            <div class="checklist">
+                <h3>📝 This week I want to:</h3>
+                <div class="progreso">
+                    <div class="progreso-barra" id="progresoBarra"></div>
+                </div>
+                <p class="progreso-texto" id="progresoTexto">0 of 10 completed</p>
+
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c1">
+                    <label for="c1">Get a small notebook (or create a note on your phone)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c2">
+                    <label for="c2">Choose a regular time to take notes (e.g., 8 a.m. with tea)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c3">
+                    <label for="c3">Make your first entry today (sky, temperature, what I did)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c4">
+                    <label for="c4">Record an expense related to the weather (gas cylinder, medicine, fuel)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c5">
+                    <label for="c5">Repeat the record for 7 days in a row</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c6">
+                    <label for="c6">Review all your notes on Sunday and look for a pattern</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c7">
+                    <label for="c7">Choose ONE decision I will make differently next week</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c8">
+                    <label for="c8">Tell someone (family member, neighbor, coworker) what I am doing</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c9">
+                    <label for="c9">After a month, calculate how much I saved or avoided losing</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c10">
+                    <label for="c10">At the end of the month, review whether the record helps me plan</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <div class="cta-final">
+            <h2>Start by observing your local weather.</h2>
+            <p>Download the template, print it, or use it on your phone. Record what you observe and compare it with forecasts and official sources.</p>
+            <button class="btn-descarga" type="button" onclick="descargarPlantilla()">📄 Print notebook / save as PDF</button>
+            <button id="installAppButton" class="btn-descarga" type="button" onclick="instalarApp()">📱 Install / use offline</button>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>DSCFM Lite</strong> · A weather observation and tracking guide to support everyday planning.</p>
+        <p style="margin-top: 0.5rem;">Personal records complement, but do not replace, forecasts and official alerts. <a href="dscfm-extendida.en.html">View the institutional proposal →</a></p>
+    </footer>
+
+    <script>
+        const renderCharts = () => {
+        if (typeof Chart === 'undefined') {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                canvas.hidden = true;
+                const fallback = document.createElement('p');
+                fallback.textContent = 'This chart needs an internet connection to load. The rest of the guide remains available offline.';
+                canvas.after(fallback);
+            });
+            return;
+        }
+        // ========== GRÁFICA DE BARRAS: AHORRO POR ACTIVIDAD ==========
+        const ctxBarras = document.getElementById('graficaBarras').getContext('2d');
+        new Chart(ctxBarras, {
+            type: 'bar',
+            data: {
+                labels: ['Garden', 'Outdoor work', 'Retail', 'Transportation', 'Home', 'Cooperative'],
+                datasets: [{
+                    label: 'Simulated value (index)',
+                    data: [35, 62, 48, 54, 29, 71],
+                    backgroundColor: [
+                        '#52b788',
+                        '#4a90c2',
+                        '#f59e0b',
+                        '#95d5b2',
+                        '#52b788',
+                        '#52b788'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' (simulated)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ========== GRÁFICA DE LÍNEAS: GASTOS SIN vs CON REGISTRO ==========
+        const ctxLineas = document.getElementById('graficaLineas').getContext('2d');
+        new Chart(ctxLineas, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [
+                    {
+                        label: 'Series A (simulated)',
+                        data: [180, 175, 190, 220, 280, 350, 380, 340, 260, 210, 185, 180],
+                        borderColor: '#e76f51',
+                        backgroundColor: 'rgba(231, 111, 81, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Series B (simulated)',
+                        data: [180, 175, 185, 200, 230, 260, 270, 250, 220, 200, 180, 175],
+                        borderColor: '#52b788',
+                        backgroundColor: 'rgba(82, 183, 136, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': index ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ========== GRÁFICA DE TORTA: DISTRIBUCIÓN SIMULADA ==========
+        const ctxTorta = document.getElementById('graficaTorta').getContext('2d');
+        new Chart(ctxTorta, {
+            type: 'doughnut',
+            data: {
+                labels: ['Health and medicine', 'Food', 'Children’s education', 'Savings / emergencies', 'Housing / repairs'],
+                datasets: [{
+                    data: [28, 22, 20, 18, 12],
+                    backgroundColor: ['#52b788', '#4a90c2', '#f59e0b', '#95d5b2', '#374151'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 12 },
+                            padding: 10
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        };
+
+        const loadCharts = () => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+            script.onload = renderCharts;
+            script.onerror = error => {
+                console.error('Could not load Chart.js:', error);
+                renderCharts();
+            };
+            document.head.append(script);
+        };
+
+        const firstChart = document.querySelector('canvas');
+        if ('IntersectionObserver' in window && firstChart) {
+            const chartObserver = new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting)) {
+                    chartObserver.disconnect();
+                    loadCharts();
+                }
+            }, { rootMargin: '200px' });
+            chartObserver.observe(firstChart);
+        } else {
+            loadCharts();
+        }
+
+        const stormAudioButton = document.getElementById('stormAudioButton');
+        const stormAudioStatus = document.getElementById('stormAudioStatus');
+        const stormDuration = 5 * 60 * 60 * 1000;
+        let stormTimer;
+        let stormStartedAt;
+        let nextThunderInterval = 5;
+
+        const thunderAudio = document.getElementById('thunderAudio');
+
+        const playThunder = () => {
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            return thunderAudio.play();
+        };
+
+        const finishStormSounds = () => {
+            clearTimeout(stormTimer);
+            stormTimer = undefined;
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            stormStartedAt = undefined;
+            stormAudioButton.textContent = '⛈️ Turn on storm sounds';
+            stormAudioButton.setAttribute('aria-pressed', 'false');
+            stormAudioStatus.textContent = 'The sound session ended after 5 hours.';
+        };
+
+        const scheduleNextThunder = () => {
+            const elapsed = Date.now() - stormStartedAt;
+            const remaining = stormDuration - elapsed;
+            if (remaining <= 0) {
+                finishStormSounds();
+                return;
+            }
+
+            const delay = nextThunderInterval * 60 * 1000;
+            if (delay > remaining) {
+                stormTimer = setTimeout(finishStormSounds, remaining);
+                return;
+            }
+
+            stormTimer = setTimeout(() => {
+                if (Date.now() - stormStartedAt >= stormDuration) {
+                    finishStormSounds();
+                    return;
+                }
+                playThunder().then(() => {
+                    nextThunderInterval += 10;
+                    stormAudioStatus.textContent = `Thunder played. The next one will play in ${nextThunderInterval} minutes; the session ends after 5 hours.`;
+                    scheduleNextThunder();
+                }).catch(error => {
+                    console.error('Could not play thunder:', error);
+                    stopStormSounds();
+                    stormAudioStatus.textContent = 'Your browser could not play the audio. Check the volume and sound permissions, then try again.';
+                });
+            }, delay);
+        };
+
+        const stopStormSounds = () => {
+            clearTimeout(stormTimer);
+            stormTimer = undefined;
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            stormStartedAt = undefined;
+            stormAudioButton.textContent = '⛈️ Turn on storm sounds';
+            stormAudioButton.setAttribute('aria-pressed', 'false');
+            stormAudioStatus.textContent = 'Sound stopped. No more thunder will play.';
+        };
+
+        stormAudioButton.addEventListener('click', () => {
+            if (stormStartedAt) {
+                stopStormSounds();
+                return;
+            }
+
+            playThunder().then(() => {
+                stormStartedAt = Date.now();
+                nextThunderInterval = 5;
+                stormAudioButton.textContent = '⏹️ Stop sounds';
+                stormAudioButton.setAttribute('aria-pressed', 'true');
+                stormAudioStatus.textContent = 'Thunder played. The next one will play in 5 minutes; after that, intervals will increase by 10 minutes each time. The session will stop after 5 hours.';
+                scheduleNextThunder();
+            }).catch(error => {
+                console.error('Could not start storm sounds:', error);
+                stormAudioStatus.textContent = 'Could not play the thunder. Check your device volume and sound permissions, then try again.';
+            });
+        });
+
+        // ========== CALCULADORA DE AHORRO ==========
+        function calcular() {
+            const gastoMensual = Number(document.getElementById('gastoMensual').value);
+            const reduccion = Number(document.getElementById('reduccionEsperada').value);
+            const resultadoNumero = document.getElementById('resultadoNumero');
+            const resultadoSupuestos = document.getElementById('resultadoSupuestos');
+
+            if (!Number.isFinite(gastoMensual) || gastoMensual < 0 || !Number.isFinite(reduccion) || reduccion < 0 || reduccion > 100) {
+                resultadoNumero.textContent = 'Check the values';
+                resultadoSupuestos.textContent = 'Enter a non-negative expense and a reduction between 0 and 100%.';
+                document.getElementById('resultado').classList.add('activo');
+                return;
+            }
+
+            const reduccionAnualHipotetica = Math.round(gastoMensual * (reduccion / 100) * 12);
+            resultadoNumero.textContent = '$' + reduccionAnualHipotetica.toLocaleString('en-US');
+            resultadoSupuestos.textContent = `Arithmetic scenario: $${gastoMensual.toLocaleString('en-US')} per month × ${reduccion}% × 12. This is not an observed result.`;
+            document.getElementById('resultado').classList.add('activo');
+        }
+
+        // ========== SIMULADOR DE DECISIONES ==========
+        let escenarioActual = 1;
+        const feedbacks = {
+            1: {
+                bueno: 'Good: you used observations and an up-to-date forecast to consider alternatives. The decision depends on the actual conditions that day.',
+                malo: 'In this exercise, it is best to check the forecast and plan an alternative. Past records cannot tell you for certain what will happen today.'
+            },
+            2: {
+                bueno: 'Good: you compared the record with current conditions and adjusted your plan. Past data can guide you, but they do not replace a forecast.',
+                malo: 'In this exercise, ignoring available information leaves you with fewer planning options. A record cannot predict the weather with certainty.'
+            },
+            3: {
+                bueno: 'Good: you used observations to plan and review needs. Demand and prices also depend on other factors.',
+                malo: 'In this exercise, reviewing records and available information would provide more context for your decision, without guaranteeing sales or prices.'
+            }
+        };
+
+        function responder(btn, esCorrecta) {
+            const escenario = btn.closest('.escenario');
+            const escenarioNum = Array.from(document.querySelectorAll('.escenario')).indexOf(escenario) + 1;
+            const feedback = escenario.querySelector('.feedback');
+            const botones = escenario.querySelectorAll('.opcion-btn');
+
+            botones.forEach(b => b.disabled = true);
+
+            if (esCorrecta) {
+                btn.classList.add('correcta');
+                feedback.className = 'feedback activo bueno';
+                feedback.textContent = feedbacks[escenarioNum].bueno;
+            } else {
+                btn.classList.add('incorrecta');
+                feedback.className = 'feedback activo malo';
+                feedback.textContent = feedbacks[escenarioNum].malo;
+            }
+        }
+
+        // ========== CHECKLIST CON PROGRESO ==========
+        function toggleCheck(item) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            item.classList.toggle('completado', checkbox.checked);
+            actualizarProgreso();
+            guardarProgreso();
+        }
+
+        function actualizarProgreso() {
+            const total = document.querySelectorAll('.check-item').length;
+            const completed = document.querySelectorAll('.check-item.completado').length;
+            const porcentaje = (completed / total) * 100;
+
+            document.getElementById('progresoBarra').style.width = porcentaje + '%';
+            document.getElementById('progresoTexto').textContent = `${completed} of ${total} completed`;
+        }
+
+        function guardarProgreso() {
+            const checks = [];
+            document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+                checks.push(cb.checked);
+            });
+            try {
+                localStorage.setItem('dscfm-lite-checks', JSON.stringify(checks));
+            } catch (error) {
+                console.error('Could not save progress:', error);
+                document.getElementById('progresoTexto').textContent = 'Could not save progress in this browser.';
+            }
+        }
+
+        function cargarProgreso() {
+            try {
+                const guardado = localStorage.getItem('dscfm-lite-checks');
+                if (guardado) {
+                    const checks = JSON.parse(guardado);
+                    document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+                        cb.checked = Boolean(checks[i]);
+                        cb.closest('.check-item').classList.toggle('completado', cb.checked);
+                    });
+                }
+            } catch (error) {
+                console.error('Could not retrieve saved progress:', error);
+                document.getElementById('progresoTexto').textContent = 'Could not retrieve saved progress in this browser.';
+            }
+            actualizarProgreso();
+        }
+
+        // ========== DESCARGAS ==========
+        function descargarPlantilla() {
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert('Your browser blocked the print window. Allow pop-ups to save the template as a PDF.');
+                return;
+            }
+            const rows = Array.from({ length: 7 }, (_, index) =>
+                `<tr><td>${index + 1}</td><td></td><td></td><td></td><td></td><td></td></tr>`
+            ).join('');
+            printWindow.document.write(`<!DOCTYPE html>
+                <html lang="en"><head><meta charset="UTF-8"><title>DSCFM Weather Log</title>
+                <style>
+                    body{font:14px/1.4 Arial,sans-serif;color:#1f2937;margin:24px}
+                    h1{color:#1e4d7b;font-size:22px}p{margin:8px 0}
+                    table{width:100%;border-collapse:collapse;margin-top:18px}
+                    th,td{border:1px solid #687386;padding:10px;text-align:left}
+                    td{height:42px}th{background:#eef5f0}
+                    @media print{body{margin:10mm}h1{font-size:18pt}}
+                </style></head><body>
+                <h1>Weather log</h1>
+                <p><strong>Name / group:</strong> ____________________________ &nbsp; <strong>Location:</strong> ____________________</p>
+                <p><strong>Month:</strong> ____________________ &nbsp; <strong>Year:</strong> __________</p>
+                <table><thead><tr><th>Day</th><th>Sky / rainfall</th><th>Temperature</th><th>Activity</th><th>Expenses / effects</th><th>Observations</th></tr></thead><tbody>${rows}</tbody></table>
+                <p><strong>Pattern I observed:</strong> _________________________________________________________________</p>
+                <p><strong>Decision for next week:</strong> ____________________________________________________</p>
+                <script>window.addEventListener('load',()=>window.print());<\/script>
+                </body></html>`);
+            printWindow.document.close();
+        }
+
+        let installPrompt;
+        window.addEventListener('beforeinstallprompt', event => {
+            event.preventDefault();
+            installPrompt = event;
+            document.getElementById('installAppButton').textContent = '📱 Install DSCFM';
+        });
+
+        async function instalarApp() {
+            if (!installPrompt) {
+                alert('To install the guide and enable offline use, open it from an HTTPS server or localhost and choose “Add to Home Screen” from your browser menu.');
+                return;
+            }
+            try {
+                installPrompt.prompt();
+                await installPrompt.userChoice;
+                installPrompt = null;
+            } catch (error) {
+                console.error('Could not start installation:', error);
+                alert('Your browser could not start the installation. Try “Add to Home Screen” from its menu.');
+            }
+        }
+
+        document.getElementById('shareSavingsButton').addEventListener('click', () => {
+            const ahorro = document.getElementById('resultadoNumero').textContent;
+            const message = `I explored a hypothetical annual expense reduction scenario with the DSCFM guide: ${ahorro}. This calculation is based on assumptions, not a prediction or guarantee.`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+        });
+
+        document.querySelectorAll('.check-item').forEach(item => {
+            item.removeAttribute('onclick');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', () => toggleCheck(item));
+            item.addEventListener('click', event => {
+                if (event.target.closest('input, label')) return;
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
+        // Inicializar
+        cargarProgreso();
+    </script>
+
+    <script>
+        (() => {
+            const sections = Array.from(document.querySelectorAll('main section'));
+            const menu = document.getElementById('liteIndex');
+            const toggle = document.getElementById('indexToggle');
+            const backdrop = document.getElementById('indexBackdrop');
+            const links = document.getElementById('liteIndexLinks');
+            const chapterIndicator = document.getElementById('chapterIndicator');
+            const progressBar = document.getElementById('readingProgress');
+            let currentIndex = 0;
+            let storageUnavailable = false;
+            const storageGet = key => {
+                if (storageUnavailable) return null;
+                try {
+                    return localStorage.getItem(key);
+                } catch (error) {
+                    storageUnavailable = true;
+                    console.error('Could not read local storage:', error);
+                    chapterIndicator.textContent = 'Your browser blocked local storage.';
+                    return null;
+                }
+            };
+            const storageSet = (key, value) => {
+                if (storageUnavailable) return;
+                try {
+                    localStorage.setItem(key, value);
+                } catch (error) {
+                    storageUnavailable = true;
+                    console.error('Could not save to local storage:', error);
+                    chapterIndicator.textContent = 'Your browser blocked local storage.';
+                }
+            };
+
+            const closeMenu = () => {
+                menu.classList.remove('open');
+                backdrop.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+                menu.inert = true;
+            };
+
+            const openMenu = () => {
+                menu.classList.add('open');
+                backdrop.hidden = false;
+                toggle.setAttribute('aria-expanded', 'true');
+                menu.inert = false;
+            };
+
+            sections.forEach((section, index) => {
+                const heading = section.querySelector('h2');
+                if (!heading) return;
+                section.id = `lite-section-${index + 1}`;
+                section.classList.add('fade-in');
+                const item = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${section.id}`;
+                link.textContent = heading.textContent.trim();
+                item.append(link);
+                links.append(item);
+                link.addEventListener('click', closeMenu);
+            });
+
+            const navigateTo = index => {
+                const target = sections[Math.max(0, Math.min(index, sections.length - 1))];
+                target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+
+            toggle.addEventListener('click', () => menu.classList.contains('open') ? closeMenu() : openMenu());
+            document.getElementById('mobileIndexToggle').addEventListener('click', openMenu);
+            backdrop.addEventListener('click', closeMenu);
+            document.getElementById('previousSection').addEventListener('click', () => navigateTo(currentIndex - 1));
+            document.getElementById('nextSection').addEventListener('click', () => navigateTo(currentIndex + 1));
+
+            const nightModeButton = document.getElementById('nightModeButton');
+            const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            let savedTheme = storageGet('dscfm-lite-night-mode');
+            const setNightMode = enabled => {
+                document.body.classList.toggle('night-mode', enabled);
+                document.body.classList.toggle('light-mode', !enabled);
+                nightModeButton.setAttribute('aria-pressed', String(enabled));
+                nightModeButton.setAttribute('aria-label', enabled ? 'Switch to light mode' : 'Switch to dark mode');
+                nightModeButton.title = enabled ? 'Switch to light mode' : 'Switch to dark mode';
+                nightModeButton.textContent = enabled ? '☀️' : '🌙';
+            };
+            setNightMode(savedTheme === null ? colorScheme.matches : savedTheme === 'true');
+            nightModeButton.addEventListener('click', () => {
+                const enabled = !document.body.classList.contains('night-mode');
+                savedTheme = String(enabled);
+                storageSet('dscfm-lite-night-mode', savedTheme);
+                setNightMode(enabled);
+            });
+            colorScheme.addEventListener('change', event => {
+                if (savedTheme === null) setNightMode(event.matches);
+            });
+
+            document.getElementById('textSizeButton').addEventListener('click', event => {
+                const active = document.body.classList.toggle('text-large');
+                event.currentTarget.setAttribute('aria-pressed', String(active));
+            });
+
+            const bookmarkLink = document.getElementById('bookmarkLink');
+            const savedBookmark = storageGet('dscfm-lite-bookmark');
+            if (savedBookmark && document.getElementById(savedBookmark)) {
+                bookmarkLink.href = `#${savedBookmark}`;
+                bookmarkLink.hidden = false;
+                bookmarkLink.textContent = 'Go to saved bookmark';
+            }
+            document.getElementById('bookmarkButton').addEventListener('click', () => {
+                const section = sections[currentIndex];
+                if (!section) return;
+                storageSet('dscfm-lite-bookmark', section.id);
+                bookmarkLink.href = `#${section.id}`;
+                bookmarkLink.hidden = false;
+                bookmarkLink.textContent = `Return to: ${section.querySelector('h2')?.textContent.trim() || 'saved section'}`;
+            });
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    currentIndex = sections.indexOf(entry.target);
+                    const title = entry.target.querySelector('h2')?.textContent.trim();
+                    chapterIndicator.textContent = title ? `Reading: ${title}` : 'Current chapter';
+                    links.querySelectorAll('a').forEach(link => {
+                        if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current', 'location');
+                        else link.removeAttribute('aria-current');
+                    });
+                    entry.target.classList.add('visible');
+                });
+            }, { rootMargin: '-20% 0px -65% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            const updateProgress = () => {
+                const available = document.documentElement.scrollHeight - window.innerHeight;
+                const percent = available > 0 ? Math.round((window.scrollY / available) * 100) : 0;
+                progressBar.style.width = `${percent}%`;
+                document.querySelector('.reading-progress-track').setAttribute('role', 'progressbar');
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuenow', String(percent));
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuemin', '0');
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuemax', '100');
+            };
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeMenu();
+                if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+                if (event.key === 'ArrowRight') navigateTo(currentIndex + 1);
+                if (event.key === 'ArrowLeft') navigateTo(currentIndex - 1);
+            });
+        })();
+    </script>
+    <script>
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.register('./sw.js').catch(error => {
+                console.error('Could not enable offline mode:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>

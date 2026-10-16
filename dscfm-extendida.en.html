@@ -1,0 +1,4182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Preliminary institutional proposal to strengthen the observation, registration and integration of climate and meteorological information.">
+    <meta name="theme-color" content="#0A2540">
+    <meta name="color-scheme" content="light dark">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Lora:wght@400;600;700&family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Extended DSCFM | Institutional intervention project</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+            --navy: #0a2540;
+            --blue: #1e4d7b;
+            --green: #2d6a4f;
+            --amber: #d97706;
+            --paper: #fff;
+            --alternate: #f3f4f6;
+            --ink: #1f2937;
+            --muted: #526071;
+            --line: #d1d5db;
+            --surface: #fff;
+            --shadow: 0 4px 18px rgba(10, 37, 64, .1);
+            font-family: "Lora", Georgia, serif;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 7rem; }
+        body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.8 "Lora", Georgia, serif; }
+        a { color: var(--blue); }
+        button, input, textarea { font: inherit; }
+        button { cursor: pointer; }
+        :focus-visible { outline: 3px solid #d97706; outline-offset: 3px; }
+        .skip-link { position: fixed; z-index: 1500; top: .5rem; left: .5rem; padding: .8rem 1rem; background: #fff; transform: translateY(-160%); }
+        .skip-link:focus { transform: none; }
+        .book-header { position: sticky; z-index: 1100; top: 0; display: flex; align-items: center; gap: 1rem; min-height: 64px; padding: .5rem 1rem; background: linear-gradient(135deg, #0a2540 0%, #1d4f73 100%); color: #fff; font: 600 15px/1.4 "Source Sans 3", sans-serif; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
+        .book-brand { color: #fff; text-decoration: none; white-space: nowrap; }
+        .book-brand strong { color: #a7f3d0; }
+        .book-header-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .book-progress-wrap { display: flex; align-items: center; gap: .5rem; margin-left: auto; min-width: 140px; }
+        .book-progress-track { width: min(18vw, 180px); height: 8px; border-radius: 8px; background: rgba(255,255,255,.25); overflow: hidden; }
+        .book-progress { width: 0; height: 100%; background: #59c28b; }
+        .book-progress-label { min-width: 3ch; font-variant-numeric: tabular-nums; }
+        .toolbar { position: sticky; z-index: 1000; top: 64px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .45rem; padding: .6rem 1rem; background: rgba(243,244,246,.97); border-bottom: 1px solid var(--line); font: 600 14px/1.4 "Source Sans 3", sans-serif; }
+        .toolbar button, .toolbar a, .mobile-controls button, .note-actions button { min-height: 48px; padding: .5rem .75rem; border: 1px solid #b7c2cd; border-radius: 6px; background: var(--surface); color: var(--navy); text-decoration: none; }
+        .toolbar button:hover, .toolbar a:hover, .mobile-controls button:hover { background: #e7edf3; }
+        #menuButton { display: none; }
+        .current-chapter { position: fixed; z-index: 900; right: 1rem; bottom: 1rem; max-width: 270px; padding: .6rem .9rem; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); box-shadow: var(--shadow); color: var(--ink); font: 600 13px/1.4 "Source Sans 3", sans-serif; }
+        .current-chapter a { color: inherit; }
+        .book-shell { display: grid; grid-template-columns: minmax(220px, 270px) minmax(0, 900px); gap: 2rem; max-width: 1600px; margin: 0 auto; padding: 1.5rem 1.25rem 5rem; }
+        .book-sidebar { position: sticky; top: 126px; align-self: start; max-height: calc(100vh - 145px); overflow: auto; padding: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--alternate); font: 15px/1.45 "Source Sans 3", sans-serif; }
+        .book-sidebar h2, .notes-panel h2 { margin: 0 0 .7rem; color: var(--navy); font: 700 20px/1.3 "Source Sans 3", sans-serif; }
+        .search-label { display: block; margin: 1rem 0 .3rem; font-weight: 600; }
+        #bookSearch { width: 100%; min-height: 44px; padding: .5rem; border: 1px solid #9ca3af; border-radius: 5px; background: #fff; color: #1f2937; }
+        #searchResults { max-height: 40vh; overflow: auto; margin: .5rem 0; padding: 0; list-style: none; }
+        #searchResults button { width: 100%; padding: .55rem .4rem; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--blue); text-align: left; font: inherit; }
+        #bookNav { padding-left: 1.2rem; }
+        #bookNav li { margin: .35rem 0; }
+        #bookNav li.level-3 { margin-left: .6rem; font-size: .92em; }
+        #bookNav a { color: var(--ink); text-decoration: none; }
+        #bookNav a:hover, #bookNav a[aria-current="location"] { color: var(--green); font-weight: 700; }
+        .book-content { min-width: 0; }
+        .book-cover { max-width: 900px; margin: 0 auto 2.5rem; padding: clamp(1.5rem, 5vw, 4rem); border-top: 8px solid var(--green); background: linear-gradient(145deg, #f3f7f4, #fff); box-shadow: var(--shadow); }
+        .cover-kicker { color: var(--green); font: 700 13px/1.4 "Source Sans 3", sans-serif; letter-spacing: .1em; }
+        .book-cover h1 { max-width: 18ch; margin: 1rem 0; color: var(--navy); font: 700 clamp(2rem, 5vw, 3.3rem)/1.16 "Playfair Display", Georgia, serif; }
+        .cover-subtitle { color: var(--blue); font: 600 clamp(1.1rem, 2.5vw, 1.45rem)/1.45 "Source Sans 3", sans-serif; }
+        .cover-summary { margin-top: 2rem; padding: 1.25rem; border-left: 4px solid var(--green); background: #fff; }
+        .cover-summary li { margin: .55rem 0; }
+        .data-note { padding: .85rem 1rem; border-left: 4px solid var(--amber); background: #fffbeb; font: 15px/1.6 "Source Sans 3", sans-serif; }
+        body.night-mode .book-cover { background: linear-gradient(145deg, #1f2937, #111827); }
+        body.night-mode .book-cover h1 { color: #a7f3d0; }
+        body.night-mode .cover-summary { background: #273548; }
+        body.night-mode .data-note { background: #3b3120; color: #fef3c7; }
+        #bookDocument { overflow-wrap: anywhere; }
+        #bookDocument > h1:first-child { margin-top: .2rem; }
+        #bookDocument h1, #bookDocument h2, #bookDocument h3, #bookDocument h4 { color: var(--navy); line-height: 1.3; scroll-margin-top: 9rem; }
+        #bookDocument h1 { font: 700 clamp(2rem, 4vw, 3rem)/1.18 "Playfair Display", Georgia, serif; }
+        #bookDocument h2 { margin-top: 3rem; padding: 1rem 1rem .8rem; border-top: 3px solid var(--green); background: var(--alternate); font: 700 clamp(1.5rem, 3vw, 2rem)/1.3 "Playfair Display", Georgia, serif; }
+        #bookDocument h3 { margin-top: 2rem; font: 700 1.35rem/1.35 "Source Sans 3", sans-serif; }
+        #bookDocument h4 { font: 600 1.15rem/1.4 "Source Sans 3", sans-serif; }
+        #bookDocument p, #bookDocument li { max-width: 82ch; }
+        #bookDocument blockquote { margin: 1.5rem 0; padding: .8rem 1.2rem; border-left: 4px solid var(--amber); background: #fffbeb; color: #3f3f46; }
+        #bookDocument table { width: 100%; margin: 1.4rem 0; border-collapse: collapse; font: 15px/1.55 "Source Sans 3", sans-serif; }
+        #bookDocument th, #bookDocument td { padding: .65rem .75rem; border: 1px solid #cbd5e1; text-align: left; vertical-align: top; }
+        #bookDocument th { background: #e8edf2; color: var(--navy); }
+        #bookDocument tr:nth-child(even) td { background: #f9fafb; }
+        #bookDocument pre { overflow-x: auto; padding: 1rem; border-radius: 6px; background: #102a43; color: #f3f4f6; font: 14px/1.55 "JetBrains Mono", monospace; }
+        #bookDocument code { font: .9em/1.5 "JetBrains Mono", monospace; }
+        #bookDocument :not(pre) > code { padding: .12rem .3rem; border-radius: 3px; background: #eef2f7; }
+        #bookDocument img { max-width: 100%; height: auto; }
+        .book-chapter { scroll-margin-top: 9rem; }
+        .search-hit { outline: 3px solid #f59e0b; outline-offset: 3px; }
+        .notes-panel { display: none; }
+        .notes-panel.open { display: block; position: fixed; z-index: 1050; top: 126px; right: 1rem; width: min(360px, calc(100vw - 2rem)); max-height: calc(100vh - 150px); overflow: auto; padding: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); font: 15px/1.5 "Source Sans 3", sans-serif; }
+        #chapterNotes { width: 100%; min-height: 170px; padding: .6rem; border: 1px solid #9ca3af; border-radius: 5px; }
+        .note-actions { display: flex; gap: .5rem; margin-top: .5rem; }
+        .mode-status { min-height: 1.5em; color: var(--green); font: 600 14px/1.4 "Source Sans 3", sans-serif; }
+        body.night-mode { color-scheme: dark; --paper: #111827; --alternate: #1f2937; --ink: #e5e7eb; --muted: #cbd5e1; --line: #4b5563; --surface: #1f2937; background: var(--paper); color: var(--ink); }
+        body.night-mode #bookDocument h1, body.night-mode #bookDocument h2, body.night-mode #bookDocument h3, body.night-mode #bookDocument h4, body.night-mode .book-sidebar h2, body.night-mode .notes-panel h2 { color: #a7f3d0; }
+        body.night-mode .book-sidebar, body.night-mode .toolbar { background: #1f2937; }
+        body.night-mode #bookNav a, body.night-mode .book-sidebar, body.night-mode .notes-panel { color: #e5e7eb; }
+        body.night-mode #bookDocument th, body.night-mode #bookDocument tr:nth-child(even) td { background: #273548; color: #f3f4f6; }
+        body.night-mode #bookDocument blockquote { background: #3b3120; color: #fef3c7; }
+        body.night-mode .toolbar button, body.night-mode .mobile-controls button, body.night-mode .note-actions button, body.night-mode .study-controls button { background: #374151; color: #f3f4f6; border-color: #6b7280; }
+        body.night-mode #bookSearch, body.night-mode #chapterNotes { background: #111827; color: #f3f4f6; border-color: #6b7280; }
+        body.night-mode #bookDocument :not(pre) > code { background: #374151; color: #f3f4f6; }
+        @media (prefers-color-scheme: dark) {
+            body:not(.day-mode) { color-scheme: dark; --paper: #111827; --alternate: #1f2937; --ink: #e5e7eb; --muted: #cbd5e1; --line: #4b5563; --surface: #1f2937; background: var(--paper); color: var(--ink); }
+            body:not(.day-mode) #bookDocument h1, body:not(.day-mode) #bookDocument h2, body:not(.day-mode) #bookDocument h3, body:not(.day-mode) #bookDocument h4, body:not(.day-mode) .book-sidebar h2, body:not(.day-mode) .notes-panel h2, body:not(.day-mode) .study-panel h2 { color: #a7f3d0; }
+            body:not(.day-mode) .book-cover { background: linear-gradient(145deg, #1f2937, #111827); }
+            body:not(.day-mode) .book-cover h1 { color: #a7f3d0; }
+            body:not(.day-mode) .cover-summary { background: #273548; }
+            body:not(.day-mode) .data-note, body:not(.day-mode) #bookDocument blockquote { background: #3b3120; color: #fef3c7; }
+            body:not(.day-mode) .book-sidebar, body:not(.day-mode) .toolbar, body:not(.day-mode) .notes-panel { background: #1f2937; }
+            body:not(.day-mode) #bookNav a, body:not(.day-mode) .book-sidebar, body:not(.day-mode) .notes-panel { color: #e5e7eb; }
+            body:not(.day-mode) #bookDocument th, body:not(.day-mode) #bookDocument tr:nth-child(even) td { background: #273548; color: #f3f4f6; }
+            body:not(.day-mode) .toolbar button, body:not(.day-mode) .mobile-controls button, body:not(.day-mode) .note-actions button, body:not(.day-mode) .study-controls button { background: #374151; color: #f3f4f6; border-color: #6b7280; }
+            body:not(.day-mode) #bookSearch, body:not(.day-mode) #chapterNotes { background: #111827; color: #f3f4f6; border-color: #6b7280; }
+            body:not(.day-mode) #bookDocument :not(pre) > code { background: #374151; color: #f3f4f6; }
+        }
+        body.large-text { font-size: 18px; }
+        body.presentation .book-chapter:not(.active) { display: none; }
+        .study-panel { padding: 1.5rem; border: 1px solid var(--line); border-top: 4px solid var(--green); border-radius: 8px; background: var(--alternate); }
+        .study-panel h2 { color: var(--navy); font: 700 1.6rem/1.3 "Source Sans 3", sans-serif; }
+        .study-question { margin: 1rem 0; font: 700 1.4rem/1.5 "Source Sans 3", sans-serif; }
+        .study-answer { padding: 1rem; border-left: 4px solid var(--green); background: var(--surface); }
+        .study-controls { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+        .study-controls button { min-height: 48px; padding: .5rem .75rem; border: 1px solid #b7c2cd; border-radius: 6px; background: var(--surface); color: var(--navy); }
+        body.study-mode #bookDocument { display: none; }
+        body.night-mode .study-panel h2 { color: #a7f3d0; }
+        .mobile-controls { display: none; }
+        @media (min-width: 1440px) {
+            .book-shell { grid-template-columns: 250px minmax(0, 860px) 250px; }
+            .notes-panel { display: block; position: sticky; top: 126px; align-self: start; max-height: calc(100vh - 145px); overflow: auto; padding: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--alternate); font: 15px/1.5 "Source Sans 3", sans-serif; }
+            .notes-panel.open { display: block; position: sticky; top: 126px; width: auto; max-height: calc(100vh - 145px); }
+        }
+        @media (max-width: 1023px) {
+            .book-shell { display: block; padding: 1rem 1rem 6rem; }
+            .book-sidebar { position: fixed; z-index: 1300; inset: 0 auto 0 0; width: min(360px, 90vw); max-height: none; padding: 5rem 1rem 2rem; border-radius: 0; box-shadow: var(--shadow); transform: translateX(-110%); transition: transform .2s ease; }
+            .book-sidebar.open { transform: translateX(0); }
+            .sidebar-backdrop { position: fixed; z-index: 1200; inset: 0; background: rgba(10, 37, 64, .55); }
+            .sidebar-backdrop[hidden] { display: none; }
+            #menuButton { display: inline-block; }
+            .mobile-controls { position: fixed; z-index: 1000; inset: auto 0 0; display: flex; justify-content: space-around; gap: .4rem; padding: .4rem; background: rgba(243,244,246,.97); border-top: 1px solid var(--line); }
+            .mobile-controls button { flex: 1; min-height: 48px; padding: .4rem; font: 600 13px/1.2 "Source Sans 3", sans-serif; }
+            body { padding-bottom: 4.5rem; }
+        }
+        @media (max-width: 600px) {
+            .book-header { gap: .5rem; padding-inline: .6rem; font-size: 13px; }
+            .book-header-title { display: none; }
+            .book-progress-wrap { min-width: 92px; }
+            .book-progress-track { width: 60px; }
+            .toolbar { top: 64px; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding: .4rem; }
+            .toolbar button, .toolbar a { min-width: max-content; min-height: 42px; padding: .4rem .55rem; font-size: 13px; }
+            #bookDocument table { display: block; overflow-x: auto; }
+            .current-chapter { display: none; }
+            .book-shell { padding: .75rem .75rem 5.5rem; }
+            .book-cover { margin-bottom: 1.5rem; padding: 1.25rem; }
+            .cover-kicker { font-size: 11px; letter-spacing: .06em; }
+            .book-cover h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+            #bookDocument p, #bookDocument li { overflow-wrap: anywhere; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+        @media print {
+            .book-header, .toolbar, .book-sidebar, .notes-panel, .mobile-controls, .current-chapter, .skip-link, .sidebar-backdrop { display: none !important; }
+            body, body.night-mode { color: #111 !important; background: #fff !important; font-size: 11pt; }
+            .book-shell { display: block; max-width: none; padding: 0; }
+            .book-cover { break-after: page; box-shadow: none; }
+            .book-chapter + .book-chapter { break-before: page; }
+            #bookDocument h1, #bookDocument h2, #bookDocument h3, #bookDocument h4 { color: #111 !important; break-after: avoid; }
+            #bookDocument table, #bookDocument blockquote, #bookDocument pre { break-inside: avoid; }
+            body.print-current .book-chapter:not(.active) { display: none !important; }
+        }
+
+        .edition-language-picker { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.5rem; padding:.65rem 1rem; background:var(--alternate); border-bottom:1px solid var(--line); font:600 14px/1.5 "Source Sans 3",sans-serif; }
+        .edition-language-picker a { display:inline-block; min-height:44px; padding:.55rem .8rem; border:1px solid var(--line); border-radius:6px; background:var(--surface); color:var(--blue); text-align:center; }
+        .edition-language-picker a[aria-current="page"] { border-color:var(--green); font-weight:700; text-decoration-thickness:2px; }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#bookDocument">Skip to content</a>
+    <header class="book-header">
+        <a class="book-brand" href="index.en.html"><strong>DSCFM</strong> · Practical guide</a>
+        <span class="book-header-title">🌦️ Climate observation · Institutional proposal</span>
+        <div class="book-progress-wrap" role="group" aria-label="Reading progress">
+            <div class="book-progress-track" role="progressbar" aria-label="Percentage read" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="book-progress" id="bookProgress"></div></div>
+            <span id="bookProgressLabel" class="book-progress-label">0%</span>
+        </div>
+    </header>
+    <nav class="edition-language-picker" aria-label="Extended edition language">
+        <span>Extended edition:</span>
+        <a href="dscfm-extendida.html" lang="es">Español</a>
+        <a href="dscfm-extendida.en.html" lang="en" aria-current="page">English</a>
+        <a href="dscfm-extendida.pt-BR.html" lang="pt-BR">Português (Brasil)</a>
+    </nav>
+    <div class="toolbar" role="toolbar" aria-label="Book tools">
+        <button id="menuButton" type="button" aria-controls="bookSidebar" aria-expanded="false">☰ Index</button>
+        <a class="return-lite" href="./index.en.html">← Return to Lite version</a>
+        <button id="nightButton" type="button" aria-pressed="false">🌙 Dark mode</button>
+        <button id="fontButton" type="button" aria-pressed="false">Increase text</button>
+        <button id="bookmarkButton" type="button">Save bookmark</button>
+        <button id="notesButton" type="button" aria-controls="notesPanel" aria-expanded="false">Notes</button>
+        <button id="studyButton" type="button" aria-pressed="false">Study mode</button>
+        <button id="presentationButton" type="button" aria-pressed="false">Presentation</button>
+        <button id="shareButton" type="button">Share chapter</button>
+        <button id="printChapterButton" type="button">Print chapter</button>
+        <button id="printBookButton" type="button">Print book / PDF</button>
+    </div>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" hidden></div>
+    <div class="book-shell">
+        <aside id="bookSidebar" class="book-sidebar" aria-label="Index and search">
+            <h2>Content</h2>
+            <form id="searchForm" role="search">
+                <label class="search-label" for="bookSearch">Search in the book</label>
+                <input id="bookSearch" type="search" placeholder="Topic, word or phrase" autocomplete="off">
+            </form>
+            <p id="searchStatus" class="mode-status" aria-live="polite"></p>
+            <ol id="searchResults" aria-label="Search results"></ol>
+            <nav aria-label="Chapters and sections"><ol id="bookNav"></ol></nav>
+            <p id="bookmarkStatus" class="mode-status" aria-live="polite"></p>
+        </aside>
+        <main id="mainContent" class="book-content">
+            <article id="bookDocument">
+
+<section class="book-cover" aria-labelledby="bookTitle">
+    <p class="cover-kicker">PROPOSAL FOR CLIMATE OBSERVATION AND MONITORING · DOCUMENT FOR EVALUATION</p>
+    <h1 id="bookTitle">Climate Monitoring and Meteorological Phenomena Division</h1>
+    <p class="cover-subtitle">DSCFM · Meteorological observation, information integration, prevention and training</p>
+    <div class="cover-summary">
+        <p>This preliminary proposal proposes a scheme of continuous observation, intersectoral articulation and training to provide useful information regarding meteorological and environmental risks.</p>
+        <ul>
+            <li><strong>Purpose:</strong> explore how to integrate observations and data to support informed decisions.</li>
+            <li><strong>Next step:</strong> validate feasibility, competencies, sources and responsibilities before designing a pilot.</li>
+            <li><strong>Scope:</strong> proposal under evaluation; It does not describe an implemented institution or an official forecast or warning service.</li>
+        </ul>
+        <p class="data-note"><strong>Note on figures:</strong> The cited facts must be read with their source, cut-off date and methodology. Counterfactual comparisons are hypothetical: they do not prove harm avoided, causation, or return on investment.</p>
+    </div>
+</section>
+
+<section class="book-chapter"><h2>1. NAME AND PURPOSE OF THE PROJECT</h2>
+<p><strong>Proposal for the creation of the Division of Climate Monitoring and Meteorological Phenomena (DSCFM): a scheme to strengthen the observation, registration and integration of climate and meteorological information, along with training and intersectoral coordination actions.</strong></p>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>2. DIAGNOSIS / BACKGROUND</h2>
+<h3>2.1 Global context of climate change</h3>
+<p>Climate change poses increasing risks to societies and ecosystems. The IPCC Sixth Assessment Report (2023) documents an increase in global average temperature relative to pre-industrial levels and describes impacts that vary between regions and sectors. These include changes in extremes of heat and precipitation, retreating glaciers, and rising sea levels. Trends and projections must be communicated with their reference period, geographic scale, uncertainty and source.</p>
+<p>The World Meteorological Organization (WMO, 2023) confirms that the last nine years have been the warmest on record since 1850. FAO (2022) estimates that climate change could increase the population at risk of hunger by hundreds of millions by 2050. WHO (2021) warns that between 2030 and 2050 climate change will cause approximately <strong>250,000 additional deaths per year</strong> due to malnutrition, malaria, diarrhea and heat stress.</p>
+<p><strong>Update 2024-2026:</strong></p>
+<ul>
+<li>The WMO reported that 2023 was the warmest year in the observational series available when its report was published, with an estimated global anomaly of 1.45 °C (±0.12 °C) compared to the pre-industrial period.</li>
+<li>According to the WMO, 2024 was the first calendar year with an estimated global average temperature higher than 1.5°C above the pre-industrial level; This is not equivalent to exceeding the long-term warming threshold of the Paris Agreement.</li>
+<li>Atmospheric CO₂ concentrations remain at historically high levels; The annual figures must be accompanied by the measuring station and the corresponding reference series.</li>
+</ul>
+<p>This global context is not an abstraction: it is translated into concrete, measurable and everyday phenomena that directly affect the health, production, infrastructure and social cohesion of each territory.</p>
+<hr />
+<h3>2.2 Local and regional demonstrations</h3>
+<p>At the regional and local level, climate change is manifested through specific indicators that are already being observed by communities, producers, health professionals and municipal authorities, but that are not being systematically recorded or integrated into a unified database.</p>
+<p>Among the manifestations identified are:</p>
+<ul>
+<li><p><strong>Expansion of disease-transmitting vectors:</strong> The <em>Aedes aegypti</em> (dengue, Zika, chikungunya) has expanded its geographic range to areas that historically did not register autochthonous transmission. Temperate and high-altitude regions that were previously protected by thermal barriers now report annual outbreaks. The <em>Anopheles</em> (malaria) and Lyme disease-carrying ticks are also expanding their habitat.</p>
+</li>
+<li><p><strong>Proliferation of emerging pathogens:</strong> The increase in temperature and humidity favors the appearance of phytopathogenic fungi in crops (rusts, fusariosis, downy mildew), mycotoxins in stored grains (aflatoxins, ochratoxins) and opportunistic fungi in humans (<em>Candida auris</em>). Bacteria develop accelerated antimicrobial resistance under thermal stress. Enteric viruses are most commonly spread through flooding.</p>
+</li>
+<li><p><strong>Invasion of exotic species:</strong> Organisms previously confined by climate barriers colonize new territories. Specific examples include the Asian wasp (<em>Vespa velutina</em>), the zebra mussel (<em>Dreissena polymorpha</em>), the giant African snail (<em>Achatina fulica</em>), the desert locust (<em>Schistocerca gregaria</em>), the pine weevil and various species of invasive plants that displace the native flora.</p>
+</li>
+<li><p><strong>Pollution aggravated by climate events:</strong> Floods carry hazardous waste (industrial chemicals, batteries, e-waste, agrochemicals) into rivers and aquifers. Heat waves stagnate urban air pollutants. Forest fires, favored by prolonged droughts, inject particulate matter and CO₂ on a massive scale. Extreme heat degrades recycled plastics and releases microplastics.</p>
+</li>
+<li><p><strong>Impact on food production and water resources:</strong> Multi-seasonal droughts, unseasonable late frosts, destructive hailstorms and torrential rains at harvest time destroy entire agricultural cycles. Glaciers retreat, reducing long-term freshwater reserves. Coastal aquifers are salinized by rising sea levels.</p>
+</li>
+<li><p><strong>Climate blows on critical infrastructure:</strong> Major hurricanes, severe storms, extreme heat waves, and space weather events (solar storms) disrupt power grids, transportation systems, communications, and cold chains, paralyzing local economies for days or weeks.</p>
+</li>
+</ul>
+<hr />
+<h3>2.3 Argentine cases for follow-up analysis</h3>
+<p>The following events are proposed as lines of work to review information and coordination needs. This synthesis does not present impact figures nor establish climate causality. Before a public presentation, each data must be cross-checked with a primary source, cut-off date, definition and methodology.</p>
+<table>
+<thead><tr><th>Reference event</th><th>Dimensions that could be analyzed</th><th>Sources to consult and validate</th></tr></thead>
+<tbody>
+<tr><td>Dengue, season 2023-2024</td><td>Sanitary and entomological surveillance, meteorological conditions, territorial coverage and timeliness of alerts.</td><td>Official epidemiological bulletins, provincial health authorities and vector surveillance records.</td></tr>
+<tr><td>Drought and low water levels in the Paraná basin, 2022–2023</td><td>Precipitation, flows, production, navigation, energy and sectoral decisions available on each date.</td><td>SMN, hydrological organizations, INTA, production series and navigation records.</td></tr>
+<tr><td>South American lobster in the NOA, 2019-2021</td><td>Field reports, environmental conditions, detection, control measures and effects on production.</td><td>SENASA, INTA and provincial authorities; validate magnitudes and dates with original reports.</td></tr>
+<tr><td>Fires in the Paraná Delta, 2020-2024</td><td>Outbreaks, affected area, meteorology, smoke, public health and response coordination.</td><td>National Fire Management Service, competent environmental, health and scientific organizations.</td></tr>
+</tbody>
+</table>
+<p><strong>Reading criteria:</strong> Including an event does not demonstrate that an institution has omitted an action or that a new unit has avoided its consequences. The retrospective exercises are presented in Annexes 18.6 and 18.11.</p>
+<hr />
+<h3>2.4 Institutional diagnosis to validate</h3>
+<p>The proposal is based on the hypothesis that a better articulation of climate, environmental, health and production data could support sectoral decisions. An absence of coordination is not proven nor are failures attributed to existing organizations. The pilot diagnosis must map capacities, mandates, data systems, protocols and gaps together with the participating institutions.</p>
+<h3>2.5 Questions for initial diagnosis</h3>
+<table>
+<thead><tr><th>Dimension</th><th>Evaluation question</th><th>Evidence to gather</th></tr></thead>
+<tbody>
+<tr><td>Data</td><td>What information exists, with what coverage, frequency and access conditions?</td><td>Catalog of sources, metadata, permissions, quality and missing data.</td></tr>
+<tr><td>Coordination</td><td>What exchange mechanisms and responsibilities are in place?</td><td>Agreements, protocols, work flows and interviews with actors.</td></tr>
+<tr><td>Alerts and response</td><td>How are alerts issued, received and translated into decisions?</td><td>Alert logs, channels, response times and responsibilities.</td></tr>
+<tr><td>Capabilities</td><td>What technical and training resources are already available and where are there gaps?</td><td>Inventory of personnel, equipment, connectivity and training needs.</td></tr>
+<tr><td>Governance</td><td>What mandate, safeguards and limits would be necessary for an additional unit?</td><td>Legal and institutional analysis, data protection and consultation with competent organizations.</td></tr>
+</tbody>
+</table>
+<p><strong>Diagnostic use:</strong> determine if a new unit adds value compared to existing coordination alternatives, define a limited pilot and establish indicators before formulating impact goals.</p>
+<hr />
+</section>
+<section class="book-chapter"><h2>3. FOUNDATION</h2>
+<h3>3.1 Climate change as a multiplier of transversal risks</h3>
+<p>Climate change is not a sectoral problem. It is not just an "environmental" problem in the restricted sense, nor exclusively agricultural, nor exclusively health, nor exclusively energy. It is a <strong>transversal risk multiplier</strong> that simultaneously crosses all dimensions of social, productive and ecological life.</p>
+<p>This transversality requires an institutional response that is also transversal. An organism that only measures temperature cannot anticipate a dengue outbreak. An organization that only records agricultural pests cannot warn about contamination of the aquifer. An organization that only cares for patients cannot project that the next heat wave will triple consultations for heat stroke.</p>
+<p>The DSCFM is based on the premise that <strong>data integration is the necessary condition for anticipation</strong>. Without integration, there is only reaction. With integration, there is prevention, projection and opportunity.</p>
+<hr />
+<h3>3.2 Socio-ecological system approach</h3>
+<p>This project takes the approach of <strong>socio-ecological system</strong>, which understands that natural systems and human systems are not separate entities but rather interdependent components of the same complex system.</p>
+<p>Under this approach:</p>
+<ul>
+<li>Climate is not just an atmospheric phenomenon: it is a determinant of human health, food production, economic stability and social cohesion.</li>
+<li>Biodiversity is not just a natural resource: it is an ecosystem service that regulates the climate, pollinates crops, purifies water and controls pests.</li>
+<li>Pollution is not only a chemical problem: it is a factor of disease, productive loss and social inequality.</li>
+<li>The human species is not "outside" the ecosystem: it is part of it, it modifies it and is modified by it.</li>
+</ul>
+<hr />
+<h3>3.3 Teaching monitoring as a condition of adaptation</h3>
+<p>This is the central axis that distinguishes the DSCFM from a conventional observatory.</p>
+<p>An observatory measures and publishes. A follow-up division <strong>measure, publish, think, generate protocols and teach others to measure, think and generate their own protocols</strong>.</p>
+<p>Adaptation to climate change is not a finished product. It is a <strong>capacity being built</strong>. And that capacity is built by teaching:</p>
+<ul>
+<li><strong>To observe:</strong> What to look at, when to look, how to record what you see.</li>
+<li><strong>To register:</strong> In what format, how frequently, with what level of detail, with what evidence.</li>
+<li><strong>To cross data:</strong> How to connect temperature with fungus, drought with pest, flood with outbreak.</li>
+<li><strong>To think:</strong> How to formulate hypotheses, how to identify trends, how to detect breaking points.</li>
+<li><strong>To project:</strong> How to estimate what will happen if the trend continues.</li>
+<li><strong>To generate protocols:</strong> How to transform the analysis into a concrete, repeatable and adaptable procedure.</li>
+<li><strong>To communicate:</strong> How to translate the data into the language of those who need it.</li>
+</ul>
+<p><strong>The protocols that the DSCFM generates are not closed recipes that are imposed from above. They are the product of a thought process that the Division carries out on its own data and then teaches how to replicate.</strong> Each protocol begins with observation, is validated through records, refined using projections, and taught so others can adapt it to their context.</p>
+<p>This means that DSCFM does not create dependency: it creates autonomy. It does not provide closed answers: it teaches how to ask questions. It does not impose a single method: it teaches the logic of the method so that each organization, each community and each person can apply it to their context.</p>
+<hr />
+<h3>3.4 International references for comparative analysis</h3>
+<p>Programs from other countries can serve to identify design practices and questions. This list is preliminary: results, institutional validity, and sources should be verified before being used as comparative evidence or attributing impacts.</p>
+<table>
+<thead>
+<tr>
+  <th>Country</th>
+  <th>System</th>
+  <th>Aspect to investigate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Bangladesh</strong></td>
+  <td><em>Cyclone Preparedness Programme</em> (CPP)</td>
+  <td>Community organization and communication of alerts</td>
+</tr>
+<tr>
+  <td><strong>Israel</strong></td>
+  <td>Integration <em>Israel Meteorological Service</em> + <em>Ministry of Agriculture</em></td>
+  <td>Coordination of meteorological information and agricultural planning</td>
+</tr>
+<tr>
+  <td><strong>Netherlands</strong></td>
+  <td><em>KNMI</em> (weather) + <em>RIVM</em> (public health) integrated</td>
+  <td>Heat and joint alerts with public health</td>
+</tr>
+<tr>
+  <td><strong>Kenya</strong></td>
+  <td><em>Kenya Meteorological Department</em> + <em>FAO Desert Locust Information Service</em></td>
+  <td>Pest surveillance and response coordination</td>
+</tr>
+<tr>
+  <td><strong>Brazil</strong></td>
+  <td><em>Sistema de Vigilancia Integrada del Dengue</em> (SVI) in pilot cities</td>
+  <td>Verify program, scope and primary sources on surveillance integration</td>
+</tr>
+<tr>
+  <td><strong>Philippines</strong></td>
+  <td><em>Project NOAH</em> (Nationwide Operational Assessment of Hazards)</td>
+  <td>Threat assessment, risk products and communication</td>
+</tr>
+<tr>
+  <td><strong>Germany</strong></td>
+  <td><em>DWD</em> (weather service) + <em>RKI</em> (public health institute)</td>
+  <td>Environmental alerts and coordination with public health</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Benchmarking Conclusion:</strong> Before stating that there is an institutional gap or that a methodology is transferable, it is necessary to map the competencies and programs in force in Argentina, verify primary sources and consult the organizations involved.</p>
+<hr />
+<h3>3.5 Legal and regulatory framework of reference</h3>
+<p>The creation and operation of the DSCFM is part of the following regulatory framework:</p>
+<p><strong>International regulations:</strong></p>
+<ul>
+<li>Paris Agreement (2015): Commitment to limit global warming to 1.5°C and strengthen adaptive capacity.</li>
+<li>Sendai Framework for Disaster Risk Reduction 2015-2030 (UNDRR).</li>
+<li>United Nations Framework Convention on Climate Change (UNFCCC).</li>
+<li>Convention on Biological Diversity (CBD): Guidelines on invasive alien species.</li>
+<li>Sustainable Development Goals (SDGs): Particularly SDG 4 (Quality Education), SDG 13 (Climate Action), SDG 3 (Health), SDG 6 (Water), SDG 14 and 15 (Ecosystems).</li>
+</ul>
+<p><strong>National regulations (Argentina):</strong></p>
+<ul>
+<li>Law No. 27,520 on Minimum Budgets for Adaptation and Mitigation to Global Climate Change (2019).</li>
+<li>Law No. 25,675 on National Environmental Policy (2002).</li>
+<li>Law No. 26,331 on Environmental Protection of Native Forests.</li>
+<li>Law No. 26,639 on Glacier Preservation.</li>
+<li>Law No. 24,051 on Hazardous Waste.</li>
+<li>Law No. 25,916 on Household Waste Management.</li>
+<li>Law No. 26,562 on Control of Burning Activities.</li>
+<li>Law No. 27,621 on Comprehensive Environmental Education (2021).</li>
+<li>National Plan for Adaptation and Mitigation to Climate Change (2022).</li>
+</ul>
+<p><strong>Educational regulations:</strong></p>
+<ul>
+<li>Law No. 26,150 on Comprehensive Sexual Education (applicable in the transversal formative dimension).</li>
+<li>Law No. 27,621 on Comprehensive Environmental Education: Establishes the right to environmental education as a public policy at all levels and educational modalities.</li>
+<li>Law No. 26,206 on National Education: Principles of education for citizenship and critical thinking.</li>
+</ul>
+<hr />
+<h3>3.6 Prevention as a management component</h3>
+<p>Prevention can reduce exposure and improve preparedness, but its costs and results depend on the hazard, the territory, the population, and the measures effectively implemented. It is not appropriate to automatically transfer benefit/cost ratios from other programs to this proposal.</p>
+<p><strong>Application to the project:</strong> Before comparing costs and benefits, the DSCFM would need a validated budget, baseline and independent evaluation. Community training can expand observation coverage, but also requires resources, supervision, and quality control.</p>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>4. OBJECTIVES</h2>
+<h3>4.1 General Objective</h3>
+<p>Create, structure and put into operation the <strong>Division of Climate Monitoring and Meteorological Phenomena (DSCFM)</strong> as a permanent operational unit of universal scope, whose central function is <strong>teach how to monitor, teach how to think about the climate and teach how to generate your own protocols</strong>, in addition to carrying out the historical record, daily surveillance, projection and offering concrete solutions for all sectors of society.</p>
+<h3>4.2 Specific Objectives</h3>
+<ol>
+<li><p><strong>Teach the methodology of climate monitoring:</strong> Train organizations, institutions, producers, health professionals, teachers, officials and communities in the method of observing, recording, cross-referencing data, thinking, projecting and generating protocols based on evidence.</p>
+</li>
+<li><p><strong>Reconstruct, digitize and systematize the historical climatic, biological and environmental record</strong> of the jurisdiction, spanning a minimum of 30 years, to establish a baseline against which to measure present change.</p>
+</li>
+<li><p><strong>Implement a functioning and uninterrupted daily recording system</strong> of emerging phenomena in four categories: pollution, biological outbreaks, invasive species and extreme climatic events, with a standardized protocol generated by the Division itself.</p>
+</li>
+<li><p><strong>Generate your own protocols</strong> based on the analysis of the recorded data: alert, containment, adaptation, communication and response protocols, which are taught and transferred to each sector.</p>
+</li>
+<li><p><strong>Generate projections for four time horizons</strong> (immediate, seasonal, medium and long term) on climate trends, health risks, pressure on ecosystems and productive vulnerability.</p>
+</li>
+<li><p><strong>Translate data and projections into specific products by sector and recipient</strong>, simultaneously teaching each actor to interpret and use that information autonomously.</p>
+</li>
+<li><p><strong>Offer concrete solutions and detect opportunities</strong> by sector, training recipients so that they can replicate the logic of identifying solutions in their own contexts.</p>
+</li>
+<li><p><strong>Establish an inter-institutional coordination network</strong> with health, agriculture, environment, energy, education, civil defense, universities, private sector and community organizations.</p>
+</li>
+<li><p><strong>Guarantee inclusion and equity in access to training and information</strong>, ensuring multiple channels and prioritizing the most vulnerable communities.</p>
+</li>
+<li><p><strong>Train community observers</strong> as autonomous registration agents, capable of applying the methodology taught by the DSCFM in their own territories without permanent dependence on the Division.</p>
+</li>
+</ol>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>5. Preliminary goals and indicators</h2>
+<p class="data-note">The values in this section are planning proposals, not approved results or commitments. They must be adjusted after defining the baseline, pilot scope, resources and technical validation.</p>
+<table>
+<thead>
+<tr>
+  <th>No.</th>
+  <th>Goal</th>
+  <th>Term</th>
+  <th>Compliance indicator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td>Complete the historical climatic, biological and environmental database (last 30 years)</td>
+  <td>Months 3-12</td>
+  <td>100% data digitized, validated and uploaded</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>Put the operational daily recording system into operation</td>
+  <td>Month 6</td>
+  <td>Uninterrupted registration since day 180</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>Install and operate 50 basic monitoring stations</td>
+  <td>Months 6-18</td>
+  <td>50 operational stations with data every 15 minutes</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Issue the first quarterly report of projections and alerts</td>
+  <td>Month 12</td>
+  <td>1 report published and distributed</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>Identify, register and record at least 10 invasive species and 5 emerging pathogens</td>
+  <td>Months 6-18</td>
+  <td>15 complete technical sheets</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>Produce 2 annual "Solutions and Opportunities" reports</td>
+  <td>Month 12 and 24</td>
+  <td>2 documents delivered</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>Establish formal agreements with at least 5 institutions</td>
+  <td>Month 6</td>
+  <td>5 agreements signed and operational</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>Train 30 community observers as autonomous registration agents</td>
+  <td>Month 9</td>
+  <td>30 certificates; at least 20 active monthly reports</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td>Implement the multilevel alert system (SMS, app, radio, panel, report)</td>
+  <td>Month 12</td>
+  <td>5 channels operating simultaneously</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td>Achieve 80% of the recipient institutions to confirm use of at least one product</td>
+  <td>Month 18</td>
+  <td>Survey with result ≥ 80%</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td>Conduct 4 community follow-up training workshops per year</td>
+  <td>Annual</td>
+  <td>16 workshops in 4 years; attendance ≥ 40 people/workshop</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td>Publish the open data platform with public API</td>
+  <td>Month 15</td>
+  <td>Accessible platform; ≥ 100 monthly downloads</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td>Prepare the first "Annual Comprehensive Climate Status Report"</td>
+  <td>Month 24</td>
+  <td>1 free public report</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td>Reduce the detection time of an outbreak or invasion from 30 days to 7 days</td>
+  <td>Month 24</td>
+  <td>Before/after comparison</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td>Guarantee that 100% of alerts include an action protocol</td>
+  <td>From Month 12</td>
+  <td>Quarterly audit; 100% with protocol</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td>Generate at least 3 own protocols per year, born from the internal analysis of the Division</td>
+  <td>Annual</td>
+  <td>3 documented, validated and taught protocols</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td>Train 5 external organizations per year in the monitoring methodology so that they generate their own records</td>
+  <td>Annual</td>
+  <td>5 organizations with active autonomous registration</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td>Publish the protocol generation methodology as an open and replicable document</td>
+  <td>Month 18</td>
+  <td>1 public document with free access</td>
+</tr>
+<tr>
+  <td><strong>19</strong></td>
+  <td><strong>Design an independent evaluation of costs and outcomes</strong></td>
+  <td><strong>Year 3</strong></td>
+  <td><strong>Independent evaluation with published assumptions and limitations</strong></td>
+</tr>
+<tr>
+  <td><strong>20</strong></td>
+  <td><strong>Publish results, uncertainties and limitations of the evaluation</strong></td>
+  <td><strong>Year 4</strong></td>
+  <td><strong>Indicators defined after validating the baseline</strong></td>
+</tr>
+<tr>
+  <td><strong>21</strong></td>
+  <td><strong>Establish a verifiable baseline to measure emissions associated with fires</strong></td>
+  <td><strong>Year 3</strong></td>
+  <td><strong>Satellite modeling</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>6. LOCATION AND TERRITORIAL SCOPE</h2>
+<h3>6.1 Headquarters</h3>
+<p>The DSCFM requires a central operational headquarters that concentrates:</p>
+<ul>
+<li>General Management and strategic coordination.</li>
+<li>Historical Record and Database Unit.</li>
+<li>Analysis, Projections and Protocol Generation Unit.</li>
+<li>Alerts and Response Unit.</li>
+<li>Solutions and Opportunities Unit.</li>
+<li>Monitoring Training and Teaching Unit.</li>
+<li>Server room and technological platform.</li>
+<li>Physical and digital archive of historical data.</li>
+<li>Meeting room for inter-institutional coordination and training workshops.</li>
+<li>Field material deposit.</li>
+</ul>
+<p><strong>Venue Requirements:</strong></p>
+<ul>
+<li>Minimum area: 150-200 m² covered.</li>
+<li>High speed internet connectivity.</li>
+<li>Electrical backup (generator or UPS).</li>
+<li>Vehicular access for mobile units.</li>
+<li>Space for training workshops (minimum 30 people).</li>
+</ul>
+<h3>6.2 Network of monitoring stations and nodes</h3>
+<table>
+<thead>
+<tr>
+  <th>Level</th>
+  <th>Description</th>
+  <th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>automatic stations</td>
+  <td>Meteorological + air and water quality sensors</td>
+  <td>50 → 100 → 200 (phased)</td>
+</tr>
+<tr>
+  <td>Community nodes</td>
+  <td>Low-cost sensors managed by trained observers</td>
+  <td>30-50 active nodes</td>
+</tr>
+<tr>
+  <td>Satellite and radar data</td>
+  <td>Integration with remote sensing provided by national/international organizations</td>
+  <td>Permanent access</td>
+</tr>
+</tbody>
+</table>
+<h3>6.3 Jurisdictional scope</h3>
+<p>The DSCFM is conceived with <strong>universal scope</strong>:</p>
+<ul>
+<li><strong>Geographic dimension:</strong> The entire jurisdictional territory (urban, peri-urban, rural, coastal, mountainous, nature reserve).</li>
+<li><strong>Atmospheric dimension:</strong> Meteorological variables, air quality, UV radiation, space weather.</li>
+<li><strong>Hydrological dimension:</strong> Basins, rivers, streams, aquifers, wetlands, coasts.</li>
+<li><strong>Biological dimension:</strong> Flora, fauna, microorganisms, vectors, invasive species, ecosystems.</li>
+<li><strong>Sanitary dimension:</strong> Epidemiological outbreaks, climate-related diseases, antimicrobial resistance.</li>
+<li><strong>Productive dimension:</strong> Agriculture, livestock, fishing, industry, logistics, energy.</li>
+<li><strong>Social dimension:</strong> Vulnerable communities, indigenous peoples, rural populations, urban peripheries.</li>
+<li><strong>Training dimension:</strong> Educational institutions of all levels, community organizations, productive sector, public organizations.</li>
+</ul>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>7. BLOCK I – JUSTIFICATION: WHY IS THE DSCFM NECESSARY?</h2>
+<h3>7.0 Central premise</h3>
+<p>Climate change is no longer an isolated phenomenon nor an "environmental" problem in the restricted sense. It is a <strong>transversal risk multiplier</strong> that cuts across public health, food production, energy infrastructure, geopolitical stability and social cohesion. Without a division dedicated exclusively to comprehensive monitoring <strong>and to the teaching of that follow-up</strong>, no sector can anticipate threats or capitalize on opportunities autonomously.</p>
+<p>The DSCFM is born from a double realization:</p>
+<ol>
+<li>Climate information exists, but it is fragmented, decontextualized and disconnected from decision making.</li>
+<li>Nobody teaches how to generate that information, how to interpret it and how to think from it.</li>
+</ol>
+<p>A meteorologist records the rain; an epidemiologist records the dengue outbreak; an agronomist records the pest. Nobody joins the three data. And no one taught any of the three how to put them together, how to register them compatibly, and how to generate a protocol from that integration. The DSCFM is that integration node <strong>and that integration school</strong>.</p>
+<hr />
+<h3>7.1 Biological vectors: insects, migratory fauna and invasive species</h3>
+<p><strong>The problem:</strong>
+The sustained increase in temperatures and the alteration of humidity regimes are reconfiguring the biological map of the planet. Organisms that were previously confined to tropical or subtropical areas are advancing toward previously inaccessible latitudes and altitudes.</p>
+<p><strong>Specific manifestations:</strong></p>
+<ul>
+<li><p><strong>Mosquitoes and transmitted diseases:</strong> The <em>Aedes aegypti</em> (dengue, zika, chikungunya) and <em>Anopheles</em> (malaria) expand their habitat towards temperate zones. Regions that historically did not have autochthonous transmission today report annual outbreaks. Populations without previous exposure lack immunity and preventive culture.</p>
+</li>
+<li><p><strong>Deregulated migratory fauna:</strong> Birds, fish and mammals alter their migratory routes due to changes in ocean currents, water temperature and food availability. This affects fishing, crop pollination and food security.</p>
+</li>
+<li><p><strong>Invasive species favored by the climate:</strong> Pests previously limited by thermal barriers (desert locusts, pine weevils, Asian wasps, zebra mussels, giant African snails) colonize new territories, destroying native crops and ecosystems.</p>
+</li>
+</ul>
+<p><strong>What DSCFM does and teaches:</strong>
+Record each sighting, map the speed of expansion, correlate with climatic variables and issue sectorized alerts. <strong>and teach</strong> producers, health agents and community observers how to make this record, how to interpret the speed of expansion and how to generate a local containment protocol adapted to their territory.</p>
+<hr />
+<h3>7.2 Pathogens: fungi, viruses and bacteria</h3>
+<p><strong>The problem:</strong>
+Global warming redefines the conditions under which microorganisms thrive, mutate and disperse.</p>
+<p><strong>Specific manifestations:</strong></p>
+<ul>
+<li><strong>Mushrooms:</strong> Mycotoxins in stored grains; opportunistic fungi in humans (<em>Candida auris</em>); rusts, fusariosis and mildew in crops.</li>
+<li><strong>Viruses:</strong> Risk of pathogen release from permafrost; dispersal of enteric viruses by flooding; alteration of seasonal influenza cycles.</li>
+<li><strong>Bacteria:</strong> Increase in gastrointestinal infections (<em>Salmonella</em>, <em>Vibrio</em>) due to heat waves; spread of cholera and leptospirosis due to floods; acceleration of antimicrobial resistance.</li>
+</ul>
+<p><strong>What DSCFM does and teaches:</strong>
+Cross-reference climatic data with epidemiological and phytosanitary records. Identify correlations. Generate preventive alerts. <strong>and teach</strong> health personnel and producers how to read these correlations, how to record an outbreak in a way that serves the analysis and how to generate a local containment protocol.</p>
+<hr />
+<h3>7.3 Waste, pollution and recycling</h3>
+<p><strong>The problem:</strong>
+Climate change interacts with existing pollution, aggravating it and generating new cycles of toxicity.</p>
+<p><strong>Specific manifestations:</strong></p>
+<ul>
+<li>Dispersion of hazardous waste due to floods and storms.</li>
+<li>Accelerated degradation of plastics due to extreme heat; release of microplastics.</li>
+<li>Collapse of recycling infrastructure in the face of extreme events.</li>
+<li>Air pollution aggravated by heat waves and fires.</li>
+</ul>
+<p><strong>What DSCFM does and teaches:</strong>
+Monitor air, water and soil quality. Identify sources of pollution aggravated by climate. Project collapse scenarios. <strong>and teach</strong> to municipalities, recycling cooperatives and communities how to record environmental quality, how to identify sources of contamination and how to generate contingency protocols adapted to their infrastructure.</p>
+<hr />
+<h3>7.4 Famine, water scarcity and climate shocks</h3>
+<p><strong>The problem:</strong>
+The most direct impact of climate change is on the ability to feed and sustain the population.</p>
+<p><strong>Specific manifestations:</strong></p>
+<ul>
+<li>Crop loss due to drought, late frosts, hail and torrential rains.</li>
+<li>Water scarcity due to glacial retreat, salinization of aquifers and multiseasonal droughts.</li>
+<li>Climate shocks that interrupt electrical networks, transportation, communications and cold chains.</li>
+</ul>
+<p><strong>What DSCFM does and teaches:</strong>
+Project water and food stress scenarios. Warn about harvest risks. Monitor space weather. <strong>and teach</strong> to producers, cooperatives and municipalities how to interpret a projection, how to plan planting or water reserves in advance, and how to generate a local food contingency protocol.</p>
+<hr />
+<h3>7.5 Synthesis: the institutional and training gap that the DSCFM comes to cover</h3>
+<table>
+<thead>
+<tr>
+  <th>Without the DSCFM</th>
+  <th>With the DSCFM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Fragmented data across multiple organisms</td>
+  <td>Unified and correlated database</td>
+</tr>
+<tr>
+  <td>Delayed reaction to outbreaks, pests and disasters</td>
+  <td>Early warnings weeks/months in advance</td>
+</tr>
+<tr>
+  <td>Public policies based on intuition</td>
+  <td>Decisions based on comprehensive climate evidence</td>
+</tr>
+<tr>
+  <td>Each sector faces the climate in isolation</td>
+  <td>Coordinated network with protocols by sector</td>
+</tr>
+<tr>
+  <td>Invisible opportunities</td>
+  <td>Active detection of new productive niches</td>
+</tr>
+<tr>
+  <td><strong>Nobody teaches how to record, think or generate protocols</strong></td>
+  <td><strong>The DSCFM trains each sector to be autonomous in its monitoring</strong></td>
+</tr>
+<tr>
+  <td><strong>The protocols come from outside, generic, decontextualized</strong></td>
+  <td><strong>Protocols are born from the thinking of the Division and are taught to be adapted</strong></td>
+</tr>
+<tr>
+  <td><strong>Establish baseline, comparable sources and methodology to evaluate losses</strong></td>
+  <td><strong>Do not estimate savings until you have an independent evaluation</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>8. BLOCK II – OPERATION BY SECTOR</h2>
+<h3>8.1 General operating model</h3>
+<p>The DSCFM operates as a <strong>network of specialized nodes</strong>, each with its own protocols but connected to a unified central database. No node works in isolation.</p>
+<p><strong>Guiding principle:</strong> <em>Data that is not recorded does not exist. Data that is not cross-referenced is of no use. Data that is not translated into actionable information cannot drive change. And data that people are not taught to record is lost when its holder is gone.</em></p>
+<p><strong>Training principle:</strong> Each sector not only receives data from the DSCFM; <strong>learn to generate your own data, interpret it and build your own protocols</strong>. The DSCFM teaches the method; the sector applies it to its reality.</p>
+<hr />
+<h3>8.2 Agriculture and Countryside Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Pests, late frosts, droughts, excess water, hail, invasive species in crops, phytopathogenic fungi</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Daily in productive season; weekly on break</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Optimal planting/harvesting windows; risk of frost within 7-15 days; probability of seasonal drought</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Early warnings; recommendation of resistant varieties; pest containment protocols</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>New suitable crops; resilient markets; parametric weather insurance</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to keep a daily field record; how to correlate climate with plague; how to generate an adapted planting protocol; how to read a seasonal projection</td>
+</tr>
+</tbody>
+</table>
+<h3>8.3 Public Health Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Outbreaks of viruses, bacteria and fungi; vector expansion; respiratory diseases due to pollution; poisonings</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Mandatory diary; immediate outbreak alert</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Epidemiological risk maps for 30-60-90 days</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Preventive alerts; focused fumigation protocols; early vaccination recommendations</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>Biocontrollers; antiviral/antifungal research; genomic surveillance</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to correlate an outbreak with a climate anomaly; how to record a case in a way that feeds analysis; how to generate a local health alert protocol</td>
+</tr>
+</tbody>
+</table>
+<h3>8.4 Energy and Infrastructure Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Demand for heat/cold waves; impact of storms on networks; renewable generation; space weather</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Continuous monitoring (24/7)</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Demand peaks at 48-72 hours; risk of solar storms in 1-3 days</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Load plans; satellite and transformer protection protocols; preventive maintenance</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>Optimal areas for renewables; resistant materials; energy storage</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to interpret space weather data; how to plan maintenance according to climate projection; how to generate an energy contingency protocol</td>
+</tr>
+</tbody>
+</table>
+<h3>8.5 Science and Technology Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Degradation of materials due to UV, humidity, salinity; behavior under climate stress</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Periodic testing + continuous monitoring</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Useful life of materials in different scenarios</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Updated durability standards; material recommendations</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>Self-healing materials, smart coatings, low-cost sensors</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to design climate degradation trials; how to interpret results; how to generate adapted standards</td>
+</tr>
+</tbody>
+</table>
+<h3>8.6 Government and Civil Defense Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>extreme events; vulnerability by area; state of roads, bridges, dikes</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Continuous monitoring; activation upon alert</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Flood scenarios by basin; fire risk; 7-day probability of events</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Evacuation protocols; risk maps; contingency plans</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>Green infrastructure; territorial planning based on risk; international funds</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to read a risk map; how to design an evacuation protocol; how to interpret a projection for territorial planning</td>
+</tr>
+</tbody>
+</table>
+<h3>8.7 Education and Community Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Level of climate knowledge; campaign effectiveness; training needs</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Quarterly evaluations; continuous feedback</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Knowledge gaps; training needs</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Teaching material; workshops; climate observer training</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>New professional profiles; citizen science</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to teach how to observe and record the weather in the classroom; how to design citizen science projects; how to train autonomous community observers</td>
+</tr>
+</tbody>
+</table>
+<h3>8.8 Industry and Logistics Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Impact on supply chains; status of routes and ports; cold chain risks</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Daily in high risk season; weekly under normal conditions</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Alternative routes; risk of cold chain interruption; logistics windows</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Contingency plans; sensitive charging protection; alternative suppliers</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>Green logistics; route optimization; new markets</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to interpret a logistics projection; how to design an operational contingency plan; how to log interruptions usefully</td>
+</tr>
+</tbody>
+</table>
+<h3>8.9 Biodiversity and Ecosystems Sector</h3>
+<table>
+<thead>
+<tr>
+  <th>Appearance</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>What records</strong></td>
+  <td>Advance/setback of native species; colonization by invaders; algal blooms; wildlife migration</td>
+</tr>
+<tr>
+  <td><strong>Frequency</strong></td>
+  <td>Weekly surveys + continuous sensors</td>
+</tr>
+<tr>
+  <td><strong>Projections</strong></td>
+  <td>Invasion trajectories at 1-5 years; local extinction risk; break points</td>
+</tr>
+<tr>
+  <td><strong>Solutions offered</strong></td>
+  <td>Early eradication plans; biological corridors; habitat restoration</td>
+</tr>
+<tr>
+  <td><strong>Opportunities you detect</strong></td>
+  <td>Resilient ecotourism; bioeconomy; payments for ecosystem services</td>
+</tr>
+<tr>
+  <td><strong>What the DSCFM teaches</strong></td>
+  <td>How to identify an invasive species in an early phase; how to record a useful sighting; how to generate a local containment protocol</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>8.10 Transverse operational flow</h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│              DAILY FIELD RECORD                    │
+│  (Operators, sensors, satellites, citizen reports) │
+└────────────────────────┬────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│           UNIFIED CENTRAL DATABASE               │
+│  (Crossing climatic + biological + variables          │
+│   pollution + infrastructure + health)              │
+└────────────────────────┬────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│              ANALYSIS AND THINKING                     │
+│  (Trends, correlations, breaking points,        │
+│   generation of hypotheses, identification of           │
+│   patterns → GENERATION OF OWN PROTOCOLS)         │
+└────────────────────────┬────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│         PRODUCTS BY SECTOR AND RECIPIENT             │
+│  • Early warnings with action protocol            │
+│  • Technical bulletins by sector                        │
+│  • Executive reports                                  │
+│  • Educational and training material                    │
+│  • Protocols generated by the Division                 │
+│  • Market opportunities detected                  │
+└────────────────────────┬────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│         TEACHING AND TRANSFER                       │
+│  • Follow-up training workshops                 │
+│  • Training of autonomous observers               │
+│  • Transfer of generation methodology           │
+│    of protocols                                        │
+│  • Formation of organizations for their own registration     │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>9. BLOCK III – PROPOSED SOLUTIONS</h2>
+<h3>9.1 Distributed sensor network</h3>
+<p>Deployment of community weather stations, IoT sensors in crops, cities and bodies of water, complemented with satellite and radar data.</p>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Phase 1: 50 basic stations in critical points.</li>
+<li>Phase 2: Air, water and soil quality sensors.</li>
+<li>Phase 3: Integration with satellite data.</li>
+<li>Phase 4: Network of low-cost community sensors managed by observers trained by the DSCFM.</li>
+</ul>
+<p><strong>Training component:</strong> Each community station is also a teaching point. The observer not only records: he learns why he records, what the data means, and how to use it.</p>
+<h3>9.2 Open data platform and public API</h3>
+<p>Digital portal where any citizen, company, researcher or government can access DSCFM data.</p>
+<p><strong>Components:</strong></p>
+<ul>
+<li>Interactive dashboard by sector.</li>
+<li>Public API for integration with third-party systems.</li>
+<li>Download historical series in open formats.</li>
+<li>Georeferenced risk maps.</li>
+<li>"Opportunities" section.</li>
+<li><strong>Section "Methodology":</strong> Open document that explains how the DSCFM generates its protocols, so that any organization can replicate the logic.</li>
+</ul>
+<h3>9.3 Multilevel alert system</h3>
+<table>
+<thead>
+<tr>
+  <th>Channel</th>
+  <th>Recipient</th>
+  <th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>SMS / Local radio</td>
+  <td>Rural areas, communities without internet</td>
+  <td>Simple text, local language</td>
+</tr>
+<tr>
+  <td>Mobile app</td>
+  <td>Urban population, technicians</td>
+  <td>Data + map + recommendation</td>
+</tr>
+<tr>
+  <td>Control panel</td>
+  <td>Governments, civil defense, hospitals</td>
+  <td>Dashboards with risk traffic lights</td>
+</tr>
+<tr>
+  <td>PDF technical reports</td>
+  <td>Academia, industry, legislators</td>
+  <td>Detailed analysis with methodology</td>
+</tr>
+<tr>
+  <td>Weekly newsletter on networks</td>
+  <td>General public</td>
+  <td>Accessible language, infographics</td>
+</tr>
+<tr>
+  <td>satellite alert</td>
+  <td>Satellite operators, energy</td>
+  <td>Technical protocol with action window</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Training component:</strong> Each alert includes a “How was this alert generated?” so that the recipient understands the logic and can, over time, anticipate for themselves.</p>
+<h3>9.4 Transversal climate education: teaching to follow and think</h3>
+<p>This is the training heart of the DSCFM. It's not just about reporting on climate change. It is about <strong>teach the tracking method</strong>:</p>
+<ul>
+<li><p><strong>Primary level:</strong> Playful workshops on observing the environment. Children learn to look at the sky, the ground, insects, plants. They record in adapted field notebooks.</p>
+</li>
+<li><p><strong>Secondary level:</strong> Citizen science projects. Students operate mini-weather stations, recording daily data, cross-referencing it with biological observations and generating their first reports. They learn that isolated data is useless; a time series, yes.</p>
+</li>
+<li><p><strong>Technical/university level:</strong> Training of monitoring operators, climate data analysts, risk managers. They learn the complete methodology: observe → record → cross → think → project → generate protocol → teach.</p>
+</li>
+<li><p><strong>Professional/business level:</strong> Training for engineers, agronomists, doctors, logisticians and officials. Each one learns to apply the monitoring methodology to their specific sector.</p>
+</li>
+<li><p><strong>Community:</strong> Neighborhood and rural workshops to prepare for extreme events. Training of autonomous community observers. Teaching simplified daily recording.</p>
+</li>
+<li><p><strong>Organizations:</strong> "Organization that follows itself" program. The DSCFM trains 5 organizations per year to implement their own registration system and generate their own protocols, without permanent dependence on the Division.</p>
+</li>
+</ul>
+<h3>9.5 Inter-institutional alliances</h3>
+<p>Formal agreements with:</p>
+<ul>
+<li>National Meteorological Service / equivalent organizations.</li>
+<li>Ministries of Health, Agriculture, Environment, Energy, Education.</li>
+<li>Universities and research centers (INTA, CONICET, equivalents).</li>
+<li>International organizations (WHO, FAO, IPCC, WMO).</li>
+<li>Environmental and community NGOs.</li>
+<li>Private sector (technology, insurance, agribusiness, logistics).</li>
+</ul>
+<p><strong>Joint model:</strong> Monthly coordination table + real-time data exchange + joint research projects + <strong>joint training programs</strong>.</p>
+<h3>9.6 Resilience funds and climate insurance</h3>
+<ul>
+<li>Parametric insurance accessible for small producers and SMEs.</li>
+<li>Community adaptation fund: microcredits for resilient infrastructure.</li>
+<li>Tax incentives for companies that invest in monitoring and training.</li>
+</ul>
+<h3>9.7 Applied research and mobile laboratories</h3>
+<ul>
+<li>Mobile diagnostic units for on-site analysis.</li>
+<li>Materials laboratories: climate degradation tests.</li>
+<li>Vector biology laboratories: identification, resistance, genomics.</li>
+</ul>
+<p><strong>Training component:</strong> Mobile laboratories don't just analyze: they train local staff in sampling and identification techniques, so that next time they can do it without waiting for the mobile unit.</p>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>10. Transversal design criteria</h2>
+<p>These criteria guide institutional planning and must be translated into procedures, responsibilities and evaluation mechanisms.</p>
+<h3>10.1 The climate does not affect everyone equally</h3>
+<blockquote>
+<p><em>A heat wave kills more in a neighborhood without air conditioning or running water than in a corporate office.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Cross-reference climate data with socioeconomic vulnerability maps. Prioritize alerts and training to those with the least capacity to respond.</p>
+<h3>10.2 An alert without action is useless</h3>
+<blockquote>
+<p><em>There is no point in predicting a flood 72 hours in advance if the community does not know where to evacuate.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Each alert includes a specific action protocol. And the community is taught how to execute it.</p>
+<h3>10.3 Scientific data must be translated</h3>
+<blockquote>
+<p><em>An aerospace engineer and a small farmer need the same information, but in different formats.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Communication and technical translation team. Multiple simultaneous formats.</p>
+<h3>10.4 Prevention as a management component</h3>
+<blockquote>
+<p><em>Preventative measures can improve preparedness; Its costs and results must be evaluated for each context.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> The budget requires validation and its results must be evaluated with indicators, baseline and independent review.</p>
+<h3>10.5 Nobody is left out</h3>
+<blockquote>
+<p><em>Climate change impacts everything from phytoplankton to satellites. Ignoring one link weakens the entire chain.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Universal and transversal scope. No sector excluded from monitoring or training.</p>
+<h3>10.6 Technology without inclusion generates inequality</h3>
+<blockquote>
+<p><em>An alert app is useless for those who do not have a smartphone or electricity.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Multiple simultaneous channels: digital, radio, in-person, community, SMS. Always a backup analog channel.</p>
+<h3>10.7 The historical record is not a luxury</h3>
+<blockquote>
+<p><em>Without data from the past, one cannot prove that the present is abnormal or project the future.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Historical reconstruction unit. Minimum 50 years of data. Includes archives, agricultural, health, journalistic records and oral histories.</p>
+<h3>10.8 Data without temporal continuity are useless</h3>
+<blockquote>
+<p><em>An isolated measurement is an anecdote. A series of 30 years is evidence.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Permanent institutional rank, protected by law. Guaranteed budget. Stable staff.</p>
+<h3>10.9 The human species is part of the ecosystem</h3>
+<blockquote>
+<p><em>Local communities are the first affected and the first to detect changes. Its empirical knowledge is data as valid as that of a sensor.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Incorporate local knowledge and citizen science as legitimate sources. Community observers are an integral part of the network.</p>
+<h3>10.10 Opportunity is also part of monitoring</h3>
+<blockquote>
+<p><em>A division that only registers problems generates paralysis. One that also identifies opportunities generates action.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Each report includes a "Detected Opportunities" section.</p>
+<h3>10.11 Teaching how to think is more transformative than providing answers</h3>
+<blockquote>
+<p><em>If the DSCFM only delivers finished protocols, it creates dependency. If you teach how to build a protocol from observation and recording, you create autonomy. And autonomy is the only true adaptation.</em></p>
+</blockquote>
+<p><strong>Operational implication:</strong> Each DSCFM product includes a “How was this built?” The protocol generation methodology is public, open and replicable. The final objective of the DSCFM is not to be indispensable: it is that each organization can carry out its own monitoring without needing it permanently.</p>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>11. DAILY REGISTRATION SYSTEM AND PROTOCOLS GENERATED BY THE DIVISION</h2>
+<h3>11.1 Principle: protocols are born from the thinking of the Division</h3>
+<p>The DSCFM does not import generic protocols from international organizations to apply them without adaptation. <strong>Generate your own protocols</strong> from the following process:</p>
+<ol>
+<li><strong>Observation and daily recording</strong> of phenomena.</li>
+<li><strong>Data crossing</strong> between climatic, biological, health and productive variables.</li>
+<li><strong>Identification of patterns and correlations</strong> that were not visible before the crossing.</li>
+<li><strong>Formulation of hypotheses</strong> on causes, trends and projections.</li>
+<li><strong>Validation</strong> of the hypothesis with additional data or with the record of the following weeks/months.</li>
+<li><strong>Protocol writing:</strong> concrete procedure, step by step, adapted to the local context, with those responsible, times and resources.</li>
+<li><strong>Protocol teaching:</strong> It is not delivered as a closed prescription; The logic that generated it is taught so that each recipient can adapt it.</li>
+<li><strong>Check and adjustment:</strong> the protocol is updated with new data. It is not static.</li>
+</ol>
+<p><strong>This process is the core methodology of DSCFM and is what is taught.</strong></p>
+<hr />
+<h3>11.2 Unified Daily Record Form</h3>
+<pre><code>═══════════════════════════════════════════════════════════════
+    DSCFM – DAILY RECORD OF PHENOMENA AND VARIABLES
+═══════════════════════════════════════════════════════════════
+Date: ___/___/______ Time: _______ UTC
+Operator / Sensor ID: ___________________________
+Station / Zone / Coordinates: ____________________
+
+■ CLIMATE DATA OF THE DAY:
+  Temp. max: ___°C | Temp. min: ___°C | Humidity: ___%
+  Precipitation: ___ mm | Wind: ___ km/h | Direction: ___
+  Pressure: ___ hPa | UV radiation: ___
+  Extreme event: YES / NO → Type: _________________
+
+■ CONTAMINATION DETECTED:
+  Air: YES/NO → Type: _________________
+  Water: YES/NO → Type: _________________
+  Soil: YES/NO → Type: _________________
+  Identified source: ___________________________
+  Severity level: Low / Medium / High / Critical
+
+■ BIOLOGICAL OUTBREAKS (Viruses / Fungi / Bacteria / Parasites):
+  Detection: YES / NO
+  Type: Virus / Fungus / Bacteria / Parasite / Unknown
+  Species/Strain: _________________________________
+  Affects: Human / Animal / Plant / Multiple
+  Detection area: _____________________________
+  Associated climatic conditions: _______________
+  Observed propagation speed: ____________
+
+■ INVASIVE SPECIES:
+  Sighting: YES / NO
+  Species: _____________________________
+  Estimated quantity: ___________________
+  Affected habitat: ____________________
+  Impact on native species: _________________
+  Probable entry pathway: ____________________
+
+■ EXTREME CLIMATE EVENTS:
+  Type: Drought / Flood / Hail / Frost /
+        Heat wave / Severe storm / Fire / Other
+  Duration: _________________
+  Observed damage: _____________________________
+  Affected population: ____________________________
+
+■ GENERAL OBSERVATIONS / LOCAL KNOWLEDGE:
+  _______________________________________________
+  _______________________________________________
+
+■ EVIDENCE:
+  Photographs: YES/NO | Samples: YES/NO | Video: YES/NO
+  Associated citizen report: YES/NO → Ref: _______
+
+Operator signature: _________________
+═══════════════════════════════════════════════════════════════
+</code></pre>
+<hr />
+<h3>11.3 Record Categories</h3>
+<ul>
+<li><strong>Category A:</strong> Pollution (air, water, soil).</li>
+<li><strong>Category B:</strong> Biological outbreaks (viruses, fungi, bacteria, parasites).</li>
+<li><strong>Category C:</strong> Invasive species.</li>
+<li><strong>Category D:</strong> Extreme weather events.</li>
+<li><strong>Category E:</strong> <em>Productive opportunities detected</em></li>
+<li><strong>Category F:</strong> <em>Local knowledge and empirical knowledge</em></li>
+</ul>
+<hr />
+<h3>11.4 Data loading and validation protocol</h3>
+<ol>
+<li>The operator completes the form in the field (digital or paper).</li>
+<li>Load on the central platform within 24 hours.</li>
+<li>The system validates completeness, coherence and georeferencing.</li>
+<li>The data analyst reviews and confirms the upload.</li>
+<li>The data is integrated into the corresponding time series.</li>
+<li>If a significant anomaly is detected, the analysis protocol is activated.</li>
+<li>The data can be cross-referenced with historical time series to support preliminary analyses, once the thresholds and procedures have been defined and validated.</li>
+</ol>
+<hr />
+<h3>11.5 Network of community observers</h3>
+<ul>
+<li>20 to 50 people trained by the DSCFM.</li>
+<li>Trained in the method: observe → record → report.</li>
+<li>They are not "auxiliary": they are an integral part of the monitoring network.</li>
+<li>They receive quarterly refresher training.</li>
+<li>They provide local knowledge and empirical observations.</li>
+<li>Over time, they generate their own autonomous mini-records.</li>
+<li><strong>Incentives:</strong> University certification (agreement with national universities), field equipment, annual public recognition, priority access to alerts.</li>
+</ul>
+<hr />
+<h3>11.6 Methodology for generating own protocols</h3>
+<p>The DSCFM documents and publishes its protocol generation methodology so that it is replicable:</p>
+<p><strong>Step 1 – Observation:</strong> What am I seeing? Precise description of the phenomenon.
+<strong>Step 2 – Registration:</strong> What data do I have? Frequency, magnitude, location, evidence.
+<strong>Step 3 – Crossover:</strong> What other data is related? Climatic, biological, health, and productive variables.
+<strong>Step 4 – Thinking:</strong> What pattern emerges? What hypothesis can I formulate?
+<strong>Step 5 – Projection:</strong> What will happen if the trend continues? In what period?
+<strong>Step 6 – Protocol:</strong> What should be done, who does it, when, with what resources?
+<strong>Step 7 – Teaching:</strong> How do I explain the logic of this protocol for others to adapt?
+<strong>Step 8 – Review:</strong> Did the protocol work? What new data confirms or denies it?</p>
+<hr />
+<h3>11.7 Validation of protocols before use</h3>
+<p>Sector protocols are future products of the pilot, not procedures that are already approved or tested. Each draft must be agreed upon with the competent authorities and specify scope, data source, quality controls, activation criteria, responsible parties, permitted actions, review mechanisms and communication of uncertainty.</p>
+<table>
+<thead><tr><th>Work area</th><th>Information that could be integrated</th><th>Prior validation required</th></tr></thead>
+<tbody>
+<tr><td>Health and vectors</td><td>Sanitary and entomological surveillance, meteorology and territorial coverage.</td><td>Review of health authorities; privacy, data quality and clinical criteria.</td></tr>
+<tr><td>Drought and basin</td><td>Forecasts, precipitation, flows and sectoral data.</td><td>Hydrological validation and consultation with productive, energy and logistics actors.</td></tr>
+<tr><td>Pests</td><td>Field observations, environmental variables and satellite images.</td><td>Confirmation of specialists and coordination with phytosanitary organizations.</td></tr>
+<tr><td>Fires</td><td>Meteorological indices, detection of outbreaks and territorial observations.</td><td>Validation with risk management, firefighters, environmental and health authorities.</td></tr>
+</tbody>
+</table>
+<p>Thresholds, deadlines and response measures will be determined with local data and technical evaluation; This proposal does not establish anticipations or impact results.</p>
+<hr />
+<hr /></section>
+</section>
+<section class="book-chapter"><h2>12. Monitoring and evaluation products</h2>
+<p class="data-note">The products and models described are proposed lines of work. There are no operational forecasts or validated models here; Horizons, thresholds and performance will be defined with available data and technical review.</p>
+<h3>12.1 Products according to decision horizon</h3>
+<table>
+<thead><tr><th>Orientative horizon</th><th>Possible product</th><th>Publication requirements</th></tr></thead>
+<tbody>
+<tr><td>Short term</td><td>Bulletins and warnings against meteorological dangers.</td><td>Official source, validity area, broadcast and update time, uncertainty and consultation channel.</td></tr>
+<tr><td>Seasonal</td><td>Scenarios of precipitation, temperature, flows or sectoral risks.</td><td>Reference prognosis, probabilities, resolution limits and review with specialists.</td></tr>
+<tr><td>Medium and long term</td><td>Climate scenarios and vulnerability analysis for planning.</td><td>Scenarios, assumptions, spatial scale, uncertainty and uses that are not appropriate.</td></tr>
+<tr><td>Continuous monitoring</td><td>Indicators of changes, events and critical conditions.</td><td>Stable definitions, documented coverage and distinction between observation and interpretation.</td></tr>
+</tbody>
+</table>
+<h3>12.2 Lines of analysis that could be explored</h3>
+<ul>
+<li><strong>Health and environment:</strong> study associations between meteorological conditions, health surveillance and territorial variables, under the supervision of health authorities.</li>
+<li><strong>Production and resources:</strong> analyze climatic, hydrological and phenological variables with technical sources and sectoral participation.</li>
+<li><strong>Fires:</strong> evaluate danger indices, observations of outbreaks and their usefulness to prioritize surveillance and response.</li>
+<li><strong>Species and pests:</strong> explore observational, environmental and distribution data with specialized confirmation.</li>
+</ul>
+<h3>12.3 Minimum conditions for developing models</h3>
+<ol>
+<li>Define a specific question, the user of the product and the decision it could support.</li>
+<li>Inventory sources, permits, coverage, quality, comparable periods, and missing data; Do not assume that access is guaranteed.</li>
+<li>Establish a baseline and temporally separate development and evaluation data.</li>
+<li>Compare the model with a relevant reference and report error, uncertainty, biases and limits of use.</li>
+<li>Perform independent validation with specialists and users before issuing operational products.</li>
+<li>Monitor performance and suspend or revise the product when evidence or conditions change.</li>
+</ol>
+<p><strong>Communication rule:</strong> Do not publish precision, anticipation, or damage reduction figures until performance is measured with documented data and a reproducible method. The alerts and recommendations correspond to the competent sectoral authorities.</p>
+<hr /></section>
+<section class="book-chapter"><h2>13. ACTIVITIES</h2>
+<h3>Stage 1: Institutional design, historical record and team formation (Months 1-6)</h3>
+<table>
+<thead>
+<tr>
+  <th>Activity</th>
+  <th>Detail</th>
+  <th>Responsible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1.1 Legal framework of creation</td>
+  <td>Bill/decree with permanent status and guaranteed budget</td>
+  <td>General Management + Legal Advice</td>
+</tr>
+<tr>
+  <td>1.2 Interinstitutional agreements</td>
+  <td>Minimum 5 agreements with health, agriculture, municipality, university, NGO</td>
+  <td>General Directorate</td>
+</tr>
+<tr>
+  <td>1.3 Registration protocols</td>
+  <td>Design of the Unified Form, categories, validation criteria</td>
+  <td>Record Unit + Analysis Unit</td>
+</tr>
+<tr>
+  <td>1.4 Historical data collection</td>
+  <td>Meteorological, agricultural, health, journalistic archives, oral histories. Minimum 30 years</td>
+  <td>Historical Record Unit</td>
+</tr>
+<tr>
+  <td>1.5 Digitization and upload</td>
+  <td>Entry into central platform. Validation and normalization</td>
+  <td>Data Specialist</td>
+</tr>
+<tr>
+  <td>1.6 Baseline</td>
+  <td>Historical status document for reference</td>
+  <td>Climate Analyst + Biologist</td>
+</tr>
+<tr>
+  <td>1.7 Technological platform</td>
+  <td>Database architecture, dashboards, API, alerts</td>
+  <td>IT Specialist</td>
+</tr>
+<tr>
+  <td>1.8 Training of the internal team</td>
+  <td>Training of DSCFM staff in the monitoring methodology and generation of protocols</td>
+  <td>General Management + Educator</td>
+</tr>
+</tbody>
+</table>
+<h3>Stage 2: Deployment of the monitoring and training network (Months 4-12)</h3>
+<table>
+<thead>
+<tr>
+  <th>Activity</th>
+  <th>Detail</th>
+  <th>Responsible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>2.1 Installation of 50 stations</td>
+  <td>Critical points identified by the baseline</td>
+  <td>Operators + Technician</td>
+</tr>
+<tr>
+  <td>2.2 Air/water/soil quality sensors</td>
+  <td>Deployment and calibration</td>
+  <td>Environmental Engineer</td>
+</tr>
+<tr>
+  <td>2.3 Training of field operators</td>
+  <td>Technical training in sensors, forms, sampling</td>
+  <td>Educator + Analyst</td>
+</tr>
+<tr>
+  <td>2.4 Training of 30 community observers</td>
+  <td>Training in daily registration, basic identification, reporting</td>
+  <td>Educator + Biologist</td>
+</tr>
+<tr>
+  <td>2.5 Satellite data integration</td>
+  <td>Connection with remote sensing sources</td>
+  <td>IT Specialist</td>
+</tr>
+<tr>
+  <td>2.6 Implementation of the daily record</td>
+  <td>Start of uninterrupted operational record</td>
+  <td>The whole team</td>
+</tr>
+</tbody>
+</table>
+<h3>Stage 3: Daily record operation (From Month 6 – PERMANENT)</h3>
+<table>
+<thead>
+<tr>
+  <th>Activity</th>
+  <th>Detail</th>
+  <th>Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>3.1 Uploading the Daily Record Form</td>
+  <td>Climate data, pollution, outbreaks, invasives, extreme events</td>
+  <td>Daily</td>
+</tr>
+<tr>
+  <td>3.2 Validation and quality control</td>
+  <td>Completeness, coherence, georeferencing, evidence</td>
+  <td>Daily</td>
+</tr>
+<tr>
+  <td>3.3 Photographic and sample registration</td>
+  <td>Photographs, samples, upload to system</td>
+  <td>Upon detection</td>
+</tr>
+<tr>
+  <td>3.4 Citizen report</td>
+  <td>Reception, validation and upload of community reports</td>
+  <td>Continue</td>
+</tr>
+<tr>
+  <td>3.5 Database update</td>
+  <td>Automatic and manual loading. Daily backup</td>
+  <td>Daily</td>
+</tr>
+</tbody>
+</table>
+<h3>Stage 4: Analysis, projection and generation of protocols (Quarterly)</h3>
+<table>
+<thead>
+<tr>
+  <th>Activity</th>
+  <th>Detail</th>
+  <th>Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>4.1 Trend analysis</td>
+  <td>Current vs. Comparison baseline</td>
+  <td>Quarterly</td>
+</tr>
+<tr>
+  <td>4.2 Predictive modeling</td>
+  <td>Projections at 1 season, 5 and 20 years</td>
+  <td>Quarterly</td>
+</tr>
+<tr>
+  <td>4.3 Climate-biology correlation</td>
+  <td>Crossing variables and identifying patterns</td>
+  <td>Quarterly</td>
+</tr>
+<tr>
+  <td>4.4 Identification of break points</td>
+  <td>Detection of critical thresholds</td>
+  <td>Upon detection</td>
+</tr>
+<tr>
+  <td>4.5 Generation of own protocols</td>
+  <td>Application of the methodology: observation → recording → crossing → thinking → protocol</td>
+  <td>Quarterly</td>
+</tr>
+<tr>
+  <td>4.6 Quarterly projections report</td>
+  <td>Document with data, trends, alerts and protocols</td>
+  <td>Quarterly</td>
+</tr>
+</tbody>
+</table>
+<h3>Stage 5: Teaching, dissemination and articulation (Permanent)</h3>
+<table>
+<thead>
+<tr>
+  <th>Activity</th>
+  <th>Detail</th>
+  <th>Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>5.1 "Solutions and Opportunities" Report</td>
+  <td>Actionable recommendations by sector</td>
+  <td>Semester</td>
+</tr>
+<tr>
+  <td>5.2 Issuance of early warnings</td>
+  <td>With action protocol and explanation of how it was generated</td>
+  <td>Before event / daily</td>
+</tr>
+<tr>
+  <td>5.3 Monthly sector bulletin</td>
+  <td>Specific report by sector</td>
+  <td>Monthly</td>
+</tr>
+<tr>
+  <td>5.4 Weekly community newsletter</td>
+  <td>Accessible language, infographics, maps</td>
+  <td>Weekly</td>
+</tr>
+<tr>
+  <td>5.5 Follow-up training workshops</td>
+  <td>Teach to observe, record, cross, think, project, generate protocols</td>
+  <td>4 per year</td>
+</tr>
+<tr>
+  <td>5.6 Program “Organization that monitors itself”</td>
+  <td>Formation of 5 organizations/year for autonomous registration</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>5.7 Articulation with schools</td>
+  <td>Data and material for citizen science</td>
+  <td>Continue</td>
+</tr>
+<tr>
+  <td>5.8 Annual Comprehensive Climate Status Report</td>
+  <td>Complete public document</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>5.9 Publication of the protocol generation methodology</td>
+  <td>Open and replicable document</td>
+  <td>Annual</td>
+</tr>
+</tbody>
+</table>
+<h3>Stage 6: Evaluation and continuous improvement (Annual)</h3>
+<table>
+<thead>
+<tr>
+  <th>Activity</th>
+  <th>Detail</th>
+  <th>Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>6.1 Alert audit</td>
+  <td>Verify that 100% included protocol</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>6.2 Satisfaction survey</td>
+  <td>Measure use and evaluation of products. Goal: ≥ 80%</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>6.3 Evaluation of territorial coverage</td>
+  <td>Check absence of blind spots</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>6.4 Evaluation of autonomy of formed organizations</td>
+  <td>Do formed organizations continue to register without direct support?</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>6.5 Continuous improvement report</td>
+  <td>Lessons learned, adjustments, expansion proposals</td>
+  <td>Annual</td>
+</tr>
+<tr>
+  <td>6.6 Baseline update</td>
+  <td>Incorporate data from the year. Recalibrate models</td>
+  <td>Annual</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>14. SCHEDULE</h2>
+<table>
+<thead>
+<tr>
+  <th>Stages / Activities</th>
+  <th>M1</th>
+  <th>M2</th>
+  <th>M3</th>
+  <th>M4</th>
+  <th>M5</th>
+  <th>M6</th>
+  <th>M7</th>
+  <th>M8</th>
+  <th>M9</th>
+  <th>M10</th>
+  <th>M11</th>
+  <th>M12</th>
+  <th>Year 2</th>
+  <th>Year 3+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Stage 1: Institutional Design and Historical Record</strong></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.1 Legal framework</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.2 Agreements (min. 5)</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.3 Registration protocols</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.4 Historical data collection</td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.5 Digitization and upload</td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.6 Baseline</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.7 Technological platform</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>1.8 Training of the internal team</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td><strong>Stage 2: Network Deployment and Training</strong></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>2.1 Installation of 50 stations</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>2.2 Air/water/soil quality sensors</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>2.3 Operator training</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>2.4 Training 30 observers</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>2.5 Satellite data</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>2.6 Start daily log</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td><strong>Stage 3: Daily Record Operation</strong></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>3.1-3.5 Loading, validation, reporting</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td><strong>Stage 4: Analysis and Generation of Protocols</strong></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>4.1-4.6 Analysis, modeling, protocols, reporting</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td><strong>Stage 5: Teaching, Dissemination and Articulation</strong></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>5.1 Solutions and Opportunities Report N°1</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>5.2 Early warnings</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td>5.3 Monthly sector bulletin</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td>5.4 Weekly community newsletter</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td>5.5 Training workshops (4/year)</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td>5.6 Program “Organization that monitors itself”</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td>5.7 Articulation with schools</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+<tr>
+  <td>5.8 Annual Climate Status Report N°1</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>5.9 Publication of methodology</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td></td>
+</tr>
+<tr>
+  <td><strong>Stage 6: Evaluation and Continuous Improvement</strong></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>6.1-6.6 Audit, survey, report</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>x</td>
+  <td>x</td>
+  <td>x</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>15. RECIPIENTS</h2>
+<h3>15.1 Direct recipients</h3>
+<table>
+<thead>
+<tr>
+  <th>Recipient</th>
+  <th>Relationship with the DSCFM</th>
+  <th>Products you receive</th>
+  <th>Training you receive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Municipal and provincial authorities</td>
+  <td>They make public policy decisions</td>
+  <td>Executive reports, alerts, risk maps</td>
+  <td>How to read projections for territorial planning</td>
+</tr>
+<tr>
+  <td>Public health sector</td>
+  <td>Receive outbreak alerts</td>
+  <td>Epidemiological risk maps, protocols</td>
+  <td>How to correlate weather with outbreaks; how to register</td>
+</tr>
+<tr>
+  <td>Agricultural sector</td>
+  <td>They receive projections and alerts</td>
+  <td>Agricultural alerts, recommendations</td>
+  <td>How to keep field records; how to generate seeding protocol</td>
+</tr>
+<tr>
+  <td>Energy and infrastructure sector</td>
+  <td>They receive demand projections and space weather</td>
+  <td>Charging plans, protection protocols</td>
+  <td>How to interpret space weather data</td>
+</tr>
+<tr>
+  <td>Industry and logistics sector</td>
+  <td>They receive route and cold chain information</td>
+  <td>Contingency plans</td>
+  <td>How to design contingency operational protocol</td>
+</tr>
+<tr>
+  <td>Education sector</td>
+  <td>They receive data and teaching material</td>
+  <td>Material, open data, workshops</td>
+  <td>How to teach observing and recording in the classroom</td>
+</tr>
+<tr>
+  <td>Civil Defense</td>
+  <td>They receive alerts with protocol</td>
+  <td>Alerts, evacuation maps</td>
+  <td>How to design and execute evacuation protocol</td>
+</tr>
+<tr>
+  <td>General community</td>
+  <td>Access newsletters and workshops</td>
+  <td>Newsletter, SMS, radio, networks</td>
+  <td>How to record phenomena; how to interpret alerts</td>
+</tr>
+<tr>
+  <td>Vulnerable communities and indigenous peoples</td>
+  <td>Priority training and accessible alerts</td>
+  <td>Alerts in simple language, in-person workshops</td>
+  <td>How to be an autonomous community observer</td>
+</tr>
+<tr>
+  <td>Scientific community</td>
+  <td>Access open data</td>
+  <td>API, historical series</td>
+  <td>Protocol generation methodology</td>
+</tr>
+<tr>
+  <td>Private sector (SMEs, insurance companies)</td>
+  <td>Access projections and opportunities</td>
+  <td>Opportunities report, dashboards</td>
+  <td>How to apply tracking to your operation</td>
+</tr>
+</tbody>
+</table>
+<h3>15.2 Indirect recipients</h3>
+<ul>
+<li>International organizations (IPCC, WMO, FAO, WHO, UNDRR, ECLAC).</li>
+<li>Media.</li>
+<li>Legislators.</li>
+<li>Future generations.</li>
+</ul>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>16. HUMAN RESOURCES</h2>
+<h3>16.1 Organic structure</h3>
+<pre><code>                    ┌─────────────────────────────┐
+                    │     GENERAL DIRECTION       │
+                    │  (Strategic Coordination) │
+                    └──────────────┬──────────────┘
+                                 │
+    ┌─────────────┬──────────────┼──────────────┬─────────────┐
+    ▼             ▼              ▼              ▼             ▼
+┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+│ Unit   ││ Unit   ││ Unit   ││ Unit   ││ Unit   │
+│ Registration ││ Analysis,││ Alerts  ││ Solution- ││ Shape-   │
+│ Historical││ Project-  ││ and        ││ nes and    ││ tion and   │
+│ and Base   ││ tions and ││ Answer││ Timely ││ Teaching│
+│ of Data ││ Protocols││          ││          ││ of the      │
+│          ││          ││          ││          ││ Continue.  │
+└──────────┘└──────────┘└──────────┘└──────────┘└──────────┘
+</code></pre>
+<h3>16.2 Roles, functions and tasks</h3>
+<table>
+<thead>
+<tr>
+  <th>Role</th>
+  <th>Qty.</th>
+  <th>Main function</th>
+  <th>Tasks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>General Director</strong></td>
+  <td>1</td>
+  <td>Strategic coordination, articulation, representation</td>
+  <td>Coordinate inter-institutional table; sign agreements; monitor reports; manage budget</td>
+</tr>
+<tr>
+  <td><strong>Climate Analyst / Meteorologist</strong></td>
+  <td>2</td>
+  <td>Historical series, modeling, projections</td>
+  <td>Load and validate time series; run models; prepare climate sections of reports; monitor space weather</td>
+</tr>
+<tr>
+  <td><strong>Biologist – Ecologist</strong></td>
+  <td>2</td>
+  <td>Invasive species, biological outbreaks, ecosystems</td>
+  <td>Identify and record species; record and georeference; evaluate impact; develop containment plans; field surveys</td>
+</tr>
+<tr>
+  <td><strong>Epidemiologist / Health Specialist</strong></td>
+  <td>1</td>
+  <td>Climate-health intersection, health alerts</td>
+  <td>Correlate anomalies with outbreaks; prepare risk maps; issue alerts; coordinate with hospitals</td>
+</tr>
+<tr>
+  <td><strong>Environmental Engineer</strong></td>
+  <td>1</td>
+  <td>Pollution, waste, environmental quality</td>
+  <td>Operate sensors; identify sources of contamination; project collapses; develop contingency protocols</td>
+</tr>
+<tr>
+  <td><strong>Data / IT Specialist</strong></td>
+  <td>2</td>
+  <td>Database, platform, API, dashboards</td>
+  <td>Design and maintain database; develop platform; manage APIs; guarantee backup and security</td>
+</tr>
+<tr>
+  <td><strong>Communicator – Technical Translator</strong></td>
+  <td>2</td>
+  <td>Adaptation of products, newsletters, material</td>
+  <td>Write community newsletter; adapt technical reports; manage channels; design infographics and audiovisual material</td>
+</tr>
+<tr>
+  <td><strong>Educator – Monitoring Trainer</strong></td>
+  <td>2</td>
+  <td>Teaching of the monitoring method; observer training; workshops</td>
+  <td>Design and deliver workshops; train community observers; coordinate citizen science; prepare teaching material; run program "Organization that follows itself"</td>
+</tr>
+<tr>
+  <td><strong>Protocol Generator</strong></td>
+  <td>1</td>
+  <td>Apply the protocol generation methodology; document; teach logic</td>
+  <td>Write protocols based on the analysis; validate with data; document the methodology; teach to replicate it</td>
+</tr>
+<tr>
+  <td><strong>Data Scientist / Modeler</strong></td>
+  <td>1</td>
+  <td>Development of predictive models</td>
+  <td>Design, train and validate machine learning models; maintain data pipelines</td>
+</tr>
+<tr>
+  <td><strong>Field operators</strong></td>
+  <td>5-10</td>
+  <td>Daily recording, sensor maintenance, sampling</td>
+  <td>Complete daily form; maintain sensors; collect samples; georeference; report events</td>
+</tr>
+<tr>
+  <td><strong>Community observers</strong></td>
+  <td>20-50</td>
+  <td>Territorial reporting network; supplementary registration</td>
+  <td>Complete simplified form; report by SMS/app/radio; participate in quarterly update; disseminate alerts; provide local knowledge</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Estimated total:</strong> 40 to 75 people.</p>
+<hr />
+<h3>16.3 Professional profile and required skills</h3>
+<h4>Transversal competencies (all roles)</h4>
+<ul>
+<li><strong>Systems thinking:</strong> Ability to see connections between seemingly disconnected variables.</li>
+<li><strong>Methodological rigor:</strong> Discipline in data registration, validation and analysis.</li>
+<li><strong>Pedagogical capacity:</strong> Ability to translate complex knowledge into accessible formats.</li>
+<li><strong>Interdisciplinary work:</strong> Willingness to collaborate with professionals from other areas.</li>
+<li><strong>Commitment to technical independence:</strong> Prioritize evidence over political expediency.</li>
+<li><strong>Territorial sensitivity:</strong> Knowledge and respect for local realities and community knowledge.</li>
+</ul>
+<h4>Role-specific competencies</h4>
+<table>
+<thead>
+<tr>
+  <th>Role</th>
+  <th>Specific technical skills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>General Director</td>
+  <td>Institutional management, intersectoral negotiation, strategic communication, budget management</td>
+</tr>
+<tr>
+  <td>Climate Analyst</td>
+  <td>Climate modeling (R, Python), time series, IPCC model interpretation</td>
+</tr>
+<tr>
+  <td>Biologist</td>
+  <td>Taxonomy, population ecology, identification of invasive species, biological sampling</td>
+</tr>
+<tr>
+  <td>Epidemiologist</td>
+  <td>Epidemiological surveillance, outbreak analysis, health statistics, geoepidemiology</td>
+</tr>
+<tr>
+  <td>Environmental Engineer</td>
+  <td>Air/water/soil quality, IoT sensors, environmental impact assessment</td>
+</tr>
+<tr>
+  <td>IT Specialist</td>
+  <td>PostgreSQL, PostGIS, REST APIs, cloud architecture, cybersecurity</td>
+</tr>
+<tr>
+  <td>Communicator</td>
+  <td>Scientific journalism, graphic design, audiovisual production, risk communication</td>
+</tr>
+<tr>
+  <td>Educator</td>
+  <td>Pedagogy, curriculum design, workshop facilitation, popular education</td>
+</tr>
+<tr>
+  <td>Protocol Generator</td>
+  <td>Applied research methodology, technical writing, teaching methods</td>
+</tr>
+<tr>
+  <td>Data Scientist</td>
+  <td>Machine learning, deep learning, natural language processing, data visualization</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>17. MATERIAL AND FINANCIAL RESOURCES</h2>
+<h3>17.1 Infrastructure</h3>
+<table>
+<thead>
+<tr>
+  <th>Item</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Central operational headquarters (150-200 m²)</td>
+  <td>Offices, server room, meeting/workshop room, warehouse, archive</td>
+</tr>
+<tr>
+  <td>Connectivity</td>
+  <td>High speed internet (fiber optics)</td>
+</tr>
+<tr>
+  <td>Electric backup</td>
+  <td>Generator or UPS</td>
+</tr>
+<tr>
+  <td>Workshop space</td>
+  <td>Minimum capacity 30 people</td>
+</tr>
+<tr>
+  <td>Vehicular access</td>
+  <td>Parking for mobile units</td>
+</tr>
+</tbody>
+</table>
+<h3>17.2 Technology</h3>
+<table>
+<thead>
+<tr>
+  <th>Item</th>
+  <th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Automatic weather stations</td>
+  <td>50 (Phase 1)</td>
+</tr>
+<tr>
+  <td>Air quality sensors</td>
+  <td>20</td>
+</tr>
+<tr>
+  <td>Water quality sensors</td>
+  <td>15</td>
+</tr>
+<tr>
+  <td>Portable Soil Sampling Kits</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>Camera traps</td>
+  <td>20</td>
+</tr>
+<tr>
+  <td>Computers and servers</td>
+  <td>8-10</td>
+</tr>
+<tr>
+  <td>Modeling software (QGIS, R, Python)</td>
+  <td>Institutional licenses</td>
+</tr>
+<tr>
+  <td>Cloud platform</td>
+  <td>1 annual contract</td>
+</tr>
+<tr>
+  <td>VHF/UHF Radios</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>Satellite phones</td>
+  <td>2</td>
+</tr>
+<tr>
+  <td>portable GPS</td>
+  <td>10</td>
+</tr>
+</tbody>
+</table>
+<h3>17.3 Field operational material</h3>
+<table>
+<thead>
+<tr>
+  <th>Item</th>
+  <th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Printed registration forms</td>
+  <td>5,000/year</td>
+</tr>
+<tr>
+  <td>Biological sampling kits</td>
+  <td>50 kits/month</td>
+</tr>
+<tr>
+  <td>Taxonomic identification material</td>
+  <td>5 guides + 3 magnifying glasses + 1 microscope</td>
+</tr>
+<tr>
+  <td>Rugged digital cameras</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>PPE (gloves, masks, boots, vests)</td>
+  <td>20 sets</td>
+</tr>
+</tbody>
+</table>
+<h3>17.4 Mobile units</h3>
+<table>
+<thead>
+<tr>
+  <th>Item</th>
+  <th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Field vehicles (trucks/utilities)</td>
+  <td>23</td>
+</tr>
+<tr>
+  <td>mobile laboratory unit</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>Fuel and maintenance</td>
+  <td>Monthly budget</td>
+</tr>
+</tbody>
+</table>
+<h3>17.5 Teaching and training material</h3>
+<table>
+<thead>
+<tr>
+  <th>Item</th>
+  <th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Printed information brochures</td>
+  <td>10,000/year</td>
+</tr>
+<tr>
+  <td>Posters and billboards</td>
+  <td>500/year</td>
+</tr>
+<tr>
+  <td>Material for workshops (posters, markers, cardboard, sheets)</td>
+  <td>Quarterly budget</td>
+</tr>
+<tr>
+  <td>Audiovisual production (videos, infographics, podcasts)</td>
+  <td>4 videos/month</td>
+</tr>
+<tr>
+  <td>Mini weather stations for schools</td>
+  <td>20 kits</td>
+</tr>
+<tr>
+  <td>Field notebooks for observers</td>
+  <td>50/year</td>
+</tr>
+<tr>
+  <td>Methodological guides for generating protocols</td>
+  <td>1,000/year</td>
+</tr>
+</tbody>
+</table>
+<h3>17.6 Financial resources</h3>
+<table>
+<thead>
+<tr>
+  <th>Source</th>
+  <th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Institutional / municipal / provincial budget</td>
+  <td>Salaries, headquarters, infrastructure, connectivity</td>
+</tr>
+<tr>
+  <td>Agreements with universities / INTA / SMN</td>
+  <td>Data, advice, shared equipment</td>
+</tr>
+<tr>
+  <td>National environmental funds</td>
+  <td>Stations, sensors, vehicles, training</td>
+</tr>
+<tr>
+  <td>International climate adaptation funds</td>
+  <td>Platform, mobile laboratories, network of observers</td>
+</tr>
+<tr>
+  <td>Cooperation with NGOs and private sector</td>
+  <td>Dissemination, workshops, technology, insurance</td>
+</tr>
+<tr>
+  <td>Self-management</td>
+  <td>Technical reports, paid training, consulting</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Financial principle:</strong> Reports document costs, alerts, responses, and observed results. They do not attribute savings to DSCFM without a validated evaluation methodology.</p>
+<hr />
+<h3>17.7 Annual reference budget</h3>
+<h4>Budget Year 1 (implementation)</h4>
+<table>
+<thead>
+<tr>
+  <th>Category</th>
+  <th>Detail</th>
+  <th>Annual amount (USD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Human resources</strong></td>
+  <td>22 professionals + 8 operators + 30 community observers</td>
+  <td>620,000</td>
+</tr>
+<tr>
+  <td><strong>Infrastructure</strong></td>
+  <td>Headquarters rental, adaptations, furniture</td>
+  <td>80,000</td>
+</tr>
+<tr>
+  <td><strong>Technology</strong></td>
+  <td>50 weather stations + sensors + servers + cloud platform</td>
+  <td>450,000</td>
+</tr>
+<tr>
+  <td><strong>Field equipment</strong></td>
+  <td>Vehicles (2), mobile laboratory unit, GPS, radios</td>
+  <td>180,000</td>
+</tr>
+<tr>
+  <td><strong>Operational material</strong></td>
+  <td>Sampling kits, PPE, forms, cameras</td>
+  <td>45,000</td>
+</tr>
+<tr>
+  <td><strong>Teaching material</strong></td>
+  <td>Brochures, posters, workshop materials, school mini-stations</td>
+  <td>35,000</td>
+</tr>
+<tr>
+  <td><strong>Training</strong></td>
+  <td>Workshops, trips, travel expenses, observer training</td>
+  <td>60,000</td>
+</tr>
+<tr>
+  <td><strong>Connectivity and services</strong></td>
+  <td>Internet, telephone, public services</td>
+  <td>25,000</td>
+</tr>
+<tr>
+  <td><strong>Administrative expenses</strong></td>
+  <td>Insurance, audit, legal, miscellaneous</td>
+  <td>40,000</td>
+</tr>
+<tr>
+  <td><strong>Contingency (10%)</strong></td>
+  <td>Unforeseen</td>
+  <td>153,500</td>
+</tr>
+<tr>
+  <td><strong>TOTAL YEAR 1</strong></td>
+  <td></td>
+  <td><strong>USD 1,688,500</strong></td>
+</tr>
+</tbody>
+</table>
+<h4>Year 2 Budget (full operation)</h4>
+<table>
+<thead>
+<tr>
+  <th>Category</th>
+  <th>Annual amount (USD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Human resources (expansion to 30 professionals + 10 operators + 50 observers)</td>
+  <td>850,000</td>
+</tr>
+<tr>
+  <td>Infrastructure</td>
+  <td>80,000</td>
+</tr>
+<tr>
+  <td>Technology (expansion to 100 stations + additional sensors)</td>
+  <td>280,000</td>
+</tr>
+<tr>
+  <td>Field equipment (maintenance + 1 additional vehicle)</td>
+  <td>70,000</td>
+</tr>
+<tr>
+  <td>Operational material</td>
+  <td>50,000</td>
+</tr>
+<tr>
+  <td>Teaching material (expansion of programs)</td>
+  <td>45,000</td>
+</tr>
+<tr>
+  <td>Training (expansion of workshops and programs)</td>
+  <td>85,000</td>
+</tr>
+<tr>
+  <td>Connectivity and services</td>
+  <td>30,000</td>
+</tr>
+<tr>
+  <td>Administrative expenses</td>
+  <td>45,000</td>
+</tr>
+<tr>
+  <td>Contingency (10%)</td>
+  <td>153,500</td>
+</tr>
+<tr>
+  <td><strong>TOTAL YEAR 2</strong></td>
+  <td><strong>USD 1,688,500</strong></td>
+</tr>
+</tbody>
+</table>
+<h4>Budget Year 3+ (stable operation)</h4>
+<table>
+<thead>
+<tr>
+  <th>Category</th>
+  <th>Annual amount (USD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Human resources (stabilization)</td>
+  <td>900,000</td>
+</tr>
+<tr>
+  <td>Infrastructure</td>
+  <td>80,000</td>
+</tr>
+<tr>
+  <td>Technology (maintenance + renovation)</td>
+  <td>200,000</td>
+</tr>
+<tr>
+  <td>Field equipment (maintenance)</td>
+  <td>50,000</td>
+</tr>
+<tr>
+  <td>Operational material</td>
+  <td>50,000</td>
+</tr>
+<tr>
+  <td>Teaching material</td>
+  <td>45,000</td>
+</tr>
+<tr>
+  <td>Training</td>
+  <td>90,000</td>
+</tr>
+<tr>
+  <td>Connectivity and services</td>
+  <td>30,000</td>
+</tr>
+<tr>
+  <td>Administrative expenses</td>
+  <td>50,000</td>
+</tr>
+<tr>
+  <td>Contingency (10%)</td>
+  <td>149,500</td>
+</tr>
+<tr>
+  <td><strong>TOTAL YEAR 3+</strong></td>
+  <td><strong>USD 1,644,500</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>17.8 Financial sustainability options</h3>
+<p class="data-note">The following distribution is an illustrative scenario of the estimated annual cost, not an approved goal or confirmed revenue source. It will need to be replaced with a validated financial plan.</p>
+<h4>Diversification of sources (goal at year 5)</h4>
+<table>
+<thead>
+<tr>
+  <th>Source</th>
+  <th>% of budget</th>
+  <th>Annual amount (USD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>State budget (national/provincial/municipal)</td>
+  <td>50%</td>
+  <td>822,000</td>
+</tr>
+<tr>
+  <td>International funds (GCF, GEF, IDB, UNDP)</td>
+  <td>20%</td>
+  <td>329,000</td>
+</tr>
+<tr>
+  <td>Agreements with productive sector (agribusiness, energy, insurance)</td>
+  <td>15%</td>
+  <td>247,000</td>
+</tr>
+<tr>
+  <td>Self-management (paid training, consulting, premium reports)</td>
+  <td>10%</td>
+  <td>164,000</td>
+</tr>
+<tr>
+  <td>International cooperation (NGOs, foreign universities)</td>
+  <td>5%</td>
+  <td>82,000</td>
+</tr>
+<tr>
+  <td><strong>TOTAL</strong></td>
+  <td><strong>100%</strong></td>
+  <td><strong>USD 1,644,500</strong></td>
+</tr>
+</tbody>
+</table>
+<h4>Financing options to evaluate</h4>
+<ul>
+<li>Public budget allocations and inter-institutional agreements.</li>
+<li>Cooperation programs and environmental funds, subject to their requirements and availability.</li>
+<li>Training or specialized services, only if there is legal authorization, equitable access criteria and clear rules on public data.</li>
+</ul>
+<h4>Financial evaluation</h4>
+<p>The amounts in the preceding tables are planning estimates and not quotes or approved budgets. No savings or investment returns are projected: costs, financing sources, scope of the pilot and evaluation methodology must first be validated.</p>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>18. RICH ANNEXES</h2>
+<h3>18.1 Problem Tree</h3>
+<pre><code>                        ┌─────────────────────────────────────────┐
+                        │           EFFECTS (Consequences)       │
+                        └────────────────────┬────────────────────┘
+                                             │
+        ┌────────────────────────────────────┼────────────────────────────────────┐
+        ▼                                    ▼                                    ▼
+┌───────────────┐                  ┌─────────────────┐                  ┌─────────────────┐
+│ Loss of    │                  │ Health crisis│                  │ collapse of      │
+│ crops and    │                  │ due to outbreaks of   │                  │ infrastructure │
+│ famine      │                  │ vectors and      │                  │ (energy,       │
+│               │                  │ pathogens       │                  │ transportation,     │
+│               │                  │                 │                  │ communications) │
+└───────┬───────┘                  └────────┬────────┘                  └────────┬────────┘
+        │                                    │                                    │
+        ▼                                    ▼                                    ▼
+┌───────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                           │
+│     CENTRAL PROBLEM: No unit teaches and carries out comprehensive monitoring of     │
+│     climate change and its related phenomena                                         │
+│                                                                                           │
+│   The information exists but is FRAGMENTED. No one TEACHES how to generate it,       │
+│   interpret it, or develop protocols based on it.                                    │
+│                                                                                           │
+└───────┬───────────────────┬───────────────────┬───────────────────┬──────────────────────┘
+        │                   │                   │                   │
+        ▼                   ▼                   ▼                   ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐
+│ Fragmentation │  │ Lack of historical │  │ No projections │  │ Nobody teaches how       │
+│ of institutions│ │ records, fully     │  │ or early       │  │ to observe, record,      │
+│ (each isolated)│ │ integrated         │  │ warnings       │  │ cross-reference,        │
+│                │ │                    │  │                │  │ reason, and create protocols │
+│                │ │                    │  │                │  │                              │
+└──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └──────────┬───────────┘
+       │                  │                  │                     │
+       ▼                  ▼                  ▼                     ▼
+┌───────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    CAUSES (Roots)                                       │
+│                                                                                           │
+│  • Reactive rather than preventive investment                                            │
+│  • Short political cycles that defund long-term projects                    │
+│  • Inaccessible technical language                                                          │
+│  • Absence of systematic recording culture                                           │
+│  • Disconnection between science, politics and territory                                      │
+│  • Prioritization of discourse over action ("institutional saraseo")                   │
+│  • Absence of training in monitoring methodology and climate thinking          │
+│                                                                                           │
+└───────────────────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr />
+<h3>18.2 Interviews with specialists (Model)</h3>
+<h4>Interview 1</h4>
+<p><strong>Position:</strong> Director of Regional Meteorological Station
+<strong>Institution:</strong> National Meteorological Service / Equivalent Body
+<strong>Date:</strong> <em><strong>/</strong></em>/______</p>
+<p><strong>Question 1:</strong> From your role, what are the main climate changes that you have observed in the region in the last 20-30 years?</p>
+<p><strong>Question 2:</strong> Is there a complete and accessible historical record of this data? What gaps do you identify?</p>
+<p><strong>Question 3:</strong> How is meteorological data currently articulated with other sectors (health, agriculture, civil defense)?</p>
+<p><strong>Question 4:</strong> Are the productive and health sectors currently taught how to interpret and use climate data? Who should do it?</p>
+<p><strong>Question 5:</strong> What type of projections or alerts do you consider would be most useful for the community and the productive sectors?</p>
+<p><strong>Question 6:</strong> What institutional, budgetary or political obstacles do you identify for the creation of a comprehensive monitoring unit that also trains the sectors?</p>
+<p><strong>Question 7:</strong> What productive, technological or conservation opportunities do you think could arise from systematic climate monitoring?</p>
+<hr />
+<h4>Interview 2</h4>
+<p><strong>Position:</strong> Medical Epidemiologist or Health Center Director
+<strong>Institution:</strong> Regional Hospital / CAPS / Ministry of Health
+<strong>Date:</strong> <em><strong>/</strong></em>/______</p>
+<p><strong>Question 1:</strong> From the health system, what pathologies or outbreaks have you observed linked to or aggravated by climate changes?</p>
+<p><strong>Question 2:</strong> Does the health system currently cross-reference epidemiological data with climate data? Is there a joint alert protocol?</p>
+<p><strong>Question 3:</strong> Are health personnel trained to correlate an outbreak with a previous climate anomaly?</p>
+<p><strong>Question 4:</strong> What barriers to accessing climate information do health personnel face when anticipating outbreaks?</p>
+<p><strong>Question 5:</strong> Do you observe differences in the health impact according to socioeconomic level?</p>
+<p><strong>Question 6:</strong> What information would you need from the monitoring system to improve prevention?</p>
+<p><strong>Question 7:</strong> How do you assess the possibility of a formal articulation between health and a climate monitoring division that also trains personnel?</p>
+<hr />
+<h4>Interview 3</h4>
+<p><strong>Position:</strong> Agricultural producer or INTA Technician
+<strong>Institution:</strong> Local agricultural exploitation / INTA / Cooperative
+<strong>Date:</strong> <em><strong>/</strong></em>/______</p>
+<p><strong>Question 1:</strong> What specific changes have you observed in climatic conditions that affect your production?</p>
+<p><strong>Question 2:</strong> Have you detected new pests, fungi or invasive species in your crops or in the area?</p>
+<p><strong>Question 3:</strong> Do you currently receive any type of weather alert or information to plan?</p>
+<p><strong>Question 4:</strong> Did anyone teach you how to keep a daily record of climatic and biological variables in your field?</p>
+<p><strong>Question 5:</strong> What information would you need to adapt your production to the changing climate?</p>
+<p><strong>Question 6:</strong> Do you know of any cases of crop failure that could have been avoided with early warning?</p>
+<p><strong>Question 7:</strong> Would you be willing to participate as a community observer and be trained in the monitoring methodology?</p>
+<hr />
+<h3>18.3 Registration technical sheets by category</h3>
+<p><em>(The four developed sheets are included: Sheet A – Contamination; Sheet B – Biological Outbreak; Sheet C – Invasive Species; Sheet D – Extreme Climate Event. Complete format in the body of the document, section 11.2 and complementary.)</em></p>
+<hr />
+<h3>18.4 Glossary of terms</h3>
+<table>
+<thead>
+<tr>
+  <th>Term</th>
+  <th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Early warning</td>
+  <td>Advance communication of an imminent risk, with a specific action protocol</td>
+</tr>
+<tr>
+  <td>API</td>
+  <td>Interface that allows external systems to access DSCFM data</td>
+</tr>
+<tr>
+  <td>Biological outbreaks</td>
+  <td>Sudden appearance of disease cases in humans, animals or plants</td>
+</tr>
+<tr>
+  <td>Climate change</td>
+  <td>Significant and sustained variation in climate patterns (IPCC)</td>
+</tr>
+<tr>
+  <td>Citizen science</td>
+  <td>Non-specialized community participation in data collection and analysis</td>
+</tr>
+<tr>
+  <td>Space weather</td>
+  <td>Conditions of the solar environment that affect satellites, electrical networks and communications</td>
+</tr>
+<tr>
+  <td>Dashboard</td>
+  <td>Interactive visual dashboard with data, indicators and alerts</td>
+</tr>
+<tr>
+  <td>invasive species</td>
+  <td>Organism outside its natural area that threatens biodiversity, production or health</td>
+</tr>
+<tr>
+  <td>Extreme weather event</td>
+  <td>Weather phenomenon of unusual intensity causing significant damage</td>
+</tr>
+<tr>
+  <td>Georeferencing</td>
+  <td>Assignment of geographic coordinates to a data or event</td>
+</tr>
+<tr>
+  <td>Climate blow</td>
+  <td>Sudden event that disrupts critical infrastructure</td>
+</tr>
+<tr>
+  <td>IoT</td>
+  <td>Network of sensors and connected devices that collect data in real time</td>
+</tr>
+<tr>
+  <td>Baseline</td>
+  <td>Historical status document as a reference to measure change</td>
+</tr>
+<tr>
+  <td>Predictive modeling</td>
+  <td>Using data and algorithms to project future scenarios</td>
+</tr>
+<tr>
+  <td>Community observer</td>
+  <td>Trained person who records daily phenomena as part of the network</td>
+</tr>
+<tr>
+  <td>Permafrost</td>
+  <td>Permanently frozen ground; its melting can release pathogens</td>
+</tr>
+<tr>
+  <td>Break point</td>
+  <td>Threshold at which a system undergoes an irreversible change</td>
+</tr>
+<tr>
+  <td>Antimicrobial resistance</td>
+  <td>Ability of microorganisms to resist drugs</td>
+</tr>
+<tr>
+  <td>Time series</td>
+  <td>Data recorded at regular intervals to identify trends</td>
+</tr>
+<tr>
+  <td>Socio-ecological system</td>
+  <td>Framework that integrates natural and human systems as interdependent</td>
+</tr>
+<tr>
+  <td>Remote sensing</td>
+  <td>Obtaining information through remote sensors (satellites, drones, radar)</td>
+</tr>
+<tr>
+  <td>Biological vector</td>
+  <td>Organism that transmits a pathogen from one host to another</td>
+</tr>
+<tr>
+  <td>Socioeconomic vulnerability</td>
+  <td>Greater exposure and less capacity to respond to climate risks</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>18.5 Protocol model generated by the Division</h3>
+<p class="data-note">Work template; It is not an approved operating protocol. Complete and validate it with those responsible, sources, thresholds and security criteria agreed by the competent institutions.</p>
+<p><strong>DSCFM PROTOCOL N° [___/YEAR]</strong>
+<strong>Title:</strong> [Protocol name]
+<strong>Generated from:</strong> [Data that originated it]
+<strong>Generation date:</strong> <em><strong>/</strong></em>/______
+<strong>Version:</strong> [1.0/1.1/2.0]</p>
+<p><strong>1. Observed phenomenon:</strong>
+[Precise description of the phenomenon detected in the daily record]</p>
+<p><strong>2. Supporting data:</strong>
+[Time series, correlations, photographic evidence, reports]</p>
+<p><strong>3. Analysis and thinking:</strong>
+[What pattern was identified. What hypothesis was formulated. What data crossing confirms it]</p>
+<p><strong>4. Projection:</strong>
+[What will happen if the trend continues. In what period? With what magnitude]</p>
+<p><strong>5. Procedure (step by step):</strong>
+Describe verifiable actions, their sequence, those responsible, deadlines, necessary resources and conditions to stop or review the procedure.</p>
+<p><strong>6. Recipients of the protocol:</strong>
+[Who should execute it. In what sector? With what level of urgency]</p>
+<p><strong>7. How to adapt this protocol to another context:</strong>
+[What variables to change. What to maintain. What to observe before adapting]</p>
+<p><strong>8. How this protocol (methodology) was generated:</strong>
+[Explanation of the process: observation → recording → crossing → thinking → projection → protocol. So that the recipient understands the logic and can replicate it]</p>
+<p><strong>9. Scheduled review:</strong>
+[Next review date. Data to be incorporated. Update criteria]</p>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>18.6 Hypothetical retrospective planning exercises</h2>
+<p class="data-note"><strong>Scope:</strong> The exercises are not verified reconstructions of historical decisions. They are used to define questions and data that a pilot could evaluate; They do not quantify avoided damage or attribute results to a unit not yet implemented.</p>
+<table>
+<thead><tr><th>exercise event</th><th>Information that would be recovered</th><th>Working hypothesis</th><th>How to evaluate it</th></tr></thead>
+<tbody>
+<tr><td>Dengue, season 2023-2024</td><td>Health and entomological bulletins, meteorology, publication dates, coverage and missing data.</td><td>Explore whether an integration of sources would have allowed the generation of useful surveillance products for health authorities.</td><td>Reproduce the analysis with data available on each date; measure opportunity, successes, false alarms and undetected events.</td></tr>
+<tr><td>Drought and low water levels on the Paraná River, 2022–2023</td><td>Archived forecasts, hydrological observations and documented decisions by sector.</td><td>Examine how to communicate uncertainty scenarios for production, energy and logistics planning.</td><td>Compare forecasts with observations and document options that were feasible at the time, without assuming that losses were reduced.</td></tr>
+<tr><td>South American lobster in the NOA, 2019-2021</td><td>Field reports, phytosanitary surveillance, environmental variables and control measures.</td><td>Assess what data and coordination would be necessary to improve early monitoring.</td><td>Review coverage and opportunity for screening with specialists; do not presuppose anticipation or control effectiveness.</td></tr>
+<tr><td>Fires in the Paraná Delta, 2020-2024</td><td>Georeferenced outbreaks, meteorological conditions, alerts and institutional responses.</td><td>Assess whether risk products could support surveillance and communication prioritization.</td><td>Test criteria with historical records and measure performance; Do not project spotlights, hectares, emissions or avoided damage.</td></tr>
+</tbody>
+</table>
+<p><strong>Communication rule:</strong> report only observed results and their uncertainty. Any monetization requires baseline, validated costs and independent evaluation, as set out in Exhibit 18.9.</p>
+<hr /></section>
+<section class="book-chapter"><h2>18.7 Implementation risks and management measures</h2>
+<p>Preliminary estimates to guide pilot design. It does not assign quantified probabilities or confirm the feasibility of the measures; both must be evaluated with the participating institutions.</p>
+<table>
+<thead><tr><th>Risk to consider</th><th>Management measures to be defined</th></tr></thead>
+<tbody>
+<tr><td>Changes in priorities or financing</td><td>Define mandate, governance, funding sources and continuity of services with the competent authorities.</td></tr>
+<tr><td>Difficulties in sharing data</td><td>Agree on agreements, formats, frequency, responsibilities, data protection and access limits.</td></tr>
+<tr><td>Insufficient quality or coverage of observations</td><td>Establish training, quality controls, sample audits and mechanisms to correct records.</td></tr>
+<tr><td>Technological failures or loss of information</td><td>Design backups, operational continuity, security, restoration and offline registration alternatives.</td></tr>
+<tr><td>Inaccurate or difficult to interpret alerts</td><td>Validate thresholds by hazard and region; communicate uncertainty and review false alarms and undetected events.</td></tr>
+<tr><td>Exclusion of communities with limited connectivity</td><td>Test accessible and alternative channels with communities and evaluate their effective reach.</td></tr>
+<tr><td>Conflicts of interest or politicization</td><td>Publish methods, sources and decision criteria; establish independent technical review and transparency rules.</td></tr>
+<tr><td>Dependence on a single funding source</td><td>Analyze recurring funding scenarios; do not treat percentages or assumed revenue as commitments.</td></tr>
+</tbody>
+</table>
+<hr /></section>
+<section class="book-chapter"><h2>ANNEX 18.8 – International references for comparative analysis</h2>
+<p class="data-note"><strong>Scope:</strong> The programs mentioned are references for research, not a validated impact comparison. Figures on return and avoided damage are omitted, as they do not have a primary source, comparable methodology, or demonstrated attribution.</p>
+<h3>Case Study 1: Bangladesh – Cyclone Preparedness Programme (CPP)</h3>
+<p><strong>Scope of analysis:</strong> community organization for the preparation and dissemination of cyclone warnings.</p>
+<p><strong>Question for DSCFM:</strong> What channels, training and verification mechanisms allow an alert to reach each community on time?</p>
+<hr />
+<h3>Case study 2: Philippines - Project NOAH</h3>
+<p><strong>Scope of analysis:</strong> threat assessment and communication of risk information.</p>
+<p><strong>Question for DSCFM:</strong> How are meteorological, hydrological and territorial data integrated into useful products for decision making?</p>
+<hr />
+<h3>Case study 3: Netherlands - KNMI + RIVM</h3>
+<p><strong>Scope of analysis:</strong> coordination between meteorological information and public health in the face of extreme temperatures.</p>
+<p><strong>Question for DSCFM:</strong> What vulnerability data can be used legally and what actions correspond to health authorities?</p>
+<hr />
+<h3>Case Study 4: Kenya - Desert Locust Early Warning</h3>
+<p><strong>Scope of analysis:</strong> pest surveillance with territorial observation and environmental information.</p>
+<p><strong>Question for DSCFM:</strong> How to validate reports, coordinate the response and record the undesired effects of control measures?</p>
+<hr />
+<h3>Case study 5: Israel - Climate-agriculture integration</h3>
+<p><strong>Scope of analysis:</strong> articulation of meteorological data with agricultural planning needs.</p>
+<p><strong>Question for DSCFM:</strong> What recommendations can be validated locally with producers and technical organizations before dissemination?</p>
+<hr />
+<h3>Benchmarking synthesis</h3>
+<table>
+<thead>
+<tr>
+  <th>System</th>
+  <th>Country</th>
+  <th>Aspect to document for future comparison</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>CPP</td>
+  <td>Bangladesh</td>
+  <td>Volunteer outreach, dissemination, evacuation and primary sources</td>
+</tr>
+<tr>
+  <td>Project NOAH</td>
+  <td>Philippines</td>
+  <td>Data, risk products, institutional continuity and evaluation</td>
+</tr>
+<tr>
+  <td>KNMI+RIVM</td>
+  <td>Netherlands</td>
+  <td>Heat alerts, health coordination and response indicators</td>
+</tr>
+<tr>
+  <td>DLIS</td>
+  <td>Kenya / FAO</td>
+  <td>Surveillance, territorial coverage, control and evaluation methods</td>
+</tr>
+<tr>
+  <td>IMS+MoA</td>
+  <td>Israel</td>
+  <td>Data integration and validation of agricultural recommendations</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Conclusion of Annex 18.8:</strong> These experiences offer questions and practices to study. Any adaptation to Argentina requires reviewing primary sources, institutional mandate, local capacities and comparable evidence; results are not assumed to be reproduced automatically.</p>
+</blockquote>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>18.9 Method for evaluating costs and results</h2>
+<p>This annex defines how to evaluate the initiative once a baseline and period of operation exist. It does not present savings, returns or causal effects as demonstrated results.</p>
+<h3>Evaluation principles</h3>
+<ol>
+<li><strong>Define the question and scope:</strong> specify the event, territory, population and period analyzed.</li>
+<li><strong>Consolidate sources:</strong> record origin, cut-off date, unit, coverage, methodology and limitations of each data set.</li>
+<li><strong>Describe the intervention:</strong> document what alert, recommendation or action was issued, who executed it, and when.</li>
+<li><strong>Estimate the comparison scenario:</strong> use an appropriate sector methodology, explain its assumptions and compare results with independent specialists.</li>
+<li><strong>Post uncertainty:</strong> report intervals, sensitivity, external factors, and null or adverse results; Avoid attributing changes that cannot be identified to the DSCFM.</li>
+<li><strong>Audit before monetizing:</strong> publish the methodology and subject it to external review before reporting a return on investment.</li>
+</ol>
+<h3>Minimum indicators for the pilot</h3>
+<table><thead><tr><th>Dimension</th><th>Possible indicator</th><th>Source and validation</th></tr></thead><tbody>
+<tr><td>Observation</td><td>Completeness, timeliness and correction rate of records</td><td>Data log, quality control and sample audit</td></tr>
+<tr><td>Alert</td><td>Anticipation, successes, false alarms and undetected events</td><td>Archive of independent observational data and alerts</td></tr>
+<tr><td>Answer</td><td>Time between alert, receipt and documented action</td><td>Records of participating organizations</td></tr>
+<tr><td>Result</td><td>Observed damage and coverage of response measures</td><td>Sectoral sources; exposure- and context-adjusted comparison</td></tr>
+<tr><td>Economy</td><td>Program costs and observed direct costs, with explicit rules</td><td>Audited budget and published economic methodology</td></tr>
+</tbody></table>
+<p><strong>Communication rule:</strong> until completing an independent evaluation, describe the cases as hypothetical planning exercises; do not publish a cumulative avoided savings or a benefit/cost ratio.</p>
+<hr /></section>
+<section class="book-chapter"><h2>18.10-18.13 Supplementary materials</h2>
+<h3>18.10 Registration technical sheets by category</h3>
+<h4>SHEET A – POLLUTION</h4>
+<pre><code>═══════════════════════════════════════════════════════════════
+TECHNICAL SHEET A: DETECTED CONTAMINATION
+═══════════════════════════════════════════════════════════════
+Registration ID: _______________
+Date and time: ___/___/______ - ___:___ UTC
+GPS coordinates: Lat _________ Long _________ Alt _________
+Operator: _____________________ Station: __________________
+
+■ AFFECTED ENVIRONMENT:
+  □ Air □ Surface water □ Groundwater □ Soil
+
+■ TYPE OF CONTAMINANT:
+  □ Industrial chemical □ Agrochemical □ Heavy metals
+  □ Hydrocarbons □ Solid waste □ E-waste
+  □ Particulate matter □ Microplastics □ Biological
+  □ Other: _________________________
+
+■ IDENTIFIED SOURCE:
+  □ Industrial □ Agricultural □ Urban □ Transportation
+  □ Poorly managed waste □ Natural aggravated by climate
+  □ Unknown
+
+■ MAGNITUDE:
+  □ Local (&lt;100 m²) □ Zonal (100 m² - 1 ha)
+  □ Regional (1-100 ha) □ Massive (&gt;100 ha)
+
+■ ASSOCIATED CLIMATE CONDITIONS:
+  Temperature: _____°C | Humidity: ____% | Wind: ____ km/h
+  Previous precipitation (7 days): _____ mm
+  Recent extreme event? □ Yes □ No → Type: ____________
+
+■ POPULATION/ECOSYSTEM AFFECTED:
+  □ Humans (estimated quantity: _______)
+  □ Wildlife □ Livestock □ Crops
+  □ Body of water: _________________________
+  □ Other: _________________________
+
+■ EVIDENCE:
+  □ Photographs (quantity: ___) □ Samples (quantity: ___)
+  □ Laboratory analysis □ Video □ Testimonials
+
+■ SEVERITY LEVEL (according to DSCFM protocol):
+  □ Green (low) □ Yellow (medium) □ Orange (high) □ Red (critical)
+
+■ IMMEDIATE ACTION RECOMMENDED:
+  _______________________________________________________
+
+■ OBSERVATIONS:
+  _______________________________________________________
+
+Operator signature: ________________ Analyst validation: ________________
+═══════════════════════════════════════════════════════════════
+</code></pre>
+<h4>SHEET B – BIOLOGICAL OUTBREAK</h4>
+<pre><code>═══════════════════════════════════════════════════════════════
+TECHNICAL SHEET B: BIOLOGICAL OUTBREAK DETECTED
+═══════════════════════════════════════════════════════════════
+Registration ID: _______________
+Date and time: ___/___/______ - ___:___ UTC
+GPS coordinates: Lat _________ Long _________ Alt _________
+Operator: _____________________ Station: __________________
+
+■ TYPE OF PATHOGEN:
+  □ Virus □ Bacteria □ Fungus □ Parasite □ Unknown
+
+■ SPECIES/STRAIN (if known):
+  _______________________________________________________
+
+■ AFFECTED GUEST:
+  □ Humans □ Domestic animals □ Wildlife
+  □ Crops □ Multiple: _________________________
+
+■ CLINICAL MANIFESTATIONS / SYMPTOMS:
+  _______________________________________________________
+  _______________________________________________________
+
+■ MAGNITUDE OF THE OUTBREAK:
+  □ Isolated cases (&lt;10) □ Grouping (10-100)
+  □ Local outbreak (100-1000) □ Epidemic (&gt;1000)
+
+■ SPREAD SPEED:
+  □ Stable □ Growing □ Exponential
+  New cases per day: _____ Attack rate: ____%
+
+■ ASSOCIATED CLIMATE CONDITIONS:
+  Average temperature last 30 days: _____°C
+  Average relative humidity: ____%
+  Accumulated precipitation last 30 days: _____ mm
+  Recent climate anomaly? □ Yes □ No → Type: ____________
+
+■ ASSOCIATED VECTOR (if applicable):
+  □ Mosquito (species: _______) □ Tick □ Rodent
+  □ Contaminated water □ Food □ Air □ Unknown
+
+■ CONTROL MEASURES IMPLEMENTED:
+  _______________________________________________________
+
+■ EVIDENCE:
+  □ Photographs □ Clinical samples □ Laboratory analysis
+  □ Video □ Health reports
+
+■ ALERT LEVEL (according to DSCFM protocol):
+  □ Green □ Yellow □ Orange □ Red
+
+■ IMMEDIATE ACTION RECOMMENDED:
+  _______________________________________________________
+
+Signature of the operator: ________________ Epidemiologist validation: ________________
+═══════════════════════════════════════════════════════════════
+</code></pre>
+<h4>SHEET C – INVASIVE SPECIES</h4>
+<pre><code>═══════════════════════════════════════════════════════════════
+TECHNICAL SHEET C: INVASIVE SPECIES DETECTED
+═══════════════════════════════════════════════════════════════
+Registration ID: _______________
+Date and time: ___/___/______ - ___:___ UTC
+GPS coordinates: Lat _________ Long _________ Alt _________
+Operator: _____________________ Station: __________________
+
+■ SPECIES DETECTED:
+  Common name: _________________________
+  Scientific name: _________________________
+  □ Certainly identified □ Suspected (requires validation)
+
+■ KINGDOM:
+  □ Animal □ Vegetable □ Fungi □ Microorganism
+
+■ ESTIMATED AMOUNT:
+  □ Isolated individuals (&lt;10) □ Small population (10-100)
+  □ Established population (100-1000) □ Massive plague (&gt;1000)
+  □ Covered area: _______ ha
+
+■ STATE OF DEVELOPMENT:
+  □ Initial phase (early detection)
+  □ Establishment phase
+  □ Active expansion phase
+  □ Saturation phase
+
+■ HABITAT AFFECTED:
+  □ Crops □ Native forest □ Wetland □ Urban
+  □ Grassland □ Body of water □ Other: _____________
+
+■ OBSERVED IMPACT:
+  □ On native species (competition/predation)
+  □ On crops (economic damage)
+  □ About human health (poison/allergy/vector)
+  □ About infrastructure
+  □ About ecosystem (alteration of cycles)
+
+■ PROBABLE INCOME VECTOR:
+  □ Transportation (boat, plane, truck)
+  □ Trade (pets, plants, merchandise)
+  □ Natural expansion from neighboring area
+  □ Intentional release
+  □ Unknown
+
+■ ASSOCIATED CLIMATE CONDITIONS:
+  Does the expansion coincide with local climate change? □ Yes □ No
+  Average temperature last 12 months vs. historical: _____°C
+  Average precipitation last 12 months vs. history: _____ mm
+
+■ EVIDENCE:
+  □ Photographs (quantity: ___) □ Samples (quantity: ___)
+  □ Collected specimens □ Video □ Testimonials
+
+■ ALERT LEVEL (according to DSCFM protocol):
+  □ Green (early detection) □ Yellow (established)
+  □ Orange (active expansion) □ Red (massive plague)
+
+■ IMMEDIATE ACTION RECOMMENDED:
+  □ Intensive monitoring □ Containment □ Eradication
+  □ Biological control □ Chemical control □ None viable
+
+Operator signature: ________________ Biologist validation: ________________
+═══════════════════════════════════════════════════════════════
+</code></pre>
+<h4>SHEET D – EXTREME CLIMATE EVENT</h4>
+<pre><code>═══════════════════════════════════════════════════════════════
+TECHNICAL SHEET D: EXTREME CLIMATE EVENT
+═══════════════════════════════════════════════════════════════
+Registration ID: _______________
+Start date and time: ___/___/______ - ___:___ UTC
+End date and time: ___/___/______ - ___:___ UTC
+Total duration: _______________
+Epicenter/epicenter coordinates: Lat _________ Long _________
+Operator: _____________________ Station: __________________
+
+■ TYPE OF EVENT:
+  □ Heat wave □ Cold wave □ Drought □ Flood
+  □ Severe storm □ Hail □ Late frost
+  □ Strong winds □ Forest fire □ Sand/dust storm
+  □ Space weather event □ Other: _____________
+
+■ INTENSITY (according to official scale):
+  □ Weak □ Moderate □ Strong □ Severe □ Extreme
+  Quantitative value (if applicable): _______________
+
+■ AFFECTED SURFACE:
+  □ Local (&lt;1 km²) □ Zonal (1-100 km²)
+  □ Regional (100-10,000 km²) □ Massive (&gt;10,000 km²)
+
+■ AFFECTED POPULATION:
+  □ People (estimated number: _______)
+  □ Affected localities: _________________________
+  □ Evacuated: _______ □ Damaged: _______
+
+■ MATERIAL DAMAGE:
+  □ Housing (quantity: ___) □ Public infrastructure
+  □ Crops (hectares: ___) □ Livestock (heads: ___)
+  □ Networks (energy, water, communications)
+  □ Communication routes
+  □ Other: _________________________
+
+■ ESTIMATED ECONOMIC IMPACT:
+  USD _______________
+
+■ PREVIOUS CLIMATE CONDITIONS (30 days):
+  Average temperature: _____°C (anomaly: _____°C)
+  Accumulated precipitation: _____ mm (anomaly: _____%)
+  Average relative humidity: ____%
+  Precursor event? □ Yes □ No → Type: ____________
+
+■ LINK WITH CLIMATE CHANGE:
+  □ Event within expectations □ Unusual event
+  □ Consistent with climate projections
+  □ Possible breaking point
+
+■ EVIDENCE:
+  □ Photographs □ Video □ Satellite images
+  □ Sensor data □ Testimonials □ Official reports
+
+■ ALERT LEVEL ISSUED:
+  □ Green □ Yellow □ Orange □ Red
+
+■ IMMEDIATE ACTION RECOMMENDED:
+  _______________________________________________________
+
+■ PROTOCOL ACTIVATED:
+  □ Civil Defense □ Health □ Agriculture □ Energy
+  □ Logistics □ Education □ Other: _____________
+
+Operator signature: ________________ Climatic analyst validation: ________________
+═══════════════════════════════════════════════════════════════
+</code></pre>
+<hr />
+<hr />
+<h3>18.11 Follow-up exercises in Argentine cases</h3>
+<p class="data-note"><strong>Content type:</strong> hypothetical retrospective planning exercises. They do not reconstruct alerts that were actually issued nor do they allow us to affirm what damage would have been avoided. Historical records, dates and results must be cross-checked with official sources before being presented as facts.</p>
+<h4>Exercise 1: dengue surveillance and environmental conditions</h4>
+<p><strong>Job question:</strong> What use would it be to integrate health records, entomological surveillance and meteorological variables with sufficient coverage and temporal resolution?</p>
+<ol>
+<li><strong>Prepare the baseline:</strong> gather official data on cases, vector surveillance and meteorology; record coverage, dates, definitions and missing data.</li>
+<li><strong>Design the analysis:</strong> define in advance territory, time window, indicators and alert criteria, with review by health authorities.</li>
+<li><strong>Rehearse retrospectively:</strong> apply the criteria to past periods without using future information and measure anticipation, successes, false alarms and undetected events.</li>
+<li><strong>Define possible answers:</strong> evaluate preventive actions with the competent authorities, without assuming that an environmental signal alone justifies fumigation or other intervention.</li>
+<li><strong>Communicate limits:</strong> report uncertainty and do not convert hypothetical differences into avoided cases, deaths or savings.</li>
+</ol>
+<hr />
+<h4>Exercise 2: drought, production and river logistics</h4>
+<p><strong>Job question:</strong> How can we link climate, hydrological and sectoral information to anticipate production, transportation and energy decisions without presenting a prediction as certainty?</p>
+<ol>
+<li><strong>Retrieve the information available on each date:</strong> archive published forecasts and observations, with their date of issue to avoid retrospective bias.</li>
+<li><strong>Specify scenarios:</strong> describe plausible ranges of water availability and their implications for each sector, indicating assumptions and responsible parties.</li>
+<li><strong>Consult the actors:</strong> document which options were technically, economically and legally viable at that time.</li>
+<li><strong>Evaluate performance:</strong> compare the alert with observations and record what decisions were made, without attributing loss changes to a hypothetical action.</li>
+</ol>
+<p><strong>Use of both exercises:</strong> They serve to design a pilot, prioritize data and agree on inter-institutional protocols. Any economic estimate would require a published methodology, validated costs and independent review, in accordance with Annex 18.9.</p>
+<hr />
+<h3>18.12 Interinstitutional agreement model</h3>
+<pre><code>═══════════════════════════════════════════════════════════════
+FRAMEWORK AGREEMENT OF COOPERATION AND ARTICULATION
+═══════════════════════════════════════════════════════════════
+
+Between the DIVISION OF CLIMATE MONITORING AND PHENOMENA
+METEOROLOGICAL FACILITIES (DSCFM), represented by its Director
+General [NAME], and [COUNTERPART INSTITUTION], represented
+by [POSITION AND NAME], this framework agreement is celebrated
+of cooperation, subject to the following clauses:
+
+FIRST: OBJECT
+The purpose of this agreement is to establish a framework of
+inter-institutional cooperation for data exchange,
+operational articulation and joint training in matters
+comprehensive climate monitoring.
+
+SECOND: COMMITMENTS OF THE DSCFM
+a) Provide [INSTITUTION] access to the data platform
+   open and public API.
+b) Issue early warnings sectorized according to needs
+   specific to [INSTITUTION].
+c) Train [INSTITUTION] staff in the methodology
+   climate monitoring (minimum ________________ people/year).
+d) Generate protocols adapted to the [INSTITUTION] sector.
+e) Include representatives of [INSTITUTION] at the discussion table
+   monthly coordination.
+
+THIRD: COMMITMENTS OF [INSTITUTION]
+a) Provide the DSCFM with access to your data relevant to the
+   comprehensive climate monitoring (specify which ones).
+b) Designate a technical liaison for operational coordination.
+c) Participate in the monthly coordination table.
+d) Apply the protocols generated by the DSCFM in your
+   daily operations.
+e) Provide feedback to the DSCFM on the usefulness of the
+   products received.
+
+FOURTH: DATA EXCHANGE
+Both parties agree to share data in formats
+open, with frequencies defined in the technical annex,
+respecting personal data protection regulations
+and applicable confidentiality.
+
+FIFTH: INTELLECTUAL PROPERTY
+Shared data maintains ownership of the
+institution of origin. The analyses, protocols and
+jointly generated methodologies will be domain
+public, with attribution to both parties.
+
+SIXTH: VALIDITY
+This agreement will be valid for ________________ years,
+automatically renewable for equal periods, except
+express complaint by one of the parties with 90 days of
+anticipation.
+
+SEVENTH: FOLLOW-UP
+A monitoring commission will be formed made up of
+________________ representatives of each party, who will meet
+quarterly to evaluate compliance with the agreement
+and propose adjustments.
+
+In proof of conformity, ________________ copies of a
+same tenor, in the city of ________________, on ________________ days
+of the month of ________________ of ________________.
+
+
+___________________________          ___________________________
+General Director DSCFM [Position] [Institution]
+═══════════════════════════════════════════════════════════════
+</code></pre>
+<hr />
+<h3>18.13 Design of the technological platform</h3>
+<h4>Technical architecture</h4>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    PRESENTATION LAYER                          │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
+│  │ Dashboard   │  │ Mobile app   │  │ Open data portal│ │
+│  │ website (React) │  │ (iOS/Androi)│  │ (downloads, API docs)   │ │
+│  └─────────────┘  └─────────────┘  └─────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │
+┌─────────────────────────────────────────────────────────────────┐
+│                    APPLICATION LAYER                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌───────────────────────┐ │
+│  │ REST API     │  │ engine     │  │ Alert system    │ │
+│  │ (Node.js)    │  │ alerts      │  │ (multichannel: SMS,     │ │
+│  │              │  │ (tails)      │  │  email, push, radio)  │ │
+│  └──────────────┘  └──────────────┘  └───────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │
+┌─────────────────────────────────────────────────────────────────┐
+│                    DATA LAYER                                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌───────────────────────┐ │
+│  │ PostgreSQL+ │  │ TimeScaleDB  │  │ Object Storage        │ │
+│  │ PostGIS      │  │ (series      │  │ (images, samples,  │ │
+│  │ (data       │  │  temporary) │  │  documents)          │ │
+│  │  spatial) │  │              │  │                       │ │
+│  └──────────────┘  └──────────────┘  └───────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+                              │
+┌─────────────────────────────────────────────────────────────────┐
+│                    INTAKE LAYER                               │
+│  ┌──────────────┐  ┌──────────────┐  ┌───────────────────────┐ │
+│  │ IoT Sensors │  │ Satellites    │  │ Web/app forms │ │
+│  │ (MQTT)       │  │ (NASA APIs,  │  │ (manual loading)        │ │
+│  │              │  │  ESA, CONAE) │  │                       │ │
+│  └──────────────┘  └──────────────┘  └───────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h4>Technology stack</h4>
+<table>
+<thead>
+<tr>
+  <th>Component</th>
+  <th>Technology</th>
+  <th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Spatial database</td>
+  <td>PostgreSQL + PostGIS</td>
+  <td>Robust, free, open source standard</td>
+</tr>
+<tr>
+  <td>Time series</td>
+  <td>TimeScaleDB</td>
+  <td>Optimized for sensor data</td>
+</tr>
+<tr>
+  <td>Backend</td>
+  <td>Node.js + Express</td>
+  <td>Scalable, broad ecosystem</td>
+</tr>
+<tr>
+  <td>Web frontend</td>
+  <td>React + D3.js</td>
+  <td>Interactive, powerful visualizations</td>
+</tr>
+<tr>
+  <td>Mobile app</td>
+  <td>ReactNative</td>
+  <td>Cross-platform, reuse code</td>
+</tr>
+<tr>
+  <td>API</td>
+  <td>REST + GraphQL</td>
+  <td>Flexible for different consumers</td>
+</tr>
+<tr>
+  <td>Alert queues</td>
+  <td>RabbitMQ</td>
+  <td>Reliable, withstands high load</td>
+</tr>
+<tr>
+  <td>Object storage</td>
+  <td>MinIO (self-hosted) or AWS S3</td>
+  <td>For images, documents</td>
+</tr>
+<tr>
+  <td>Containers</td>
+  <td>Docker + Kubernetes</td>
+  <td>Scalability, continuous deployment</td>
+</tr>
+<tr>
+  <td>Monitoring</td>
+  <td>Prometheus + Grafana</td>
+  <td>Platform observability</td>
+</tr>
+<tr>
+  <td>Machine Learning</td>
+  <td>Python + TensorFlow/PyTorch</td>
+  <td>Predictive models</td>
+</tr>
+<tr>
+  <td>GIS</td>
+  <td>QGIS (desktop) + GeoServer (web)</td>
+  <td>Analysis and publication of maps</td>
+</tr>
+</tbody>
+</table>
+<h4>Infrastructure requirements</h4>
+<table>
+<thead>
+<tr>
+  <th>Component</th>
+  <th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Application servers</td>
+  <td>3 nodes (8 cores, 32 GB RAM, 500 GB SSD each)</td>
+</tr>
+<tr>
+  <td>Database servers</td>
+  <td>2 nodes (16 cores, 64 GB RAM, 2 TB SSD each)</td>
+</tr>
+<tr>
+  <td>Object storage</td>
+  <td>20 TB initial, scalable</td>
+</tr>
+<tr>
+  <td>Bandwidth</td>
+  <td>1 Gbps symmetrical</td>
+</tr>
+<tr>
+  <td>Backup</td>
+  <td>Daily incremental, full weekly, geographic replication</td>
+</tr>
+<tr>
+  <td>High availability</td>
+  <td>99.9% uptime (8.76 h maximum downtime/year)</td>
+</tr>
+</tbody>
+</table>
+<h4>Security</h4>
+<ul>
+<li>Multi-factor authentication for internal users.</li>
+<li>Data encryption in transit (TLS 1.3) and at rest (AES-256).</li>
+<li>Audit of access to sensitive data.</li>
+<li>Quarterly pentesting by external company.</li>
+<li>Incident response plan documented and tested semi-annually.</li>
+</ul>
+<hr />
+<hr /></section>
+<section class="book-chapter"><h2>19. Conclusion and next steps</h2>
+<p>The DSCFM proposal proposes a coordination function to improve continuous observation, the integration of information and the translation of data into decisions. Its value will depend on clear governance, agreements with competent bodies, data quality, response protocols and transparent evaluation.</p>
+<h3>Conditions for responsible implementation</h3>
+<ul>
+<li>Specify mandate, territorial scope and responsibilities to avoid duplicating existing functions.</li>
+<li>Carry out institutional, technical and budgetary pre-feasibility with verifiable costs.</li>
+<li>Start with a limited pilot, published indicators and local coordination mechanisms.</li>
+<li>Separate observations, forecasts, alerts and hypothetical scenarios; record uncertainties and revisions.</li>
+<li>Independently evaluate results before attributing impacts or communicating economic benefits.</li>
+<li>Publish data and methodology respecting privacy, sectoral competencies and quality criteria.</li>
+</ul>
+<p>The Argentine cases included in this document motivate follow-up and prevention questions. They do not in themselves prove that a specific intervention would have prevented its consequences. Retrospective exercises are presented as work scenarios to design future evaluations, not as savings obtained nor as results attributable to an institution not yet implemented.</p>
+<p><strong>Proposed decision:</strong> advance to a pre-feasibility and pilot design stage, with the participation of the responsible institutions and independent technical review of sources, costs, indicators and protocols.</p>
+<hr /></section>
+<section class="book-chapter"><h2>20. COMPLETE BIBLIOGRAPHY</h2>
+<p><em>(The complete bibliography was provided in Part 1. Refer to that section for the complete list of international, national, normative and benchmarking sources.)</em></p>
+<hr />
+<hr />
+<blockquote>
+<p><strong>END OF COMPLETE DOCUMENT</strong></p>
+</blockquote>
+<hr /></section>
+</article>
+            <section id="studyPanel" class="study-panel" aria-labelledby="studyTitle" hidden>
+                <h2 id="studyTitle">Study cards</h2>
+                <p id="studyCounter" aria-live="polite"></p>
+                <p id="studyQuestion" class="study-question"></p>
+                <button id="revealAnswerButton" type="button">Show answer</button>
+                <p id="studyAnswer" class="study-answer" hidden></p>
+                <div class="study-controls">
+                    <button id="previousCardButton" type="button">← Previous</button>
+                    <button id="nextCardButton" type="button">Next →</button>
+                    <button id="exitStudyButton" type="button">Back to book</button>
+                </div>
+            </section>
+        </main>
+        <aside id="notesPanel" class="notes-panel" aria-label="Personal notes">
+            <h2>Notes and bookmarks</h2>
+            <p id="noteChapterLabel">Note for current chapter</p>
+            <label for="chapterNotes">Personal note</label>
+            <textarea id="chapterNotes" placeholder="Your notes are saved in this browser."></textarea>
+            <div class="note-actions"><button id="saveNoteButton" type="button">Save note</button><button id="clearNoteButton" type="button">Delete note</button></div>
+            <p id="noteStatus" class="mode-status" aria-live="polite"></p>
+        </aside>
+    </div>
+    <p id="currentChapter" class="current-chapter" aria-live="polite">Current chapter</p>
+    <nav class="mobile-controls" aria-label="Book navigation">
+        <button id="mobileMenuButton" type="button" aria-controls="bookSidebar">Index</button>
+        <button id="previousChapterButton" type="button" aria-label="Previous chapter">← Previous</button>
+        <button id="nextChapterButton" type="button" aria-label="Next chapter">Next →</button>
+    </nav>
+    <script>
+        (() => {
+            const article = document.getElementById('bookDocument');
+            const chapters = Array.from(article.querySelectorAll(':scope > .book-chapter'));
+
+            const slugCounts = new Map();
+            const makeSlug = text => {
+                const base = text.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'seccion';
+                const count = (slugCounts.get(base) || 0) + 1;
+                slugCounts.set(base, count);
+                return count === 1 ? base : `${base}-${count}`;
+            };
+            const headings = Array.from(article.querySelectorAll('h2, h3'));
+            headings.forEach(heading => { if (!heading.id) heading.id = makeSlug(heading.textContent); });
+            const currentLabel = document.getElementById('currentChapter');
+            const nav = document.getElementById('bookNav');
+            const headingLinks = new Map();
+            headings.forEach(heading => {
+                const item = document.createElement('li');
+                if (heading.tagName === 'H3') item.classList.add('level-3');
+                const link = document.createElement('a');
+                link.href = `#${heading.id}`;
+                link.textContent = heading.textContent.trim();
+                item.append(link);
+                nav.append(item);
+                headingLinks.set(heading, link);
+            });
+            let storageUnavailable = false;
+            const reportStorageError = error => {
+                storageUnavailable = true;
+                console.error('Could not access local storage:', error);
+                document.getElementById('noteStatus').textContent = 'Your browser blocked local storage; notes and preferences were not saved.';
+            };
+            const storageGet = key => {
+                if (storageUnavailable) return null;
+                try {
+                    return localStorage.getItem(key);
+                } catch (error) {
+                    reportStorageError(error);
+                    return null;
+                }
+            };
+            const storageSet = (key, value) => {
+                if (storageUnavailable) return false;
+                try {
+                    localStorage.setItem(key, value);
+                    return true;
+                } catch (error) {
+                    reportStorageError(error);
+                    return false;
+                }
+            };
+            const storageRemove = key => {
+                if (storageUnavailable) return false;
+                try {
+                    localStorage.removeItem(key);
+                    return true;
+                } catch (error) {
+                    reportStorageError(error);
+                    return false;
+                }
+            };
+            const studyCards = headings.filter(heading => heading.tagName === 'H3').map(heading => {
+                let answer = heading.nextElementSibling;
+                while (answer && !['P', 'UL', 'OL', 'TABLE', 'BLOCKQUOTE'].includes(answer.tagName)) {
+                    if (answer.matches('h2, h3, h4')) { answer = null; break; }
+                    answer = answer.nextElementSibling;
+                }
+                return {
+                    question: heading.textContent.trim(),
+                    answer: answer?.textContent.trim() || 'Review this section of the book for more information.'
+                };
+            });
+            let studyIndex = 0;
+            const renderStudyCard = () => {
+                const card = studyCards[studyIndex];
+                if (!card) {
+                    document.getElementById('studyQuestion').textContent = 'No cards are available.';
+                    document.getElementById('studyAnswer').hidden = true;
+                    return;
+                }
+                document.getElementById('studyQuestion').textContent = card.question;
+                document.getElementById('studyAnswer').textContent = card.answer;
+                document.getElementById('studyAnswer').hidden = true;
+                document.getElementById('studyCounter').textContent = `Card ${studyIndex + 1} of ${studyCards.length}`;
+            };
+            renderStudyCard();
+
+            let currentChapterIndex = 0;
+            const setCurrentChapter = index => {
+                currentChapterIndex = Math.max(0, Math.min(index, chapters.length - 1));
+                chapters.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === currentChapterIndex));
+                const heading = chapters[currentChapterIndex]?.querySelector('h2');
+                if (heading) {
+                    currentLabel.textContent = `Chapter: ${heading.textContent.trim()}`;
+                    document.getElementById('noteChapterLabel').textContent = `Note for: ${heading.textContent.trim()}`;
+                    const note = storageGet(`dscfm-note-${heading.id}`) || '';
+                    document.getElementById('chapterNotes').value = note;
+                }
+            };
+            const closeMenu = () => {
+                document.getElementById('bookSidebar').classList.remove('open');
+                document.getElementById('sidebarBackdrop').hidden = true;
+                document.getElementById('menuButton').setAttribute('aria-expanded', 'false');
+                document.getElementById('bookSidebar').inert = matchMedia('(max-width: 1023px)').matches;
+            };
+            const openMenu = () => {
+                document.getElementById('bookSidebar').classList.add('open');
+                document.getElementById('sidebarBackdrop').hidden = false;
+                document.getElementById('menuButton').setAttribute('aria-expanded', 'true');
+                document.getElementById('bookSidebar').inert = false;
+            };
+            if (matchMedia('(max-width: 1023px)').matches) document.getElementById('bookSidebar').inert = true;
+            matchMedia('(max-width: 1023px)').addEventListener('change', event => {
+                document.getElementById('bookSidebar').inert = event.matches && !document.getElementById('bookSidebar').classList.contains('open');
+                if (!event.matches) closeMenu();
+            });
+            nav.addEventListener('click', event => {
+                const link = event.target.closest('a');
+                if (!link) return;
+                const target = document.getElementById(link.hash.slice(1));
+                const chapter = target?.closest('.book-chapter');
+                if (chapter) setCurrentChapter(chapters.indexOf(chapter));
+                closeMenu();
+            });
+            document.getElementById('menuButton').addEventListener('click', () => document.getElementById('bookSidebar').classList.contains('open') ? closeMenu() : openMenu());
+            document.getElementById('mobileMenuButton').addEventListener('click', openMenu);
+            document.getElementById('sidebarBackdrop').addEventListener('click', closeMenu);
+
+            const chapterObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const index = chapters.indexOf(entry.target);
+                    setCurrentChapter(index);
+                    const heading = entry.target.querySelector('h2');
+                    headings.forEach(item => headingLinks.get(item)?.removeAttribute('aria-current'));
+                    if (heading) headingLinks.get(heading)?.setAttribute('aria-current', 'location');
+                });
+            }, { rootMargin: '-20% 0px -60% 0px' });
+            chapters.forEach(item => chapterObserver.observe(item));
+            setCurrentChapter(0);
+
+            const navigateChapter = index => {
+                const target = chapters[Math.max(0, Math.min(index, chapters.length - 1))];
+                if (!target) return;
+                setCurrentChapter(chapters.indexOf(target));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+            document.getElementById('previousChapterButton').addEventListener('click', () => navigateChapter(currentChapterIndex - 1));
+            document.getElementById('nextChapterButton').addEventListener('click', () => navigateChapter(currentChapterIndex + 1));
+
+            const progressTrack = document.querySelector('.book-progress-track');
+            const updateProgress = () => {
+                const available = document.documentElement.scrollHeight - innerHeight;
+                const percent = available > 0 ? Math.round(scrollY / available * 100) : 0;
+                document.getElementById('bookProgress').style.width = `${percent}%`;
+                document.getElementById('bookProgressLabel').textContent = `${percent}%`;
+                progressTrack.setAttribute('aria-valuenow', String(percent));
+            };
+            addEventListener('scroll', updateProgress, { passive: true });
+            addEventListener('resize', updateProgress);
+            updateProgress();
+
+            const nightButton = document.getElementById('nightButton');
+            const colorScheme = matchMedia('(prefers-color-scheme: dark)');
+            let savedTheme = storageGet('dscfm-extended-night');
+            const setNightMode = (enabled, manual = false) => {
+                document.body.classList.toggle('night-mode', enabled);
+                document.body.classList.toggle('day-mode', manual && !enabled);
+                nightButton.setAttribute('aria-pressed', String(enabled));
+                nightButton.setAttribute('aria-label', enabled ? 'Switch to light mode' : 'Switch to dark mode');
+                nightButton.title = enabled ? 'Switch to light mode' : 'Switch to dark mode';
+                nightButton.textContent = enabled ? '☀️ Light mode' : '🌙 Dark mode';
+            };
+            setNightMode(savedTheme === null ? colorScheme.matches : savedTheme === 'true', savedTheme !== null);
+            nightButton.addEventListener('click', () => {
+                const enabled = !document.body.classList.contains('night-mode');
+                savedTheme = String(enabled);
+                storageSet('dscfm-extended-night', savedTheme);
+                setNightMode(enabled, true);
+            });
+            colorScheme.addEventListener('change', event => {
+                if (savedTheme === null) setNightMode(event.matches);
+            });
+            document.getElementById('fontButton').addEventListener('click', event => {
+                const enabled = document.body.classList.toggle('large-text');
+                event.currentTarget.setAttribute('aria-pressed', String(enabled));
+            });
+            document.getElementById('bookmarkButton').addEventListener('click', () => {
+                const heading = chapters[currentChapterIndex]?.querySelector('h2');
+                if (!heading) return;
+                storageSet('dscfm-extended-bookmark', heading.id);
+                const link = document.createElement('a');
+                link.href = `#${heading.id}`;
+                link.textContent = `Bookmark saved: ${heading.textContent.trim()}`;
+                document.getElementById('bookmarkStatus').replaceChildren(link);
+            });
+            const savedBookmark = storageGet('dscfm-extended-bookmark');
+            if (savedBookmark && document.getElementById(savedBookmark)) {
+                const heading = document.getElementById(savedBookmark);
+                const link = document.createElement('a');
+                link.href = `#${savedBookmark}`;
+                link.textContent = `Go to bookmark: ${heading.textContent.trim()}`;
+                document.getElementById('bookmarkStatus').replaceChildren(link);
+            }
+
+            const notesKey = () => `dscfm-note-${chapters[currentChapterIndex]?.querySelector('h2')?.id || 'inicio'}`;
+            document.getElementById('saveNoteButton').addEventListener('click', () => {
+                if (storageSet(notesKey(), document.getElementById('chapterNotes').value)) {
+                    document.getElementById('noteStatus').textContent = 'Note saved in this browser.';
+                }
+            });
+            document.getElementById('clearNoteButton').addEventListener('click', () => {
+                if (!storageRemove(notesKey())) return;
+                document.getElementById('chapterNotes').value = '';
+                document.getElementById('noteStatus').textContent = 'Note deleted.';
+            });
+            const notesPanel = document.getElementById('notesPanel');
+            document.getElementById('notesButton').addEventListener('click', event => {
+                const open = notesPanel.classList.toggle('open');
+                event.currentTarget.setAttribute('aria-expanded', String(open));
+                if (open) document.getElementById('chapterNotes').focus();
+            });
+
+            const searchInput = document.getElementById('bookSearch');
+            const results = document.getElementById('searchResults');
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.trim().toLocaleLowerCase('es');
+                results.replaceChildren();
+                if (query.length < 2) {
+                    document.getElementById('searchStatus').textContent = query ? 'Enter at least two characters.' : '';
+                    return;
+                }
+                const matches = Array.from(article.querySelectorAll('p, li, td, blockquote'))
+                    .filter(node => node.textContent.toLocaleLowerCase('es').includes(query)).slice(0, 50);
+                matches.forEach(node => {
+                    if (!node.id) node.id = makeSlug(node.textContent.slice(0, 48));
+                    const item = document.createElement('li');
+                    const button = document.createElement('button');
+                    const excerpt = node.textContent.trim().replace(/\s+/g, ' ');
+                    button.type = 'button';
+                    button.textContent = excerpt.length > 150 ? `${excerpt.slice(0, 147)}…` : excerpt;
+                    button.addEventListener('click', () => {
+                        article.querySelectorAll('.search-hit').forEach(hit => hit.classList.remove('search-hit'));
+                        node.classList.add('search-hit');
+                        node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    });
+                    item.append(button);
+                    results.append(item);
+                });
+                document.getElementById('searchStatus').textContent = `${matches.length} result${matches.length === 1 ? '' : 's'}${matches.length === 50 ? ' (maximum shown)' : ''}.`;
+            });
+            document.getElementById('searchForm').addEventListener('submit', event => event.preventDefault());
+
+            document.getElementById('studyButton').addEventListener('click', event => {
+                const enabled = document.body.classList.toggle('study-mode');
+                event.currentTarget.setAttribute('aria-pressed', String(enabled));
+                document.getElementById('studyPanel').hidden = !enabled;
+                if (enabled) renderStudyCard();
+                document.getElementById('searchStatus').textContent = enabled ? 'Study mode on: cards created from the headings.' : 'Reading mode on.';
+            });
+            document.getElementById('revealAnswerButton').addEventListener('click', () => {
+                document.getElementById('studyAnswer').hidden = false;
+            });
+            document.getElementById('previousCardButton').addEventListener('click', () => {
+                studyIndex = (studyIndex - 1 + studyCards.length) % studyCards.length;
+                renderStudyCard();
+            });
+            document.getElementById('nextCardButton').addEventListener('click', () => {
+                studyIndex = (studyIndex + 1) % studyCards.length;
+                renderStudyCard();
+            });
+            document.getElementById('exitStudyButton').addEventListener('click', () => {
+                document.getElementById('studyButton').click();
+                document.getElementById('studyButton').focus();
+            });
+            document.getElementById('presentationButton').addEventListener('click', event => {
+                const enabled = document.body.classList.toggle('presentation');
+                event.currentTarget.setAttribute('aria-pressed', String(enabled));
+                if (enabled) navigateChapter(currentChapterIndex);
+                document.getElementById('searchStatus').textContent = enabled ? 'Presentation: one section at a time. Use ← and → to move forward.' : 'Continuous reading mode.';
+            });
+            document.getElementById('shareButton').addEventListener('click', async () => {
+                const heading = chapters[currentChapterIndex]?.querySelector('h2');
+                if (!heading) return;
+                const url = new URL(location.href);
+                url.hash = heading.id;
+                try {
+                    await navigator.clipboard.writeText(url.href);
+                    document.getElementById('searchStatus').textContent = 'Chapter link copied.';
+                } catch (error) {
+                    console.error('Could not copy the link:', error);
+                    document.getElementById('searchStatus').textContent = 'Could not copy. Copy the link from your browser’s address bar.';
+                    history.replaceState(null, '', url);
+                }
+            });
+            const printChapter = () => {
+                chapters.forEach((item, index) => item.classList.toggle('active', index === currentChapterIndex));
+                document.body.classList.add('print-current');
+                print();
+                setTimeout(() => document.body.classList.remove('print-current'), 1000);
+            };
+            document.getElementById('printChapterButton').addEventListener('click', printChapter);
+            document.getElementById('printBookButton').addEventListener('click', () => {
+                document.body.classList.remove('print-current');
+                print();
+            });
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeMenu();
+                if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+                if (document.body.classList.contains('study-mode')) {
+                    if (event.key === 'ArrowRight') document.getElementById('nextCardButton').click();
+                    if (event.key === 'ArrowLeft') document.getElementById('previousCardButton').click();
+                } else if (document.body.classList.contains('presentation')) {
+                    if (event.key === 'ArrowRight') navigateChapter(currentChapterIndex + 1);
+                    if (event.key === 'ArrowLeft') navigateChapter(currentChapterIndex - 1);
+                }
+            });
+
+            if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+                navigator.serviceWorker.register('./sw.js').catch(error => console.error('Could not enable offline mode:', error));
+            }
+        })();
+    </script>
+</body>
+</html>

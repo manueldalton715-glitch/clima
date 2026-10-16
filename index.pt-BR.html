@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guia prática para observar e registrar o tempo local, reconhecer padrões e planejar atividades com informações meteorológicas.">
+    <meta name="theme-color" content="#52b788">
+    <meta name="color-scheme" content="light dark">
+    <link rel="manifest" href="manifest.webmanifest">
+    <title>DSCFM Lite | Registre o tempo, decida melhor, viva melhor</title>
+    <style>
+        .language-selector { position: absolute; z-index: 20; top: 0.75rem; right: 1rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.35rem 0.55rem; max-width: min(100% - 2rem, 760px); padding: 0.45rem 0.65rem; border: 1px solid rgba(255,255,255,0.35); border-radius: 12px; background: rgba(11,34,53,0.55); color: white; font-size: 0.75rem; line-height: 1.4; }
+        .language-selector a { color: white; text-decoration: underline; text-underline-offset: 2px; }
+        .language-selector a:focus-visible { outline: 2px solid #f6b94c; outline-offset: 2px; }
+        @media (max-width: 700px) { .language-selector { position: relative; inset: auto; margin: -3.25rem auto 1rem; width: fit-content; max-width: 100%; } header { padding-top: 1.5rem; } }
+        :root {
+            --azul: #1d4f73;
+            --azul-claro: #2d7bb3;
+            --verde: #2d8f6f;
+            --verde-claro: #91d7b2;
+            --amarillo: #f6b94c;
+            --rojo: #dd5f4b;
+            --crema: #f6f8f3;
+            --gris: #23313d;
+            --gris-claro: #dfe7ea;
+            --sombra: 0 16px 36px rgba(29, 79, 115, 0.10);
+            --radio-tarjeta: 18px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(145, 215, 178, 0.18), transparent 28rem),
+                linear-gradient(180deg, #f7fbf8 0%, var(--crema) 100%);
+            color: var(--gris);
+            line-height: 1.7;
+            font-size: 18px;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; color: var(--azul); letter-spacing: -0.03em; }
+
+        /* HEADER */
+        header {
+            background:
+                radial-gradient(ellipse at 14% 12%, rgba(255, 255, 255, 0.16), transparent 24rem),
+                linear-gradient(125deg, #173b5b 0%, #246a77 54%, #2d8f6f 100%);
+            color: white;
+            padding: 4rem 1.5rem 4.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            color: white;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .storm-audio {
+            width: min(100%, 580px);
+            margin: 1.75rem auto 0;
+            padding: 1rem 1.15rem;
+            border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 16px;
+            background: rgba(11, 34, 53, 0.28);
+            backdrop-filter: blur(8px);
+            text-align: left;
+        }
+
+        .storm-audio p { font-size: 0.9rem; margin-top: 0.45rem; }
+
+        .storm-audio button {
+            min-height: 48px;
+            padding: 0.65rem 1rem;
+            border: 0;
+            border-radius: 10px;
+            background: #f6b94c;
+            color: #173b5b;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .storm-audio-status { min-height: 1.5em; }
+
+        .edition-link {
+            display: inline-block;
+            margin-top: 1.2rem;
+            border: 0;
+        }
+
+        /* CONTENEDOR */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title .tag {
+            display: inline-block;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--verde);
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* CAJA PRINCIPAL */
+        .caja-principal {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid rgba(29, 79, 115, 0.08);
+            border-radius: 22px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin: -2rem auto 2rem;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .caja-principal h3 {
+            color: var(--verde);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .caja-principal ul {
+            list-style: none;
+        }
+
+        .caja-principal li {
+            padding: 0.6rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px dashed var(--gris-claro);
+        }
+
+        .caja-principal li:last-child { border-bottom: none; }
+
+        .caja-principal li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--verde-claro);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* EJEMPLOS */
+        .ejemplos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ejemplo-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.8rem;
+            box-shadow: var(--sombra);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            border: 1px solid rgba(29, 79, 115, 0.06);
+            border-top: 4px solid var(--verde-claro);
+        }
+
+        .ejemplo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 30px rgba(29, 79, 115, 0.12);
+        }
+
+        .ejemplo-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ejemplo-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            color: var(--azul);
+        }
+
+        .ejemplo-card .persona {
+            font-size: 0.85rem;
+            color: var(--verde);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .ejemplo-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .ahorro-tag {
+            display: inline-block;
+            background: var(--verde-claro);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* GRÁFICAS */
+        .grafica-container {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid rgba(29, 79, 115, 0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin-bottom: 2rem;
+        }
+
+        .grafica-container h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .grafica-container .descripcion {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grafica-wrapper {
+            position: relative;
+            height: 320px;
+        }
+
+        .graficas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .graficas-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CALCULADORA */
+        .calculadora {
+            background: linear-gradient(135deg, var(--azul), var(--verde));
+            color: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .calculadora h2 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculadora > p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .calc-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .calc-form label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            opacity: 0.95;
+        }
+
+        .calc-form select, .calc-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.95);
+            color: var(--gris);
+        }
+
+        .calc-btn {
+            background: var(--amarillo);
+            color: var(--azul);
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calc-btn:hover {
+            transform: scale(1.03);
+        }
+
+        .calc-resultado {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .calc-resultado.activo {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resultado-numero {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--amarillo);
+            margin: 0.5rem 0;
+        }
+
+        .resultado-lista {
+            margin-top: 1rem;
+            padding-left: 1.2rem;
+        }
+
+        .resultado-lista li {
+            padding: 0.3rem 0;
+        }
+
+        /* SIMULADOR */
+        .simulador {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            margin: 2rem 0;
+        }
+
+        .simulador h3 {
+            margin-bottom: 1rem;
+        }
+
+        .escenario {
+            background: var(--crema);
+            border-left: 4px solid var(--azul-claro);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .escenario-titulo {
+            font-weight: 700;
+            color: var(--azul);
+            margin-bottom: 0.5rem;
+        }
+
+        .opciones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .opcion-btn {
+            padding: 1rem;
+            border: 2px solid var(--gris-claro);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .opcion-btn:hover {
+            border-color: var(--verde-claro);
+            background: rgba(82, 183, 136, 0.05);
+        }
+
+        .opcion-btn.correcta {
+            border-color: var(--verde-claro);
+            background: rgba(82, 183, 136, 0.15);
+        }
+
+        .opcion-btn.incorrecta {
+            border-color: var(--rojo);
+            background: rgba(220, 38, 38, 0.08);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.activo { display: block; }
+
+        .feedback.bueno {
+            background: rgba(82, 183, 136, 0.15);
+            border-left: 4px solid var(--verde-claro);
+            color: var(--verde);
+        }
+
+        .feedback.malo {
+            background: rgba(220, 38, 38, 0.08);
+            border-left: 4px solid var(--rojo);
+            color: var(--rojo);
+        }
+
+        /* PASOS */
+        .pasos {
+            counter-reset: paso;
+        }
+
+        .paso {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 1.5rem 1.5rem 4.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--sombra);
+            position: relative;
+            counter-increment: paso;
+        }
+
+        .paso::before {
+            content: counter(paso);
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--verde-claro);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .paso h4 {
+            color: var(--azul);
+            margin-bottom: 0.3rem;
+        }
+
+        .paso p {
+            font-size: 0.95rem;
+            color: #6b7280;
+        }
+
+        /* CHECKLIST */
+        .checklist {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+        }
+
+        .checklist h3 {
+            margin-bottom: 1rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--gris-claro);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .check-item:hover {
+            background: var(--crema);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--verde-claro);
+        }
+
+        .check-item.completado label {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .check-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .progreso {
+            background: var(--gris-claro);
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progreso-barra {
+            height: 100%;
+            background: linear-gradient(90deg, var(--verde-claro), var(--verde));
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 4px;
+        }
+
+        .progreso-texto {
+            text-align: center;
+            font-weight: 600;
+            color: var(--verde);
+        }
+
+        /* BENEFICIOS LABORALES */
+        .beneficios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .beneficio {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+            border-left: 4px solid var(--amarillo);
+        }
+
+        .beneficio h4 {
+            color: var(--azul);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .beneficio .numero {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--verde-claro);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* CTA FINAL */
+        .cta-final {
+            background: linear-gradient(135deg, #2e8f72 0%, #1d4f73 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            margin: 3rem 0;
+            box-shadow: 0 18px 40px rgba(29, 79, 115, 0.18);
+        }
+
+        .cta-final h2 {
+            color: white;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-final p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.95;
+            font-size: 1.05rem;
+        }
+
+        .btn-descarga {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7c75d 0%, #f3a630 100%);
+            color: var(--azul);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 0.3rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+            box-shadow: 0 12px 24px rgba(246, 185, 76, 0.28);
+        }
+
+        .btn-descarga:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(246, 185, 76, 0.32);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--azul);
+            color: rgba(255,255,255,0.8);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--verde-claro);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .opciones { grid-template-columns: 1fr; }
+            .caja-principal { padding: 1.5rem; }
+            .calculadora { padding: 1.5rem; }
+        }
+
+        .skip-link {
+            position: fixed;
+            z-index: 1200;
+            top: 0.5rem;
+            left: 0.5rem;
+            transform: translateY(-160%);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background: #fff;
+            color: #1f2937;
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
+        .reading-progress-track {
+            position: fixed;
+            z-index: 1100;
+            inset: 0 0 auto;
+            height: 5px;
+            background: rgba(55, 65, 81, 0.12);
+        }
+
+        .reading-progress {
+            width: 0;
+            height: 100%;
+            background: var(--verde);
+            transition: width 0.15s linear;
+        }
+
+        .reading-tools {
+            position: fixed;
+            z-index: 1000;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reading-tools button,
+        .index-toggle,
+        .mobile-book-nav button {
+            min-width: 48px;
+            min-height: 48px;
+            border: 1px solid var(--gris-claro);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--gris);
+            font: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+        }
+
+        .index-toggle {
+            position: fixed;
+            z-index: 1001;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 0.8rem;
+        }
+
+        .lite-index {
+            position: fixed;
+            z-index: 1000;
+            inset: 0 auto 0 0;
+            width: min(340px, 88vw);
+            padding: 5rem 1rem 2rem;
+            overflow-y: auto;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(31, 41, 55, 0.18);
+            transform: translateX(-110%);
+            transition: transform 0.25s ease;
+        }
+
+        .lite-index.open { transform: translateX(0); }
+        .lite-index h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+        .lite-index ol { padding-left: 1.5rem; }
+        .lite-index li { margin: 0.55rem 0; }
+        .lite-index a { color: var(--gris); text-decoration: none; }
+        .lite-index a:hover,
+        .lite-index a[aria-current="location"] {
+            color: #28724e;
+            font-weight: 700;
+        }
+
+        .index-backdrop {
+            position: fixed;
+            z-index: 999;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.45);
+        }
+
+        .chapter-indicator {
+            position: fixed;
+            z-index: 900;
+            right: 1rem;
+            bottom: 1rem;
+            max-width: min(280px, 42vw);
+            padding: 0.6rem 0.9rem;
+            border-radius: 999px;
+            background: #fff;
+            box-shadow: var(--sombra);
+            font-size: 0.85rem;
+        }
+
+        .mobile-book-nav { display: none; }
+        .reading-tools button:focus-visible,
+        .index-toggle:focus-visible,
+        .mobile-book-nav button:focus-visible,
+        .lite-index a:focus-visible {
+            outline: 3px solid #0a2540;
+            outline-offset: 3px;
+        }
+
+        body.night-mode {
+            color-scheme: dark;
+            --crema: #111827;
+            --gris: #e5e7eb;
+            --gris-claro: #4b5563;
+            background: #111827;
+            color: #e5e7eb;
+        }
+
+        body.night-mode .caja-principal,
+        body.night-mode .ejemplo-card,
+        body.night-mode .simulador,
+        body.night-mode .checklist,
+        body.night-mode .beneficio,
+        body.night-mode .escenario,
+        body.night-mode .paso,
+        body.night-mode .grafica-container,
+        body.night-mode .lite-index,
+        body.night-mode .reading-tools button,
+        body.night-mode .index-toggle,
+        body.night-mode .mobile-book-nav button,
+        body.night-mode .chapter-indicator { background: #1f2937; color: #f3f4f6; }
+
+        body.night-mode .section-title p,
+        body.night-mode .paso p { color: #d1d5db; }
+
+        body.night-mode .lite-index a,
+        body.night-mode h1,
+        body.night-mode h2,
+        body.night-mode h3,
+        body.night-mode h4 { color: #b7e4c7; }
+
+        body.night-mode .opcion-btn { background: #111827; color: #f3f4f6; }
+
+        @media (prefers-color-scheme: dark) {
+            body:not(.light-mode) {
+                color-scheme: dark;
+                --crema: #111827;
+                --gris: #e5e7eb;
+                --gris-claro: #4b5563;
+                background: #111827;
+                color: #e5e7eb;
+            }
+
+            body:not(.light-mode) .caja-principal,
+            body:not(.light-mode) .ejemplo-card,
+            body:not(.light-mode) .simulador,
+            body:not(.light-mode) .checklist,
+            body:not(.light-mode) .beneficio,
+            body:not(.light-mode) .escenario,
+            body:not(.light-mode) .paso,
+            body:not(.light-mode) .grafica-container,
+            body:not(.light-mode) .lite-index,
+            body:not(.light-mode) .reading-tools button,
+            body:not(.light-mode) .index-toggle,
+            body:not(.light-mode) .mobile-book-nav button,
+            body:not(.light-mode) .chapter-indicator { background: #1f2937; color: #f3f4f6; }
+
+            body:not(.light-mode) .section-title p,
+            body:not(.light-mode) .paso p { color: #d1d5db; }
+
+            body:not(.light-mode) .lite-index a,
+            body:not(.light-mode) h1,
+            body:not(.light-mode) h2,
+            body:not(.light-mode) h3,
+            body:not(.light-mode) h4 { color: #b7e4c7; }
+
+            body:not(.light-mode) .opcion-btn { background: #111827; color: #f3f4f6; }
+        }
+
+        body.text-large { font-size: 20px; }
+        body.text-large .section-title p { font-size: 1.12em; }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .fade-in.visible { opacity: 1; transform: none; }
+
+        @media (max-width: 600px) {
+            .reading-tools { top: 4.5rem; right: 0.75rem; }
+            .chapter-indicator { right: 0.75rem; bottom: 1rem; }
+            header { padding-top: 7rem; }
+        }
+
+        @media (max-width: 479px) {
+            .chapter-indicator { bottom: 5rem; }
+            .mobile-book-nav {
+                position: fixed;
+                z-index: 950;
+                inset: auto 0 0;
+                display: flex;
+                justify-content: space-around;
+                gap: 0.5rem;
+                padding: 0.5rem;
+                background: rgba(250, 250, 247, 0.96);
+                box-shadow: 0 -4px 18px rgba(31, 41, 55, 0.12);
+            }
+            .mobile-book-nav button { flex: 1; }
+            body { padding-bottom: 4.5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media print {
+            .reading-progress-track,
+            .reading-tools,
+            .index-toggle,
+            .lite-index,
+            .index-backdrop,
+            .chapter-indicator,
+            .mobile-book-nav { display: none !important; }
+            body { background: #fff; color: #111; font-size: 12pt; }
+            header { background: none; color: #111; padding: 1rem 0; }
+            header h1, h1, h2, h3 { color: #111 !important; }
+            .container { max-width: none; padding: 0; }
+            section, .caja-principal, .ejemplo-card { break-inside: avoid; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Pular para o conteúdo</a>
+    <div class="reading-progress-track" role="progressbar" aria-label="Progresso de leitura" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="readingProgress" class="reading-progress"></div></div>
+    <button id="indexToggle" class="index-toggle" type="button" aria-controls="liteIndex" aria-expanded="false">☰ Índice</button>
+    <nav id="liteIndex" class="lite-index" aria-label="Índice do guia" inert>
+        <h2>Índice de leitura</h2>
+        <ol id="liteIndexLinks"></ol>
+        <button id="bookmarkButton" type="button" class="calc-btn" aria-label="Salvar esta seção como favorita">Salvar favorito</button>
+        <a id="bookmarkLink" hidden>Ir para o favorito salvo</a>
+    </nav>
+    <div id="indexBackdrop" class="index-backdrop" hidden></div>
+    <div class="reading-tools" aria-label="Ferramentas de leitura">
+        <button id="nightModeButton" type="button" aria-label="Alternar modo noturno" aria-pressed="false" title="Alternar modo noturno">🌙</button>
+        <button id="textSizeButton" type="button" aria-pressed="false" title="Aumentar o tamanho do texto">A+</button>
+    </div>
+    <div id="chapterIndicator" class="chapter-indicator" aria-live="polite">Capítulo atual</div>
+    <nav class="mobile-book-nav" aria-label="Navegação entre seções">
+        <button id="previousSection" type="button" aria-label="Seção anterior">← Anterior</button>
+        <button id="mobileIndexToggle" type="button" aria-controls="liteIndex">Índice</button>
+        <button id="nextSection" type="button" aria-label="Sección siguiente">Próxima →</button>
+    </nav>
+
+    <nav class="language-selector" aria-label="Idioma da edição Lite">
+        <span>Edição Lite:</span>
+        <a href="index.html" title="Español" aria-label="Lite: Español">Español</a>
+        <a href="index.en.html" title="English" aria-label="Lite: English">English</a>
+        <a href="index.pt-BR.html" title="Português (Brasil)" aria-label="Lite: Português (Brasil)">Português (Brasil)</a>
+    </nav>
+    <!-- HERO -->
+    <header>
+        <div class="hero-badge">🌦️ DSCFM · OBSERVAÇÃO E ACOMPANHAMENTO DO TEMPO</div>
+        <h1>O tempo muda. Observá-lo ajuda a decidir melhor.</h1>
+        <p>Um guia prático para registrar o tempo local, reconhecer padrões e planejar atividades do dia a dia. Não é preciso ser especialista: basta observar, anotar e comparar as informações.</p>
+        <a class="btn-descarga edition-link" href="dscfm-extendida.pt-BR.html">📘 Leia a versão estendida</a>
+        <div class="storm-audio" role="group" aria-label="Som ambiente de tempestade">
+            <button id="stormAudioButton" type="button" aria-describedby="stormAudioHelp">⛈️ Ativar som de tempestade</button>
+            <p id="stormAudioHelp">Ao ativar, um trovão de cerca de 8 segundos toca agora e depois em intervalos crescentes (5, 15, 25… minutos), por até 5 horas. O áudio está incluído neste guia; você pode pará-lo quando quiser.</p>
+            <p id="stormAudioStatus" class="storm-audio-status" aria-live="polite">O som está desativado.</p>
+            <audio id="thunderAudio" src="./thunder.wav" preload="auto" aria-hidden="true"></audio>
+        </div>
+    </header>
+
+    <main id="contenido" class="container">
+
+        <!-- CAJA PRINCIPAL -->
+        <div class="caja-principal">
+            <h3>💡 O que torna este guia diferente?</h3>
+            <ul>
+                <li><strong>Você não precisa de tecnologia cara:</strong> um caderno, uma caneta e seu celular são suficientes.</li>
+                <li><strong>Você não precisa entender de meteorologia:</strong> basta anotar o que você vê e o que acontece.</li>
+                <li><strong>Você não precisa de muito tempo:</strong> 5 minutos por dia são suficientes.</li>
+                <li><strong>Serve para qualquer trabalho:</strong> horticultor, pedreiro, comerciante, motorista, professor ou profissional do lar.</li>
+                <li><strong>Em 30 dias, você poderá revisar suas primeiras anotações:</strong> a continuidade dos registros ajuda a comparar observações, sem garantir resultados.</li>
+            </ul>
+        </div>
+
+        <!-- SECCIÓN: LA IDEA CENTRAL -->
+        <section>
+            <div class="section-title">
+                <span class="tag">A ideia central</span>
+                <h2>O tempo pode influenciar suas decisões cotidianas</h2>
+                <p>Chuva, frio, calor e vento podem afetar atividades, despesas ou produção. Registrar observações ajuda a comparar situações e planejar, sem substituir previsões nem orientação especializada.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CASOS ILUSTRATIVOS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Exemplos ilustrativos</span>
+                <h2>Seis exemplos de observação e planejamento</h2>
+                <p>As pessoas e situações desta seção são fictícias. Elas ilustram possíveis usos; não são depoimentos nem resultados comprovados.</p>
+            </div>
+
+            <div class="ejemplos-grid">
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🥬</div>
+                    <div class="persona">Dona Marta · Horticultora familiar</div>
+                    <h3>Ela anota a chuva e decide quando transplantar</h3>
+                    <p>Marta mantém um registro da chuva e anota quando faz o transplante. Com o tempo, ela pode comparar suas observações com a previsão e ajustar o planejamento, sem presumir que um dia fixo será sempre mais adequado.</p>
+                    <span class="ahorro-tag">Exemplo: registrar chuva e transplantes</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🧱</div>
+                    <div class="persona">Seu José · Pedreiro autônomo</div>
+                    <h3>Ele anota a temperatura e planeja os trabalhos</h3>
+                    <p>José anota os dias de trabalho ao ar livre, as condições meteorológicas e as mudanças na agenda. Essas informações podem ajudá-lo a planejar junto com previsões atualizadas e as necessidades de cada obra.</p>
+                    <span class="ahorro-tag">Exemplo: planejar tarefas ao ar livre</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🏠</div>
+                    <div class="persona">Família Rodríguez · 4 pessoas</div>
+                    <h3>A família anota despesas relacionadas ao tempo e ajusta o orçamento</h3>
+                    <p>A família registra as despesas mensais de energia e as compara com a temperatura. Assim, pode identificar variações e explorar opções de orçamento; o registro não garante redução das despesas.</p>
+                    <span class="ahorro-tag">Exemplo: comparar despesas e condições</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🚕</div>
+                    <div class="persona">Pedro · Motorista</div>
+                    <h3>Ele anota as condições do tempo e ajusta rotas e horários</h3>
+                    <p>Pedro registra as condições do tempo, as rotas e os tempos de viagem. Ele pode revisar esses dados para planejar os trajetos, sem presumir que uma condição meteorológica sempre gere a mesma demanda.</p>
+                    <span class="ahorro-tag">Exemplo: observar rotas e tempos</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">🤝</div>
+                    <div class="persona">Cooperativa El Progreso · 12 famílias</div>
+                    <h3>Elas anotam pragas e compartilham alertas pelo WhatsApp</h3>
+                    <p>As famílias compartilham observações de suas hortas e registram quando uma praga aparece. Essas informações podem ajudar a consultar profissionais técnicos e coordenar o acompanhamento, não substituir um diagnóstico.</p>
+                    <span class="ahorro-tag">Exemplo: compartilhar observações</span>
+                </div>
+
+                <div class="ejemplo-card">
+                    <div class="ejemplo-icon">📚</div>
+                    <div class="persona">Lucía · Professora do ensino fundamental</div>
+                    <h3>Ela ensina seus alunos a registrar o tempo</h3>
+                    <p>Lucía propõe registrar a temperatura do pátio com instrumentos adequados e usar a série em atividades educativas de matemática, língua e ciências, explicando seu alcance e suas limitações.</p>
+                    <span class="ahorro-tag">Exemplo: aprender com observações locais</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN: GRÁFICAS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Como ler gráficos</span>
+                <h2>Gráficos de exemplo: como ler e comparar registros</h2>
+                <p>Os gráficos a seguir usam dados simulados para fins didáticos. Eles não representam observações nem resultados de famílias, organizações ou produtores.</p>
+            </div>
+
+            <div class="grafica-container">
+                <h3>📊 Índice simulado por atividade</h3>
+                <p class="descripcion">Valores fictícios para praticar a leitura de um gráfico; não estimam economias nem resultados reais.</p>
+                <div class="grafica-wrapper">
+                    <canvas id="graficaBarras" role="img" aria-label="Gráfico de barras com valores simulados por atividade"></canvas>
+                </div>
+            </div>
+
+            <div class="graficas-grid">
+                <div class="grafica-container">
+                    <h3>📈 Exemplo de variação mensal</h3>
+                    <p class="descripcion">Série fictícia para mostrar como comparar dois conjuntos de dados, não uma projeção de despesas.</p>
+                    <div class="grafica-wrapper">
+                        <canvas id="graficaLineas" role="img" aria-label="Gráfico de linhas: comparação das despesas mensais com e sem registro meteorológico"></canvas>
+                    </div>
+                </div>
+
+                <div class="grafica-container">
+                    <h3>🥧 Distribuição simulada</h3>
+                    <p class="descripcion">Porcentagens fictícias para explicar um gráfico de pizza; não descrevem despesas observadas.</p>
+                    <div class="grafica-wrapper">
+                        <canvas id="graficaTorta" role="img" aria-label="Gráfico de pizza com distribuição percentual simulada"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCULADORA -->
+        <section>
+            <div class="calculadora">
+                <h2>🧮 Explore um cenário com suas premissas</h2>
+                <p id="calculadoraNota">Informe uma despesa mensal e um percentual hipotético de redução. O resultado é apenas um cálculo aritmético: não prevê nem garante economia por registrar o tempo.</p>
+
+                <div class="calc-form">
+                    <div>
+                        <label for="gastoMensual">Despesa mensal que você quer analisar ($)</label>
+                        <input id="gastoMensual" type="number" min="0" step="100" inputmode="decimal" value="0" aria-describedby="calculadoraNota">
+                    </div>
+                    <div>
+                        <label for="reduccionEsperada">Redução hipotética (%)</label>
+                        <input id="reduccionEsperada" type="number" min="0" max="100" step="1" inputmode="decimal" value="0" aria-describedby="calculadoraNota">
+                    </div>
+                </div>
+
+                <button class="calc-btn" onclick="calcular()">Calcular cenário →</button>
+
+                <div class="calc-resultado" id="resultado" aria-live="polite">
+                    <p>Redução anual hipotética, com base nos valores informados:</p>
+                    <div class="resultado-numero" id="resultadoNumero">$0</div>
+                    <p id="resultadoSupuestos">Isto não é uma estimativa de resultados reais nem uma garantia de economia.</p>
+                    <button id="shareSavingsButton" class="calc-btn" type="button">Compartilhar pelo WhatsApp</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULADOR DE DECISIONES -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Aprenda brincando</span>
+                <h2>Simulador: o que você faria?</h2>
+                <p>Pratique com situações hipotéticas. Escolha uma opção e veja quais informações seria importante considerar.</p>
+            </div>
+
+            <div class="simulador">
+                <div class="escenario">
+                    <div class="escenario-titulo">🌦️ Cenário: amanhã é dia de feira ao ar livre</div>
+                    <p>Durante 3 meses, você anotou que chove à tarde quando a umidade da manhã passa de 80%. Hoje, a umidade está em 85%. O que você faz?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Opção A:</strong> Monto a barraca mesmo assim; se tiver que chover, vai chover.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Opção B:</strong> Confiro a previsão atualizada e considero uma alternativa coberta.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <div class="escenario">
+                    <div class="escenario-titulo">🌡️ Cenário: você tem uma tarefa ao ar livre</div>
+                    <p>Seus registros mostram vários dias frios seguidos. A previsão indica mais um dia ameno. O que você faz?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Opção A:</strong> Confiro as condições e adapto a tarefa, se necessário.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Opção B:</strong> Ignoro a previsão e não preparo nenhuma alternativa.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <div class="escenario">
+                    <div class="escenario-titulo">🛒 Cenário: você tem um pequeno comércio de bebidas</div>
+                    <p>Você anotou que, quando faz mais de 30°C por 3 dias seguidos, vende o triplo de água e refrigerante. A previsão indica 34°C nos próximos 4 dias. O que você faz?</p>
+                    <div class="opciones">
+                        <button class="opcion-btn" onclick="responder(this, false)">
+                            <strong>Opção A:</strong> Deixo tudo como está e vendo o que vender.
+                        </button>
+                        <button class="opcion-btn" onclick="responder(this, true)">
+                            <strong>Opção B:</strong> Compro mais estoque hoje e aviso os vizinhos.
+                        </button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PASOS -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Comece hoje</span>
+                <h2>Seu primeiro registro em 5 minutos</h2>
+                <p>Você não precisa de nada especial. Basta um caderno (ou o aplicativo de notas do celular) e estes 5 passos.</p>
+            </div>
+
+            <div class="pasos">
+                <div class="paso">
+                    <h4>Escolha um horário fixo</h4>
+                    <p>O melhor é pela manhã, com café ou chimarrão. Todos os dias, no mesmo horário. Leva 2 minutos.</p>
+                </div>
+                <div class="paso">
+                    <h4>Anote 3 coisas simples</h4>
+                    <p><strong>1)</strong> Como está o céu? (sol, nublado, chuvoso). <strong>2)</strong> Está frio, ameno ou quente? <strong>3)</strong> O que fiz hoje por causa do tempo? (fechei as janelas, liguei o aquecedor, reguei).</p>
+                </div>
+                <div class="paso">
+                    <h4>Anote o que gastou por causa do tempo</h4>
+                    <p>Por exemplo: “hoje comprei um botijão porque fez frio”. Anote isso também. Depois de um mês, você poderá perceber um padrão.</p>
+                </div>
+                <div class="paso">
+                    <h4>Revise seu caderno uma vez por semana</h4>
+                    <p>No domingo à noite, reserve 5 minutos. Pergunte: “o que se repete?”. Aí está seu primeiro aprendizado.</p>
+                </div>
+                <div class="paso">
+                    <h4>Tome UMA decisão melhor</h4>
+                    <p>Não tente mudar tudo. Apenas uma coisa. Exemplo: “se chover por 3 dias, não vou transplantar”. Experimente por um mês.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: BENEFICIOS LABORALES -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Melhore seu trabalho</span>
+                <h2>Como os registros podem melhorar sua vida profissional</h2>
+                <p>Um registro não prevê o tempo nem garante resultados. Ele pode ajudar você a analisar experiências locais junto com previsões e recomendações oficiais.</p>
+            </div>
+
+            <div class="beneficios-grid">
+                <div class="beneficio">
+                    <span class="numero">🌤️</span>
+                    <h4>Planejamento de tarefas</h4>
+                    <p>Registrar as condições e as mudanças na agenda ajuda a planejar tarefas ao ar livre junto com previsões atualizadas.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌡️</span>
+                    <h4>Cuidados com temperaturas extremas</h4>
+                    <p>Observar o calor e o frio pode ajudar a consultar oportunamente os alertas e as recomendações das autoridades de saúde.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌧️</span>
+                    <h4>Organização de um comércio</h4>
+                    <p>Comparar as condições meteorológicas com a atividade do negócio pode ajudar a planejar compras e horários.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🌱</span>
+                    <h4>Acompanhamento de hortas</h4>
+                    <p>Anotar chuva, temperatura e observações do cultivo ajuda a identificar mudanças e buscar orientação técnica.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">📝</span>
+                    <h4>Memória local</h4>
+                    <p>Um registro próprio complementa as previsões: documenta o que foi observado em um lugar e momento específicos.</p>
+                </div>
+                <div class="beneficio">
+                    <span class="numero">🗓️</span>
+                    <h4>Comparação ao longo do tempo</h4>
+                    <p>Uma série organizada permite comparar períodos, considerando que as condições e os limites de cada registro variam.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHECKLIST -->
+        <section>
+            <div class="section-title">
+                <span class="tag">Seu plano de ação</span>
+                <h2>Lista para começar esta semana</h2>
+                <p>Marque cada etapa ao concluí-la. Seu progresso fica salvo no navegador.</p>
+            </div>
+
+            <div class="checklist">
+                <h3>📝 Nesta semana, quero:</h3>
+                <div class="progreso">
+                    <div class="progreso-barra" id="progresoBarra"></div>
+                </div>
+                <p class="progreso-texto" id="progresoTexto">0 de 10 concluídos</p>
+
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c1">
+                    <label for="c1">Conseguir um caderno pequeno (ou criar uma nota no celular)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c2">
+                    <label for="c2">Escolher um horário fixo para anotar (ex.: 8h, tomando chimarrão)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c3">
+                    <label for="c3">Fazer o primeiro registro hoje (céu, temperatura, o que fiz)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c4">
+                    <label for="c4">Anotar uma despesa relacionada ao tempo (botijão, remédio, combustível)</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c5">
+                    <label for="c5">Repetir o registro por 7 dias seguidos</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c6">
+                    <label for="c6">No domingo, revisar tudo o que anotou e procurar um padrão</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c7">
+                    <label for="c7">Escolher UMA decisão que vou tomar de forma diferente na próxima semana</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c8">
+                    <label for="c8">Contar a alguém (familiar, vizinho, colega) o que estou fazendo</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c9">
+                    <label for="c9">Depois de um mês, calcular quanto economizei ou deixei de perder</label>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <input type="checkbox" id="c10">
+                    <label for="c10">No fim do mês, revisar se o registro é útil para planejar</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <div class="cta-final">
+            <h2>Comece observando o tempo local.</h2>
+            <p>Baixe o modelo, imprima-o ou use-o no celular. Registre o que observar e compare com previsões e fontes oficiais.</p>
+            <button class="btn-descarga" type="button" onclick="descargarPlantilla()">📄 Imprimir caderno / salvar como PDF</button>
+            <button id="installAppButton" class="btn-descarga" type="button" onclick="instalarApp()">📱 Instalar / usar off-line</button>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>DSCFM Lite</strong> · Guia de observação e registro do tempo para apoiar o planejamento do dia a dia.</p>
+        <p style="margin-top: 0.5rem;">Os registros pessoais complementam, mas não substituem, as previsões e os alertas oficiais. <a href="dscfm-extendida.pt-BR.html">Conheça a proposta institucional →</a></p>
+    </footer>
+
+    <script>
+        const renderCharts = () => {
+        if (typeof Chart === 'undefined') {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                canvas.hidden = true;
+                const fallback = document.createElement('p');
+                fallback.textContent = 'Este gráfico precisa de conexão com a internet para carregar. O restante do guia continua disponível off-line.';
+                canvas.after(fallback);
+            });
+            return;
+        }
+        // ========== GRÁFICA DE BARRAS: AHORRO POR ACTIVIDAD ==========
+        const ctxBarras = document.getElementById('graficaBarras').getContext('2d');
+        new Chart(ctxBarras, {
+            type: 'bar',
+            data: {
+                labels: ['Horta', 'Trabalho ao ar livre', 'Comércio', 'Transporte', 'Casa', 'Cooperativa'],
+                datasets: [{
+                    label: 'Valor simulado (índice)',
+                    data: [35, 62, 48, 54, 29, 71],
+                    backgroundColor: [
+                        '#52b788',
+                        '#4a90c2',
+                        '#f59e0b',
+                        '#95d5b2',
+                        '#52b788',
+                        '#52b788'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' (simulado)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ========== GRÁFICA DE LÍNEAS: GASTOS SIN vs CON REGISTRO ==========
+        const ctxLineas = document.getElementById('graficaLineas').getContext('2d');
+        new Chart(ctxLineas, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                datasets: [
+                    {
+                        label: 'Série A (simulada)',
+                        data: [180, 175, 190, 220, 280, 350, 380, 340, 260, 210, 185, 180],
+                        borderColor: '#e76f51',
+                        backgroundColor: 'rgba(231, 111, 81, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Série B (simulada)',
+                        data: [180, 175, 185, 200, 230, 260, 270, 250, 220, 200, 180, 175],
+                        borderColor: '#52b788',
+                        backgroundColor: 'rgba(82, 183, 136, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': índice ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // ========== GRÁFICA DE TORTA: DISTRIBUCIÓN SIMULADA ==========
+        const ctxTorta = document.getElementById('graficaTorta').getContext('2d');
+        new Chart(ctxTorta, {
+            type: 'doughnut',
+            data: {
+                labels: ['Saúde e medicamentos', 'Alimentação', 'Educação dos filhos', 'Poupança / emergências', 'Moradia / reparos'],
+                datasets: [{
+                    data: [28, 22, 20, 18, 12],
+                    backgroundColor: ['#52b788', '#4a90c2', '#f59e0b', '#95d5b2', '#374151'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 12 },
+                            padding: 10
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        };
+
+        const loadCharts = () => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+            script.onload = renderCharts;
+            script.onerror = error => {
+                console.error('Não foi possível carregar o Chart.js:', error);
+                renderCharts();
+            };
+            document.head.append(script);
+        };
+
+        const firstChart = document.querySelector('canvas');
+        if ('IntersectionObserver' in window && firstChart) {
+            const chartObserver = new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting)) {
+                    chartObserver.disconnect();
+                    loadCharts();
+                }
+            }, { rootMargin: '200px' });
+            chartObserver.observe(firstChart);
+        } else {
+            loadCharts();
+        }
+
+        const stormAudioButton = document.getElementById('stormAudioButton');
+        const stormAudioStatus = document.getElementById('stormAudioStatus');
+        const stormDuration = 5 * 60 * 60 * 1000;
+        let stormTimer;
+        let stormStartedAt;
+        let nextThunderInterval = 5;
+
+        const thunderAudio = document.getElementById('thunderAudio');
+
+        const playThunder = () => {
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            return thunderAudio.play();
+        };
+
+        const finishStormSounds = () => {
+            clearTimeout(stormTimer);
+            stormTimer = undefined;
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            stormStartedAt = undefined;
+            stormAudioButton.textContent = '⛈️ Ativar som de tempestade';
+            stormAudioButton.setAttribute('aria-pressed', 'false');
+            stormAudioStatus.textContent = 'A sessão de sons terminou após 5 horas.';
+        };
+
+        const scheduleNextThunder = () => {
+            const elapsed = Date.now() - stormStartedAt;
+            const remaining = stormDuration - elapsed;
+            if (remaining <= 0) {
+                finishStormSounds();
+                return;
+            }
+
+            const delay = nextThunderInterval * 60 * 1000;
+            if (delay > remaining) {
+                stormTimer = setTimeout(finishStormSounds, remaining);
+                return;
+            }
+
+            stormTimer = setTimeout(() => {
+                if (Date.now() - stormStartedAt >= stormDuration) {
+                    finishStormSounds();
+                    return;
+                }
+                playThunder().then(() => {
+                    nextThunderInterval += 10;
+                    stormAudioStatus.textContent = `Trovão reproduzido. O próximo tocará em ${nextThunderInterval} minutos; a sessão termina após 5 horas.`;
+                    scheduleNextThunder();
+                }).catch(error => {
+                    console.error('Não foi possível reproduzir o trovão:', error);
+                    stopStormSounds();
+                    stormAudioStatus.textContent = 'O navegador não conseguiu reproduzir o áudio. Verifique o volume e as permissões de som e tente novamente.';
+                });
+            }, delay);
+        };
+
+        const stopStormSounds = () => {
+            clearTimeout(stormTimer);
+            stormTimer = undefined;
+            thunderAudio.pause();
+            thunderAudio.currentTime = 0;
+            stormStartedAt = undefined;
+            stormAudioButton.textContent = '⛈️ Ativar som de tempestade';
+            stormAudioButton.setAttribute('aria-pressed', 'false');
+            stormAudioStatus.textContent = 'Som interrompido. Não haverá mais trovões.';
+        };
+
+        stormAudioButton.addEventListener('click', () => {
+            if (stormStartedAt) {
+                stopStormSounds();
+                return;
+            }
+
+            playThunder().then(() => {
+                stormStartedAt = Date.now();
+                nextThunderInterval = 5;
+                stormAudioButton.textContent = '⏹️ Parar os sons';
+                stormAudioButton.setAttribute('aria-pressed', 'true');
+                stormAudioStatus.textContent = 'Trovão reproduzido. O próximo tocará em 5 minutos; depois, os intervalos aumentarão 10 minutos a cada vez. A sessão será interrompida após 5 horas.';
+                scheduleNextThunder();
+            }).catch(error => {
+                console.error('Não foi possível iniciar o som da tempestade:', error);
+                stormAudioStatus.textContent = 'Não foi possível reproduzir o trovão. Verifique o volume e as permissões de som do dispositivo e tente novamente.';
+            });
+        });
+
+        // ========== CALCULADORA DE AHORRO ==========
+        function calcular() {
+            const gastoMensual = Number(document.getElementById('gastoMensual').value);
+            const reduccion = Number(document.getElementById('reduccionEsperada').value);
+            const resultadoNumero = document.getElementById('resultadoNumero');
+            const resultadoSupuestos = document.getElementById('resultadoSupuestos');
+
+            if (!Number.isFinite(gastoMensual) || gastoMensual < 0 || !Number.isFinite(reduccion) || reduccion < 0 || reduccion > 100) {
+                resultadoNumero.textContent = 'Confira os valores';
+                resultadoSupuestos.textContent = 'Informe uma despesa não negativa e uma redução entre 0 e 100%.';
+                document.getElementById('resultado').classList.add('activo');
+                return;
+            }
+
+            const reduccionAnualHipotetica = Math.round(gastoMensual * (reduccion / 100) * 12);
+            resultadoNumero.textContent = '$' + reduccionAnualHipotetica.toLocaleString('pt-BR');
+            resultadoSupuestos.textContent = `Cenário aritmético: $${gastoMensual.toLocaleString('pt-BR')} por mês × ${reduccion}% × 12. Não representa um resultado observado.`;
+            document.getElementById('resultado').classList.add('activo');
+        }
+
+        // ========== SIMULADOR DE DECISIONES ==========
+        let escenarioActual = 1;
+        const feedbacks = {
+            1: {
+                bueno: 'Muito bem: você usou observações e uma previsão atualizada para considerar alternativas. A decisão depende das condições reais do dia.',
+                malo: 'Neste exercício, é recomendável conferir a previsão e prever uma alternativa. Um registro passado não permite saber com certeza o que acontecerá hoje.'
+            },
+            2: {
+                bueno: 'Muito bem: você comparou o registro com as condições atuais e ajustou o plano. Dados passados orientam, mas não substituem a previsão.',
+                malo: 'Neste exercício, ignorar as informações disponíveis reduz as opções de planejamento. O registro não permite prever o tempo com certeza.'
+            },
+            3: {
+                bueno: 'Muito bem: você usou observações para planejar e revisar necessidades. A demanda e os preços também dependem de outros fatores.',
+                malo: 'Neste exercício, revisar os registros e as informações disponíveis ajudaria a decidir com mais contexto, sem garantir vendas nem preços.'
+            }
+        };
+
+        function responder(btn, esCorrecta) {
+            const escenario = btn.closest('.escenario');
+            const escenarioNum = Array.from(document.querySelectorAll('.escenario')).indexOf(escenario) + 1;
+            const feedback = escenario.querySelector('.feedback');
+            const botones = escenario.querySelectorAll('.opcion-btn');
+
+            botones.forEach(b => b.disabled = true);
+
+            if (esCorrecta) {
+                btn.classList.add('correcta');
+                feedback.className = 'feedback activo bueno';
+                feedback.textContent = feedbacks[escenarioNum].bueno;
+            } else {
+                btn.classList.add('incorrecta');
+                feedback.className = 'feedback activo malo';
+                feedback.textContent = feedbacks[escenarioNum].malo;
+            }
+        }
+
+        // ========== CHECKLIST CON PROGRESO ==========
+        function toggleCheck(item) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            item.classList.toggle('completado', checkbox.checked);
+            actualizarProgreso();
+            guardarProgreso();
+        }
+
+        function actualizarProgreso() {
+            const total = document.querySelectorAll('.check-item').length;
+            const concluídos = document.querySelectorAll('.check-item.completado').length;
+            const porcentaje = (concluídos / total) * 100;
+
+            document.getElementById('progresoBarra').style.width = porcentaje + '%';
+            document.getElementById('progresoTexto').textContent = `${concluídos} de ${total} concluídos`;
+        }
+
+        function guardarProgreso() {
+            const checks = [];
+            document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+                checks.push(cb.checked);
+            });
+            try {
+                localStorage.setItem('dscfm-lite-checks', JSON.stringify(checks));
+            } catch (error) {
+                console.error('Não foi possível salvar o progresso:', error);
+                document.getElementById('progresoTexto').textContent = 'Não foi possível salvar o progresso neste navegador.';
+            }
+        }
+
+        function cargarProgreso() {
+            try {
+                const guardado = localStorage.getItem('dscfm-lite-checks');
+                if (guardado) {
+                    const checks = JSON.parse(guardado);
+                    document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+                        cb.checked = Boolean(checks[i]);
+                        cb.closest('.check-item').classList.toggle('completado', cb.checked);
+                    });
+                }
+            } catch (error) {
+                console.error('Não foi possível recuperar o progresso salvo:', error);
+                document.getElementById('progresoTexto').textContent = 'Não foi possível recuperar o progresso salvo neste navegador.';
+            }
+            actualizarProgreso();
+        }
+
+        // ========== DESCARGAS ==========
+        function descargarPlantilla() {
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert('O navegador bloqueou a janela de impressão. Permita pop-ups para salvar o modelo como PDF.');
+                return;
+            }
+            const rows = Array.from({ length: 7 }, (_, index) =>
+                `<tr><td>${index + 1}</td><td></td><td></td><td></td><td></td><td></td></tr>`
+            ).join('');
+            printWindow.document.write(`<!DOCTYPE html>
+                <html lang="pt-BR"><head><meta charset="UTF-8"><title>Caderno de registro meteorológico DSCFM</title>
+                <style>
+                    body{font:14px/1.4 Arial,sans-serif;color:#1f2937;margin:24px}
+                    h1{color:#1e4d7b;font-size:22px}p{margin:8px 0}
+                    table{width:100%;border-collapse:collapse;margin-top:18px}
+                    th,td{border:1px solid #687386;padding:10px;text-align:left}
+                    td{height:42px}th{background:#eef5f0}
+                    @media print{body{margin:10mm}h1{font-size:18pt}}
+                </style></head><body>
+                <h1>Caderno de registro meteorológico</h1>
+                <p><strong>Nome / grupo:</strong> ____________________________ &nbsp; <strong>Localidade:</strong> ____________________</p>
+                <p><strong>Mês:</strong> ____________________ &nbsp; <strong>Ano:</strong> __________</p>
+                <table><thead><tr><th>Dia</th><th>Céu / chuva</th><th>Temperatura</th><th>Atividade</th><th>Despesas / efeitos</th><th>Observações</th></tr></thead><tbody>${rows}</tbody></table>
+                <p><strong>Padrão que observei:</strong> _________________________________________________________________</p>
+                <p><strong>Decisão para a próxima semana:</strong> ____________________________________________________</p>
+                <script>window.addEventListener('load',()=>window.print());<\/script>
+                </body></html>`);
+            printWindow.document.close();
+        }
+
+        let installPrompt;
+        window.addEventListener('beforeinstallprompt', event => {
+            event.preventDefault();
+            installPrompt = event;
+            document.getElementById('installAppButton').textContent = '📱 Instalar o DSCFM';
+        });
+
+        async function instalarApp() {
+            if (!installPrompt) {
+                alert('Para instalar e habilitar o uso off-line, abra este guia em um servidor HTTPS ou localhost e escolha “Adicionar à tela inicial” no menu do navegador.');
+                return;
+            }
+            try {
+                installPrompt.prompt();
+                await installPrompt.userChoice;
+                installPrompt = null;
+            } catch (error) {
+                console.error('Não foi possível iniciar a instalação:', error);
+                alert('O navegador não conseguiu iniciar a instalação. Tente “Adicionar à tela inicial” no menu.');
+            }
+        }
+
+        document.getElementById('shareSavingsButton').addEventListener('click', () => {
+            const ahorro = document.getElementById('resultadoNumero').textContent;
+            const message = `Explorei um cenário hipotético de redução anual de despesas com o guia DSCFM: ${ahorro}. É um cálculo baseado em premissas, não uma previsão nem uma garantia.`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+        });
+
+        document.querySelectorAll('.check-item').forEach(item => {
+            item.removeAttribute('onclick');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', () => toggleCheck(item));
+            item.addEventListener('click', event => {
+                if (event.target.closest('input, label')) return;
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
+        // Inicializar
+        cargarProgreso();
+    </script>
+
+    <script>
+        (() => {
+            const sections = Array.from(document.querySelectorAll('main section'));
+            const menu = document.getElementById('liteIndex');
+            const toggle = document.getElementById('indexToggle');
+            const backdrop = document.getElementById('indexBackdrop');
+            const links = document.getElementById('liteIndexLinks');
+            const chapterIndicator = document.getElementById('chapterIndicator');
+            const progressBar = document.getElementById('readingProgress');
+            let currentIndex = 0;
+            let storageUnavailable = false;
+            const storageGet = key => {
+                if (storageUnavailable) return null;
+                try {
+                    return localStorage.getItem(key);
+                } catch (error) {
+                    storageUnavailable = true;
+                    console.error('Não foi possível ler o armazenamento local:', error);
+                    chapterIndicator.textContent = 'O navegador bloqueou o armazenamento local.';
+                    return null;
+                }
+            };
+            const storageSet = (key, value) => {
+                if (storageUnavailable) return;
+                try {
+                    localStorage.setItem(key, value);
+                } catch (error) {
+                    storageUnavailable = true;
+                    console.error('Não foi possível salvar no armazenamento local:', error);
+                    chapterIndicator.textContent = 'O navegador bloqueou o armazenamento local.';
+                }
+            };
+
+            const closeMenu = () => {
+                menu.classList.remove('open');
+                backdrop.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+                menu.inert = true;
+            };
+
+            const openMenu = () => {
+                menu.classList.add('open');
+                backdrop.hidden = false;
+                toggle.setAttribute('aria-expanded', 'true');
+                menu.inert = false;
+            };
+
+            sections.forEach((section, index) => {
+                const heading = section.querySelector('h2');
+                if (!heading) return;
+                section.id = `lite-section-${index + 1}`;
+                section.classList.add('fade-in');
+                const item = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${section.id}`;
+                link.textContent = heading.textContent.trim();
+                item.append(link);
+                links.append(item);
+                link.addEventListener('click', closeMenu);
+            });
+
+            const navigateTo = index => {
+                const target = sections[Math.max(0, Math.min(index, sections.length - 1))];
+                target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+
+            toggle.addEventListener('click', () => menu.classList.contains('open') ? closeMenu() : openMenu());
+            document.getElementById('mobileIndexToggle').addEventListener('click', openMenu);
+            backdrop.addEventListener('click', closeMenu);
+            document.getElementById('previousSection').addEventListener('click', () => navigateTo(currentIndex - 1));
+            document.getElementById('nextSection').addEventListener('click', () => navigateTo(currentIndex + 1));
+
+            const nightModeButton = document.getElementById('nightModeButton');
+            const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            let savedTheme = storageGet('dscfm-lite-night-mode');
+            const setNightMode = enabled => {
+                document.body.classList.toggle('night-mode', enabled);
+                document.body.classList.toggle('light-mode', !enabled);
+                nightModeButton.setAttribute('aria-pressed', String(enabled));
+                nightModeButton.setAttribute('aria-label', enabled ? 'Mudar para o modo claro' : 'Mudar para o modo escuro');
+                nightModeButton.title = enabled ? 'Mudar para o modo claro' : 'Mudar para o modo escuro';
+                nightModeButton.textContent = enabled ? '☀️' : '🌙';
+            };
+            setNightMode(savedTheme === null ? colorScheme.matches : savedTheme === 'true');
+            nightModeButton.addEventListener('click', () => {
+                const enabled = !document.body.classList.contains('night-mode');
+                savedTheme = String(enabled);
+                storageSet('dscfm-lite-night-mode', savedTheme);
+                setNightMode(enabled);
+            });
+            colorScheme.addEventListener('change', event => {
+                if (savedTheme === null) setNightMode(event.matches);
+            });
+
+            document.getElementById('textSizeButton').addEventListener('click', event => {
+                const active = document.body.classList.toggle('text-large');
+                event.currentTarget.setAttribute('aria-pressed', String(active));
+            });
+
+            const bookmarkLink = document.getElementById('bookmarkLink');
+            const savedBookmark = storageGet('dscfm-lite-bookmark');
+            if (savedBookmark && document.getElementById(savedBookmark)) {
+                bookmarkLink.href = `#${savedBookmark}`;
+                bookmarkLink.hidden = false;
+                bookmarkLink.textContent = 'Ir para o favorito salvo';
+            }
+            document.getElementById('bookmarkButton').addEventListener('click', () => {
+                const section = sections[currentIndex];
+                if (!section) return;
+                storageSet('dscfm-lite-bookmark', section.id);
+                bookmarkLink.href = `#${section.id}`;
+                bookmarkLink.hidden = false;
+                bookmarkLink.textContent = `Voltar para: ${section.querySelector('h2')?.textContent.trim() || 'seção salva'}`;
+            });
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    currentIndex = sections.indexOf(entry.target);
+                    const title = entry.target.querySelector('h2')?.textContent.trim();
+                    chapterIndicator.textContent = title ? `Lendo: ${title}` : 'Capítulo atual';
+                    links.querySelectorAll('a').forEach(link => {
+                        if (link.hash === `#${entry.target.id}`) link.setAttribute('aria-current', 'location');
+                        else link.removeAttribute('aria-current');
+                    });
+                    entry.target.classList.add('visible');
+                });
+            }, { rootMargin: '-20% 0px -65% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            const updateProgress = () => {
+                const available = document.documentElement.scrollHeight - window.innerHeight;
+                const percent = available > 0 ? Math.round((window.scrollY / available) * 100) : 0;
+                progressBar.style.width = `${percent}%`;
+                document.querySelector('.reading-progress-track').setAttribute('role', 'progressbar');
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuenow', String(percent));
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuemin', '0');
+                document.querySelector('.reading-progress-track').setAttribute('aria-valuemax', '100');
+            };
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeMenu();
+                if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+                if (event.key === 'ArrowRight') navigateTo(currentIndex + 1);
+                if (event.key === 'ArrowLeft') navigateTo(currentIndex - 1);
+            });
+        })();
+    </script>
+    <script>
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.register('./sw.js').catch(error => {
+                console.error('Não foi possível ativar o modo off-line:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>
